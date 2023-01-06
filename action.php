@@ -56,19 +56,34 @@
 
             if ($_SERVER["REQUEST_METHOD"] == "GET") {
                 if (empty($_GET["toproof"])) {
-                    $error = 0;
+                    $error = 1;
                 
                 } else {
-                    $error = 1;
+                    $error = 0;
 
                 }
             }
         ?>
 
-        <?php if ($error == 0) : ?>
-            <div class="alert alert-warning">
+        <?php if ($error == 1) : ?>
+            <div class="alert alert-info">
                 <strong>Warning!</strong> You must enter a domain or IP.</a>.
             </div>
+            <div own-include-html="startpage.html"></div>    
+            <script>
+                includeHTML();
+            </script>     
+        <?php endif; ?>
+
+        <?php if ($error == 0) : ?>
+
+            <?php if ($_GET["nslookup"]) : ?>
+                <div class="container-fluid">
+
+                   <iframe src="https://www.nslookup.io/domains/<?php echo $_GET["toproof"]; ?>/dns-records/" title=""></iframe> 
+
+                </div>
+
 
         <?php endif; ?>
 
