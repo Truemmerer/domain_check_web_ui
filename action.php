@@ -80,9 +80,11 @@
             <?php 
                 if(isset($_GET['action']) && !empty($_GET['action']) && ($_GET["action"] == "nslookup")) : ?>
 
+
                 <div class="container-fluid">
 
-                   <iframe src="https://www.nslookup.io/domains/<?php echo $_GET["toproof"]; ?>/dns-records/" title=""></iframe> 
+                   <iframe src="https://www.nslookup.io/domains/<?php echo $_GET["toproof"]; ?>/dns-records/" title="" width="100%" height="3500"></iframe> 
+                    
 
                 </div>
             
