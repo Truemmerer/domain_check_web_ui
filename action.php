@@ -83,8 +83,22 @@
 
                 <div class="container-fluid">
 
-                   <iframe src="https://www.nslookup.io/domains/<?php echo $_GET["toproof"]; ?>/dns-records/" title="" width="100%" height="3500"></iframe> 
+                   <iframe src="https://www.nslookup.io/domains/<?php echo $_GET["toproof"]; ?>/dns-records/" title="" width="100%" height="3000"></iframe> 
                     
+
+                </div>
+            
+            <?php endif; ?>    
+            
+
+            <?php 
+                if(isset($_GET['action']) && !empty($_GET['action']) && ($_GET["action"] == "whois")) : ?>
+
+
+                <div class="container-fluid">
+
+                <iframe src="https://wer-ist.es/<?php echo $_GET["toproof"]; ?>" title="" width="100%" height="3000"></iframe> 
+
 
                 </div>
             
