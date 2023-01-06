@@ -52,20 +52,26 @@
 
         <?php 
 
-            $error = "";
+            $error = 0;
 
             if ($_SERVER["REQUEST_METHOD"] == "GET") {
                 if (empty($_GET["toproof"])) {
-                    $error = "Domain or IP is required";
+                    $error = 0;
                 
                 } else {
-                    $error = "Eingegeben";
+                    $error = 1;
 
                 }
             }
         ?>
 
-        Ergebnis: <?php echo $error ?>
+        <?php if ($error == 0) : ?>
+            <div class="alert alert-warning">
+                <strong>Warning!</strong> You must enter a domain or IP.</a>.
+            </div>
+
+        <?php endif; ?>
+
 
     </body>
 
