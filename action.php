@@ -55,11 +55,11 @@
             $error = 0;
 
             if ($_SERVER["REQUEST_METHOD"] == "GET") {
-                if (empty($_GET["toproof"])) {
-                    $error = 1;
+                if(isset($_GET['toproof']) && !empty($_GET['toproof'])){
+                    $error = 0;
                 
                 } else {
-                    $error = 0;
+                    $error = 1;
 
                 }
             }
@@ -77,12 +77,16 @@
 
         <?php if ($error == 0) : ?>
 
-            <?php if ($_GET["nslookup"]) : ?>
+            <?php 
+                if(isset($_GET['action']) && !empty($_GET['action']) && ($_GET["action"] == "nslookup")) : ?>
+
                 <div class="container-fluid">
 
                    <iframe src="https://www.nslookup.io/domains/<?php echo $_GET["toproof"]; ?>/dns-records/" title=""></iframe> 
 
                 </div>
+            
+            <?php endif; ?>    
 
 
         <?php endif; ?>
