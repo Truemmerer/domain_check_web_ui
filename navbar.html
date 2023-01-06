@@ -13,14 +13,14 @@
 
                 <!-- FORM START -->
                 <div class="container-fluid mt-">
-                    <form action="/action.php">
+                    <form action="action.php" method="get">
                         <div class="row">
                             <div class="col-3">
                                 <input type="text" class="form-control" placeholder="Enter Domain or IP" name="toproof">
                             </div>
                             <div class="col-2">
                                 <div class="btn-group">
-                                    <button type="submit" class="btn btn-primary">nslookup</button>
+                                    <button type="submit" class="btn btn-primary" name="nslookup">nslookup</button>
                                     <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown"></button>
                                     <div class="dropdown-menu">
                                         <a class="dropdown-item btn-primary" type="submit" href="#">dig</a>

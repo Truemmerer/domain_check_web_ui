@@ -50,8 +50,22 @@
             includeHTML();
         </script> 
 
-        Welcome <?php echo $_GET["name"]; ?><br>
-        Your email address is: <?php echo $_GET["email"]; ?>
+        <?php 
+
+            $error = "";
+
+            if ($_SERVER["REQUEST_METHOD"] == "GET") {
+                if (empty($_GET["toproof"])) {
+                    $error = "Domain or IP is required";
+                
+                } else {
+                    $error = "Eingegeben";
+
+                }
+            }
+        ?>
+
+        Ergebnis: <?php echo $error ?>
 
     </body>
 
