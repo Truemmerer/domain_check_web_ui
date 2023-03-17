@@ -67,7 +67,7 @@
 
         <?php if ($error == 1) : ?>
             <div class="alert alert-info">
-                <strong>Warning!</strong> You must enter a domain or IP.</a>.
+                <strong>Note!</strong> You must enter a domain or IP.</a>.
             </div>
             <div own-include-html="startpage.html"></div>    
             <script>

@@ -1,7 +1,7 @@
 .center_welcome {
     text-align: center;
     margin-top: 200px;
-    color: white;
+    color: grey;
 }
 
 .nav-color {
@@ -9,5 +9,5 @@
 }
 
 .body-color {
-    background-color: #353535;
+    background-color: #ffffff;
 }
