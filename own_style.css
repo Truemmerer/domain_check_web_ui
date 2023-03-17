@@ -1,7 +1,7 @@
 .center_welcome {
     text-align: center;
     margin-top: 200px;
-    color: grey;
+    color: rgb(190, 190, 190);
 }
 
 .nav-color {
@@ -9,5 +9,48 @@
 }
 
 .body-color {
-    background-color: #ffffff;
+    background-color: #353535;
+    color: #ffffff;
+}
+
+.second-color {
+    background-color: grey;
+}
+
+.credits {
+    position: relative;
+    top: 20px;
+    text-align: center;
+    color: rgb(190, 190, 190);
+  }
+
+.footer {
+    color: rgb(190, 190, 190);
+    position: relative;
+    top: 300px;
+    text-align: center;
+  }
+
+a:link {
+    color: #ffffff;
+    background-color: transparent;
+    text-decoration: none;
+}
+
+a:visited {
+    color: #ffffff;
+    background-color: transparent;
+    text-decoration: none;
+}
+
+a:hover {
+    color: #ffffff;
+    background-color: transparent;
+    text-decoration: none;
+}
+
+a:active {
+    color: #ffffff;
+    background-color: transparent;
+    text-decoration: none;
 }
