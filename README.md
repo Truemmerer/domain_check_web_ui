@@ -18,8 +18,8 @@ Currently, the tool still relies on external applications. The goal is that all 
 
 ## Collaboration 👥
 
-Collaboration is welcome! Let's make it better together~  
-Feel free to open an issue if you have any problem or suggestions 🤗
+Let's make it better together 
+Feel free to open an issue if you have any problem or suggestions 🤍
 
 </br>
 
