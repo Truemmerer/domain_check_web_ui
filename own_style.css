@@ -50,3 +50,13 @@ a:active {
     background-color: transparent;
     text-decoration: none;
 }
+
+.card-box-style {
+    background-color: #0d6efd;
+    color: white;
+}
+
+.card-body-style {
+    background-color: white;
+    color: black;
+}

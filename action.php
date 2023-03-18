@@ -9,6 +9,7 @@
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
    
         <link rel="stylesheet" type="text/css" href="own_style.css">
+        <link rel="icon" type="image/x-icon" href="assets/window-domain_icon-icons.com_52810.ico">
 
         <script>
             function includeHTML() {
@@ -43,6 +44,15 @@
     </head>
 
     <body class="body-color">
+
+        <!-- Add Funcitons -->
+        <?php
+            require_once 'functions/whois.php';
+            require_once 'functions/nslookup.php';
+
+
+        ?>
+        <!-- END Add Funcitons -->
 
         <?php 
 
@@ -110,6 +120,8 @@
         </script> 
 
 
+
+        <!-- CHECK IF ENTER TEXT -->
         <?php if ($error == 1) : ?>
             <div class="alert alert-info">
                 <strong>Note!</strong> You must enter a domain or IP.</a>.
@@ -119,60 +131,46 @@
                 includeHTML();
             </script>     
         <?php endif; ?>
+        <!-- END CHECK IF ENTER TEXT -->
 
+
+
+        <!-- Press Button -->
         <?php if ($error == 0) : ?>
 
+            <!-- Press nslookup? -->
             <?php 
                 if(isset($_GET['action']) && !empty($_GET['action']) && ($_GET["action"] == "nslookup")) : ?>
-
-
                 <div class="container-fluid">
-
-                   <iframe src="https://www.nslookup.io/domains/<?php echo $_GET["toproof"]; ?>/dns-records/" title="" width="100%" height="3000"></iframe> 
-                    
-
+                <?php
+                    nslookup($toproof)
+                ?>
                 </div>
             
             <?php endif; ?>    
              
          
-         <?php 
-                if(isset($_GET['action']) && !empty($_GET['action']) && ($_GET["action"] == "whois")) : ?>
-
-                
-                <div class="container-fluid">
-
-                        
-                <?php 
-                    $domain = escapeshellarg($_GET["toproof"]);
-                    $command = "whois -q " . escapeshellcmd($domain);
-                    $output = shell_exec($command);
-                    $lines = explode("\n", $output);
-                    array_shift($lines);
-                    $output = implode("\n", $lines);
-                    echo nl2br(htmlspecialchars($output));
-                ?>
-
-                    
-
-                </div>
+        <!-- press whois? -->
+             <?php 
+                if(isset($_GET['action']) && !empty($_GET['action']) && ($_GET["action"] == "whois")) : ?>                
+                    <div class="container-fluid">                        
+                    <?php 
+                        whois_output($toproof) 
+                    ?>
+                    </div>
             
-            <?php endif; ?>  
+              <?php endif; ?>  
 
+        <!-- press dnssec? -->
             <?php 
                 if(isset($_GET['action']) && !empty($_GET['action']) && ($_GET["action"] == "dnssec")) : ?>
-
-
                 <div class="container-fluid">
-
                 <iframe src="https://dnssec-analyzer.verisignlabs.com/<?php echo $_GET["toproof"]; ?>" title="" width="100%" height="3000"></iframe> 
-
-
-                </div>
-            
+                </div>         
             <?php endif; ?>   
 
 
+        <!-- END Press Button -->
         <?php endif; ?>
 
 
