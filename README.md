@@ -1,7 +1,7 @@
 <p align="center"><img src="./assets/window-domain_icon-icons.com_52810.png" width="256"></p>
 <p align="center">A simple domain check tool</p>  
 
-# Domain Check Web Ui
+# Gnome Shell Extension - Hanabi
 
 ### Work in Progress 🎏
 </br>

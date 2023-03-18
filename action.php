@@ -134,20 +134,30 @@
                 </div>
             
             <?php endif; ?>    
-            
-
-            <?php 
+             
+         
+         <?php 
                 if(isset($_GET['action']) && !empty($_GET['action']) && ($_GET["action"] == "whois")) : ?>
 
+                
+                <div class="container-fluid">
 
-                <div class="container-fluid second-color">
+                        
+                <?php 
+                    $domain = escapeshellarg($_GET["toproof"]);
+                    $command = "whois -q " . escapeshellcmd($domain);
+                    $output = shell_exec($command);
+                    $lines = explode("\n", $output);
+                    array_shift($lines);
+                    $output = implode("\n", $lines);
+                    echo nl2br(htmlspecialchars($output));
+                ?>
 
-                <iframe src="https://wer-ist.es/<?php echo $_GET["toproof"]; ?>" title="" width="100%" height="3000"></iframe> 
-
+                    
 
                 </div>
             
-            <?php endif; ?>    
+            <?php endif; ?>  
 
             <?php 
                 if(isset($_GET['action']) && !empty($_GET['action']) && ($_GET["action"] == "dnssec")) : ?>
