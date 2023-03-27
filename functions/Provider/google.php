@@ -4,6 +4,7 @@
     // Google 
     function google_check($toproof) {
         $domain = escapeshellarg($_GET["toproof"]);
+        //$domain = "google.de";
         $command = "nslookup " . escapeshellcmd($domain) . " 8.8.8.8";
         $output = shell_exec($command);
         $google_ipv4_addresses = array();

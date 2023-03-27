@@ -4,7 +4,7 @@
     require_once 'Provider/google.php';
     require_once 'Provider/opendns.php';
     require_once 'Provider/authoritative.php';
-
+    require_once 'check_dns.php';
 
 
 
@@ -15,8 +15,6 @@
         list($opendns_ipv4_addresses, $opendns_ipv6_addresses, $opendns_txt_records, $opendns_cname_records, $opendns_mx_records, $opendns_ns_records) = opendns_check($toproof);    
         list($authoritative_ipv4_addresses, $authoritative_ipv6_addresses, $authoritative_txt_records, $authoritative_cname_records, $authoritative_mx_records, $authoritative_ns_records, $authoritative_ip) = authoritative_check($toproof);    
 
-
-    
         build_nslookup($cloudflare_ipv4_addresses, $cloudflare_ipv6_addresses, $cloudflare_txt_records, $cloudflare_cname_records, $cloudflare_mx_records, $cloudflare_ns_records, $google_ipv4_addresses, $google_ipv6_addresses, $google_txt_records, $google_cname_records, $google_mx_records, $google_ns_records, $opendns_ipv4_addresses, $opendns_ipv6_addresses, $opendns_txt_records, $opendns_cname_records, $opendns_mx_records, $opendns_ns_records, $authoritative_ipv4_addresses, $authoritative_ipv6_addresses, $authoritative_txt_records, $authoritative_cname_records, $authoritative_mx_records, $authoritative_ns_records, $authoritative_ip);
     }
 
@@ -25,10 +23,22 @@
     // OUTPUT 
     function build_nslookup($cloudflare_ipv4_addresses, $cloudflare_ipv6_addresses, $cloudflare_txt_records, $cloudflare_cname_records, $cloudflare_mx_records, $cloudflare_ns_records, $google_ipv4_addresses, $google_ipv6_addresses, $google_txt_records, $google_cname_records, $google_mx_records, $google_ns_records, $opendns_ipv4_addresses, $opendns_ipv6_addresses, $opendns_txt_records, $opendns_cname_records, $opendns_mx_records, $opendns_ns_records, $authoritative_ipv4_addresses, $authoritative_ipv6_addresses, $authoritative_txt_records, $authoritative_cname_records, $authoritative_mx_records, $authoritative_ns_records, $authoritative_ip) {
         ?>
+
+        <!-- Check if IPv4 same -->
+       
+       <?php 
+            if (ipv4_check($cloudflare_ipv4_addresses, $google_ipv4_addresses, $opendns_ipv4_addresses, $authoritative_ipv4_addresses) == false) {
+                ?>
+                    <div class="alert .alert-warning">
+                        <strong>Warning!</strong> The IPv4 addresses differ from each other! <br/> Please note that changes take up to 48 hours to be distributed worldwide. This error message can therefore be ignored if the DNS have been set recently.</a>.
+                    </div>
+                <?php
+            }
+        ?>
+
         <div class="card card-box-style">
             <div class="card-header" role="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
-                <h2 class="mb-0">Authoritative </h2> ( 
-              
+                <h2 class="mb-0">Authoritative </h2> (              
                 <?php 
                     echo $authoritative_ip;              
                 ?>
@@ -38,7 +48,7 @@
                 <div class="card-body card-body-style">
                     <div class="container-fluid">
                     <div class="card">
-                            <div class="card-body">
+                            <div class="card-body card-body-style">
                                 <h4>A Records (IPv4)</h4>
                                     <?php 
                                         if (!empty($authoritative_ipv4_addresses)) {
@@ -50,7 +60,7 @@
                             </div>
                         </div>
                         <div class="card">
-                            <div class="card-body">
+                            <div class="card-body card-body-style">
                                  <h4>AAAA Records (IPv6)</h4>
                                     <?php 
                                         if (!empty($authoritative_ipv6_addresses)) {
@@ -62,7 +72,7 @@
                             </div>
                         </div>
                         <div class="card">
-                            <div class="card-body">
+                            <div class="card-body card-body-style">
                                 <h4>CNAME Records</h4>
                                 <?php
                                     if (!empty($authoritative_cname_records)) {
@@ -74,7 +84,7 @@
                             </div>
                         </div>
                         <div class="card">
-                            <div class="card-body">
+                            <div class="card-body card-body-style">
                                 <h4>TXT Records</h4>
                                     <?php
                                         if (!empty($authoritative_txt_records)) {
@@ -86,7 +96,7 @@
                             </div>
                         </div>
                         <div class="card">
-                            <div class="card-body">
+                            <div class="card-body card-body-style">
                                 <h4>MX Records</h4>
                                     <?php
                                         if (!empty($authoritative_mx_records)) {
@@ -98,7 +108,7 @@
                             </div>
                         </div>
                         <div class="card">
-                            <div class="card-body">
+                            <div class="card-body card-body-style">
                                 <h4>NS Records</h4>
                                 <?php
                                         if (!empty($authoritative_ns_records)) {
@@ -122,7 +132,7 @@
                 <div class="card-body card-body-style">
                     <div class="container-fluid">
                         <div class="card">
-                            <div class="card-body">
+                            <div class="card-body card-body-style">
                                 <h4>A Records (IPv4)</h4>
                                     <?php 
                                         if (!empty($cloudflare_ipv4_addresses)) {
@@ -134,7 +144,7 @@
                             </div>
                         </div>
                         <div class="card">
-                            <div class="card-body">
+                            <div class="card-body card-body-style">
                                  <h4>AAAA Records (IPv6)</h4>
                                     <?php 
                                         if (!empty($cloudflare_ipv6_addresses)) {
@@ -146,7 +156,7 @@
                             </div>
                         </div>
                         <div class="card">
-                            <div class="card-body">
+                            <div class="card-body card-body-style">
                                 <h4>CNAME Records</h4>
                                 <?php
                                     if (!empty($cloudflare_cname_records)) {
@@ -158,7 +168,7 @@
                             </div>
                         </div>
                         <div class="card">
-                            <div class="card-body">
+                            <div class="card-body card-body-style">
                                 <h4>TXT Records</h4>
                                     <?php
                                         if (!empty($cloudflare_txt_records)) {
@@ -170,7 +180,7 @@
                             </div>
                         </div>
                         <div class="card">
-                            <div class="card-body">
+                            <div class="card-body card-body-style">
                                 <h4>MX Records</h4>
                                     <?php
                                         if (!empty($cloudflare_mx_records)) {
@@ -182,7 +192,7 @@
                             </div>
                         </div>
                         <div class="card">
-                            <div class="card-body">
+                            <div class="card-body card-body-style">
                                 <h4>NS Records</h4>
                                 <?php
                                         if (!empty($cloudflare_ns_records)) {
@@ -206,7 +216,7 @@
                 <div class="card-body card-body-style">
                 <div class="container-fluid">
                         <div class="card">
-                            <div class="card-body">
+                            <div class="card-body card-body-style">
                                 <h4>A Records (IPv4)</h4>
                                     <?php 
                                         if (!empty($google_ipv4_addresses)) {
@@ -218,7 +228,7 @@
                             </div>
                         </div>
                         <div class="card">
-                            <div class="card-body">
+                            <div class="card-body card-body-style">
                                  <h4>AAAA Records (IPv6)</h4>
                                     <?php 
                                         if (!empty($google_ipv6_addresses)) {
@@ -230,7 +240,7 @@
                             </div>
                         </div>
                         <div class="card">
-                            <div class="card-body">
+                            <div class="card-body card-body-style">
                                 <h4>CNAME Records</h4>
                                 <?php
                                     if (!empty($google_cname_records)) {
@@ -242,7 +252,7 @@
                             </div>
                         </div>
                         <div class="card">
-                            <div class="card-body">
+                            <div class="card-body card-body-style">
                                 <h4>TXT Records</h4>
                                     <?php
                                         if (!empty($google_txt_records)) {
@@ -254,7 +264,7 @@
                             </div>
                         </div>
                         <div class="card">
-                            <div class="card-body">
+                            <div class="card-body card-body-style">
                                 <h4>MX Records</h4>
                                     <?php
                                         if (!empty($google_mx_records)) {
@@ -266,7 +276,7 @@
                             </div>
                         </div>
                         <div class="card">
-                            <div class="card-body">
+                            <div class="card-body card-body-style">
                                 <h4>NS Records</h4>
                                 <?php
                                         if (!empty($google_ns_records)) {
@@ -290,7 +300,7 @@
                 <div class="card-body card-body-style">
                 <div class="container-fluid">
                 <div class="card">
-                            <div class="card-body">
+                            <div class="card-body card-body-style">
                                 <h4>A Records (IPv4)</h4>
                                     <?php 
                                         if (!empty($opendns_ipv4_addresses)) {
@@ -302,7 +312,7 @@
                             </div>
                         </div>
                         <div class="card">
-                            <div class="card-body">
+                            <div class="card-body card-body-style">
                                  <h4>AAAA Records (IPv6)</h4>
                                     <?php 
                                         if (!empty($opendns_ipv6_addresses)) {
@@ -314,7 +324,7 @@
                             </div>
                         </div>
                         <div class="card">
-                            <div class="card-body">
+                            <div class="card-body card-body-style">
                                 <h4>CNAME Records</h4>
                                 <?php
                                     if (!empty($opendns_cname_records)) {
@@ -326,7 +336,7 @@
                             </div>
                         </div>
                         <div class="card">
-                            <div class="card-body">
+                            <div class="card-body card-body-style">
                                 <h4>TXT Records</h4>
                                     <?php
                                         if (!empty($opendns_txt_records)) {
@@ -338,7 +348,7 @@
                             </div>
                         </div>
                         <div class="card">
-                            <div class="card-body">
+                            <div class="card-body card-body-style">
                                 <h4>MX Records</h4>
                                     <?php
                                         if (!empty($opendns_mx_records)) {
@@ -350,7 +360,7 @@
                             </div>
                         </div>
                         <div class="card">
-                            <div class="card-body">
+                            <div class="card-body card-body-style">
                                 <h4>NS Records</h4>
                                 <?php
                                         if (!empty($opendns_ns_records)) {

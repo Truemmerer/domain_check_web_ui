@@ -61,6 +61,7 @@
             if ($_SERVER["REQUEST_METHOD"] == "GET") {
                 if(isset($_GET['toproof']) && !empty($_GET['toproof'])){
                     $error = 0;
+                    $toproof = ($_GET['toproof']);
                 
                 } else {
                     $error = 1;
