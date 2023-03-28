@@ -3,7 +3,7 @@
     //------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     // Cloudflare 
     function cloudflare_check($toproof) {
-        $domain = escapeshellarg($_GET["toproof"]);
+        $domain = escapeshellarg($toproof);
         $command = "nslookup " . escapeshellcmd($domain) . " 1.1.1.1";
         $output = shell_exec($command);
         $cloudflare_ipv4_addresses = array();

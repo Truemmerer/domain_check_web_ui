@@ -65,32 +65,39 @@ function whois_updatet($whois, $tld) {
 
 function build_whois($whois, $status, $nameserver, $updated) {
 ?>
-    <div class="row">
-        <!-- Whois --> 
-        <div class="col-sm-8">
-            <?php echo nl2br(htmlspecialchars($whois)); ?>
+  
+    <!-- Whois Quick -->
+    <div class="card card-box-style">
+        <div class="card-header" role="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+        <a class="btn" data-bs-toggle="collapse" href="#collapseOne">
+            Quick information
+        </a>
         </div>
-        <!-- Whois Quick -->
-        <div class="col-sm-4">
-
-            <div class="card card-box-style">
-                <div class="card-header" role="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                <a class="btn" data-bs-toggle="collapse" href="#collapseOne">
-                    Quick information
-                </a>
-                </div>
-                <div id="collapseOne" class="collapse show" data-bs-parent="#accordion">
-                <div class="card-body card-body-style">
-                    Status: <?php echo $status ?>
-                    <br/>
-                    Nameserver: <?php echo "" , implode(", ", $nameserver); ?>
-                    <br/>
-                    Updated: <?php echo $updated ?>
-                </div>
-                </div>
+        <div id="collapseOne" class="collapse show" data-bs-parent="#accordion">
+            <div class="card-body card-body-style">
+                Status: <?php echo $status ?>
+                <br/>
+                Nameserver: <?php echo "" , implode(", ", $nameserver); ?>
+                <br/>
+                Updated: <?php echo $updated ?>
             </div>
         </div>
     </div>
+
+    <!-- Whois --> 
+    <div class="card card-box-style">
+        <div class="card-header" role="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
+        <a class="btn" data-bs-toggle="collapse" href="#collapseTwo">
+            Complete Whois
+        </a>
+        </div>
+        <div id="collapseTwo" class="collapse show" data-bs-parent="#accordion">
+            <div class="card-body card-body-style">
+                <?php echo nl2br(htmlspecialchars($whois)); ?>
+            </div>
+        </div>
+    </div>
+
 <?php
 }
 ?>

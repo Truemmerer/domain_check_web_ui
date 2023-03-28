@@ -7,16 +7,34 @@
 </br>
 This tool is intended to provide simple and functional help in checking domains. 
 
-**Already available features:**
-- nslookup
-- whois
-- dnssec
+</br>
 
-Currently, the tool still relies on external applications. The goal is that all functions will be provided independently.
+### Already available features:
+- nslookup (Authorative, Google, Cloudflare, OpenDNS)
+- PTR/rDNS Check with IP by nslookup
+- Warning if A is different by nslookup.
+- whois
+- Quick Informations by Whois
+- Dark Mode (only 🤗)  
 
 </br>
 
-## Collaboration 👥
+### ToDo:
+- DNSSEC
+- dig
+- PTR/rDNS standalone
+- Support for more tld in Quick Informations by Whois
+- Add warning messages by bad Domain Status
+- Add warning in nslookup if AAAA, TXT, CNAME, MX, NS different
+
+</br>
+
+## Requirements
+- You need to edit config.php
+
+</br>
+
+# Collaboration 👥
 
 Let's make it better together 
 Feel free to open an issue if you have any problem or suggestions 🤍
@@ -30,6 +48,8 @@ Feel free to open an issue if you have any problem or suggestions 🤍
 </a>
 
 Made with [contrib.rocks](https://contrib.rocks).
+
+</br>
 
 ### Info
 Icon from [Icon-Icons.com](https://icon-icons.com/icon/window-domain-www/52810) made by [Vecteezy](https://icon-icons.com/users/49oaZ80LDyqHrUI3wINLc/icon-sets/) licensed under <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.
