@@ -24,6 +24,7 @@
                                     <button type="submit" class="btn btn-primary" name="action" value="dig">dig</button>
                                     <button type="submit" class="btn btn-primary" name="action" value="whois">whois</button>
                                     <button type="submit" class="btn btn-primary" name="action" value="dnssec">dnssec</button>
+                                    <button type="submit" class="btn btn-primary" name="action" value="rdns-ptr">rDNS/PTR</button>
                                 </div>
                             </div>
                         </div>

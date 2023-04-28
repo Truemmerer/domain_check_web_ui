@@ -16,6 +16,7 @@
         // FIND THE Nameserver
 
         $output_ns_detect = shell_exec("dig +short NS $domain");
+         
         $nameservers = explode("\n", trim($output_ns_detect));
         $authoritative_ns = trim($nameservers[0]);
         $authoritative_ip = get_nameserver_ip($authoritative_ns);

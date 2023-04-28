@@ -1,11 +1,25 @@
 <?php
 
 function whois_output($toproof) {
-    $tld = check_tld($toproof);
+
+    // Check if $toproof is a domain, ip, url, e-mail-adress
+    $whatisthat = whatisit($toproof);
+
     $whois = whois_check($toproof);
-    $status = whois_status($whois, $tld);
-    $nameserver = whois_nameserver($whois, $tld);
+
+    if ($whatisthat === 2) {
+        $tld = check_tld($toproof);
+        $status = whois_status($whois, $tld);
+        $nameserver = whois_nameserver($whois, $tld);
+
+    } else {
+        $tld = "none";
+        $status = "Not found";
+        $nameserver = "Not found";
+    }
+
     $updated = whois_updatet($whois, $tld);
+
 
     build_whois($whois, $status, $nameserver, $updated);
 }
@@ -32,7 +46,12 @@ function whois_status($whois, $tld) {
     $pattern = pattern_status($tld);
 
     if (preg_match_all($pattern, $whois, $matches)) {
-        $status = $matches[1][0];
+        $status = $matches[1];
+
+        if (is_array($status)) {
+            $status = implode("<br/>", $status);
+        }
+
         return $status;
     } else {
         $status = "Not found";
@@ -44,6 +63,10 @@ function whois_nameserver($whois, $tld) {
    
     if (preg_match_all($pattern, $whois, $matches)) {
         $nameserver = $matches[1];
+
+        if (is_array($nameserver)) {
+            $nameserver = implode("<br/>", $nameserver);
+        }
         return $nameserver;
     } else {
         $nameserver = "Not found";
@@ -75,11 +98,11 @@ function build_whois($whois, $status, $nameserver, $updated) {
         </div>
         <div id="collapseOne" class="collapse show" data-bs-parent="#accordion">
             <div class="card-body card-body-style">
-                Status: <?php echo $status ?>
-                <br/>
-                Nameserver: <?php echo "" , implode(", ", $nameserver); ?>
-                <br/>
-                Updated: <?php echo $updated ?>
+                <strong>Status:</strong><br/> <?php echo $status ?>
+                <br/><br/>
+                <strong>Nameserver:</strong><br/> <?php echo $nameserver ?>
+                <br/><br/>
+                <strong>Updated:</strong><br/> <?php echo $updated ?>
             </div>
         </div>
     </div>
@@ -134,6 +157,8 @@ function pattern_nameserver($tld) {
             return '/^Nserver:\s*(.*)$/im';
         case 'eu':
             return '/^Name servers:\s*(.*)$/im';
+        case 'at';
+            return '/^nserver:\s*(.*)$/im';
         default:
             return null;
     }
@@ -142,6 +167,8 @@ function pattern_nameserver($tld) {
 
 function pattern_updated($tld) {
     switch ($tld) {
+        case 'none':
+            return '/^last-modified:\s*(.*)$/im';
         case 'com':
         case 'net':
         case 'org':

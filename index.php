@@ -23,7 +23,10 @@
             require_once 'functions/nslookup.php';
             require_once 'functions/dnssec.php';
             require_once 'functions/dig.php';
+            require_once 'functions/rdns-ptr.php';
             include_once 'config.php';
+            include_once 'functions/whatisit.php';
+
             
         // END Add Funcitons
 
@@ -91,6 +94,15 @@
                             <div class="container-fluid">                        
                             <?php 
                                 dig($toproof);
+                            ?>
+                            </div>    
+                    <?php endif; ?>   
+                    <!-- press dig? -->
+                    <?php 
+                        if(isset($_GET['action']) && !empty($_GET['action']) && ($_GET["action"] == "rdns-ptr")) : ?>
+                            <div class="container-fluid">                        
+                            <?php 
+                                rdns_ptr_print($toproof);
                             ?>
                             </div>    
                     <?php endif; ?>   

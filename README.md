@@ -13,6 +13,11 @@ This tool is intended to provide simple and functional help in checking domains.
 - nslookup (Authorative, Google, Cloudflare, OpenDNS)
 - PTR/rDNS Check with IP by nslookup
 - Warning if A is different by nslookup.
+- Warning if AAAA is different by nslookup.
+- Warning if CNAME is different by nslookup.
+- Warning if MX is different by nslookup.
+- Warning if NS is different by nslookup.
+- Warning if TXT is different by nslookup.
 - whois
 - Quick Informations by Whois
 - Dark Mode (only 🤗)  
@@ -25,7 +30,6 @@ This tool is intended to provide simple and functional help in checking domains.
 - PTR/rDNS standalone
 - Support for more tld in Quick Informations by Whois
 - Add warning messages by bad Domain Status
-- Add warning in nslookup if AAAA, TXT, CNAME, MX, NS different
 
 </br>
 

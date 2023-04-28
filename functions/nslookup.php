@@ -76,6 +76,68 @@
             }
         ?>
 
+       <!-- Check if IPv6 same -->
+       
+       <?php 
+            if (ipv6_check($cloudflare_ipv6_addresses, $google_ipv6_addresses, $opendns_ipv6_addresses, $authoritative_ipv6_addresses) == false) {
+                ?>
+                    <div class="alert alert-warning">
+                        <strong>Warning!</strong> The IPv6 addresses differ from each other! <br/> Please note that changes take up to 48 hours to be distributed worldwide. This error message can therefore be ignored if the DNS have been set recently.</a>.
+                    </div>
+                <?php
+            }
+        ?>
+
+        <!-- Check if txt same -->
+    
+       <?php 
+            if (txt_check($cloudflare_txt_records, $google_txt_records, $opendns_txt_records, $authoritative_txt_records) == false) {
+                ?>
+                    <div class="alert alert-warning">
+                        <strong>Warning!</strong> The TXT records differ from each other! <br/> Please note that changes take up to 48 hours to be distributed worldwide. This error message can therefore be ignored if the DNS have been set recently.</a>.
+                    </div>
+                <?php
+            }
+        ?>
+
+        <!-- Check if cname same -->
+    
+       <?php 
+            if (cname_check($cloudflare_cname_records, $google_cname_records, $opendns_cname_records, $authoritative_cname_records) == false) {
+                ?>
+                    <div class="alert alert-warning">
+                        <strong>Warning!</strong> The TXT records differ from each other! <br/> Please note that changes take up to 48 hours to be distributed worldwide. This error message can therefore be ignored if the DNS have been set recently.</a>.
+                    </div>
+                <?php
+            }
+        ?>
+
+        <!-- Check if mx same -->
+    
+       <?php 
+            if (mx_check($cloudflare_mx_records, $google_mx_records, $opendns_mx_records, $authoritative_mx_records) == false) {
+                ?>
+                    <div class="alert alert-warning">
+                        <strong>Warning!</strong> The TXT records differ from each other! <br/> Please note that changes take up to 48 hours to be distributed worldwide. This error message can therefore be ignored if the DNS have been set recently.</a>.
+                    </div>
+                <?php
+            }
+        ?>
+
+        <!-- Check if ns same -->
+    
+       <?php 
+            if (ns_check($cloudflare_ns_records, $google_ns_records, $opendns_ns_records, $authoritative_ns_records) == false) {
+                ?>
+                    <div class="alert alert-warning">
+                        <strong>Warning!</strong> The TXT records differ from each other! <br/> Please note that changes take up to 48 hours to be distributed worldwide. This error message can therefore be ignored if the DNS have been set recently.</a>.
+                    </div>
+                <?php
+            }
+        ?>
+
+        <!-- Build the main output -->
+
         <div class="card card-box-style">
             <div class="card-header" role="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
                 <h2 class="mb-0">Authoritative </h2> (              

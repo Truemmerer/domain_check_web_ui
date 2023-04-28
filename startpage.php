@@ -22,7 +22,7 @@ function show_startpage() {
                 </br>
                 - PTR/rDNS Check with IP by nslookup
                 </br>
-                - Warning if A is different by nslookup.
+                - Warning if multiple DNS records are different on the checked name servers.
                 </br>
                 - whois
                 </br>
@@ -42,8 +42,6 @@ function show_startpage() {
                 - Support for more tld in Quick Informations by Whois
                 </br>
                 - Add warning messages by bad Domain Status
-                </br>
-                - Add warning in nslookup if AAAA, TXT, CNAME, MX, NS different
             </div>
 
             <div class="footer">
