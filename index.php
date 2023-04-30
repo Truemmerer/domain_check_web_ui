@@ -5,8 +5,8 @@
 
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+        <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
+        <script src="bootstrap/js/bootstrap.bundle.min.js"></script>
    
         <link rel="stylesheet" type="text/css" href="own_style.css">
         <link rel="icon" type="image/x-icon" href="assets/window-domain_icon-icons.com_52810.ico">
@@ -24,8 +24,10 @@
             require_once 'functions/dnssec.php';
             require_once 'functions/dig.php';
             require_once 'functions/rdns-ptr.php';
-            include_once 'config.php';
+
             include_once 'functions/whatisit.php';
+            include_once 'config.php';
+            include_once 'footer.php';
 
             
         // END Add Funcitons
@@ -37,8 +39,8 @@
                 $toproof = "";
         }
 
-
-        show_navbar($toproof, $working_domain, $impressum, $privacy_policy);
+        // Generate navbar
+        show_navbar($toproof, $working_domain);
 
         //What is to do, if a button are clickt
 
@@ -122,6 +124,9 @@
             show_startpage();
         }
         
+        // Shows imprint and privacy policy
+
+        footer($impressum, $privacy_policy, $contribute)
         
         ?>
         

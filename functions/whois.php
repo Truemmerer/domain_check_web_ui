@@ -85,10 +85,16 @@ function whois_updatet($whois, $tld) {
     }
 }
 
+function domain_status_warning($status) {
+
+
+
+}
+
 
 function build_whois($whois, $status, $nameserver, $updated) {
 ?>
-  
+
     <!-- Whois Quick -->
     <div class="card card-box-style">
         <div class="card-header" role="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
@@ -181,4 +187,18 @@ function pattern_updated($tld) {
     }
 
 }
+
+
+function pattern_warn_status($status) {
+    if (preg_match('/^clientTransferProhibited/i', $status)) {
+        return 'Warning: Domain transfer is prohibited.';
+    } elseif (preg_match('/^clientUpdateProhibited/i', $status)) {
+        return 'Warning: Domain Update is prohibited.';
+    } elseif (preg_match('/^clientDeleteProhibited/i', $status)) {
+        return 'Warning: Domain Delete is prohibited.';
+    } else {
+        return null;
+    }
+}
+
 ?>

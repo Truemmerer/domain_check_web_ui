@@ -104,7 +104,7 @@
             <div class="alert alert-success">
                 <strong>rDNS: </strong>The rDNS of the IP <?php echo $ip ?> is <?php echo $rdns ?>
             </div>
-            <div class="alert alert-warning">
+            <div class="alert alert-danger">
                 <strong>PTR: </strong>A PTR is not set. The IP <?php echo $ip ?> points to <?php echo $rdns ?> (rDNS), and didn't points to <?php echo $toproof ?> (DNS).
             </div>
             <?php

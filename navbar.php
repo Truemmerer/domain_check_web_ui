@@ -1,51 +1,41 @@
 <?php        
         
-    function show_navbar($toproof, $working_domain, $impressum, $privacy_policy) {
-?>
+    function show_navbar($toproof, $working_domain) {        
+        ?>
         <!-- NAV BAR START -->
-        <nav class="navbar navbar-expand-sm nav-color navbar-dark">
+
+        <nav class="navbar navbar-expand-lg nav-color navbar-dark">
             <div class="container-fluid">
-                <!-- LOGO START -->
                 <a class="navbar-brand" href="<?php echo $working_domain ?>">
-                    <img src="assets/window-domain_icon-icons.com_52810.png" alt="" style="width:40px;" class="rounded-pill">  Domain Check - WebUI 
+                   <img src="assets/window-domain_icon-icons.com_52810.png" alt="" style="width:40px;" class="rounded-pill">  Domain Check - WebUI 
                 </a>
-                <!-- LOGO END -->
 
-                <!-- FORM START -->
-                <div class="container-fluid mt-">
-                    <form method="get" action="index.php">
-                        <div class="row">
-                            <div class="col-3">
-                                <input type="text" class="form-control" placeholder="Enter Domain or IP" name="toproof" value="<?php echo $toproof; ?>">
-                            </div>
-                            <div class="col-2">
-                                <div class="btn-group">
-                                    <button type="submit" class="btn btn-primary" name="action" value="nslookup">nslookup</button>
-                                    <button type="submit" class="btn btn-primary" name="action" value="dig">dig</button>
-                                    <button type="submit" class="btn btn-primary" name="action" value="whois">whois</button>
-                                    <button type="submit" class="btn btn-primary" name="action" value="dnssec">dnssec</button>
-                                    <button type="submit" class="btn btn-primary" name="action" value="rdns-ptr">rDNS/PTR</button>
-                                </div>
-                            </div>
-                        </div>
-                    </form>
-                </div>         
-                <!-- FORM END-->
-
-                <div class="mt-">
-                    <div class="row">
-                        <div class="col-2">
-                            <div class="btn-group">
-                                <a href="<?php echo $impressum ?>" class="btn btn-secondary">Legal notice</a>
-                                <a href="<?php echo $privacy_policy ?>" class="btn btn-secondary">Privacy policy</a>
-                            </div>
-                        </div>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent" aria-controls="navbarContent" aria-expanded="true" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarContent">
+                <form class="d-flex ms-auto" action="index.php" method="get">
+                    <input type="text" class="form-control me-2" placeholder="Enter Domain or IP" name="toproof" value="<?php echo $toproof; ?>">
+                    <div class="btn-group" role="group">
+                    <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                        Choose tool
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="navbarContent">
+                        <li><button type="submit" class="dropdown-item" name="action" value="nslookup">nslookup</button></li>
+                        <li><button type="submit" class="dropdown-item" name="action" value="dig">dig</button></li>
+                        <li><button type="submit" class="dropdown-item" name="action" value="whois">whois</button></li>
+                        <li><button type="submit" class="dropdown-item" name="action" value="dnssec">dnssec</button></li>
+                        <li><button type="submit" class="dropdown-item" name="action" value="rdns-ptr">rDNS/PTR</button></li>
+                    </ul>
                     </div>
+                </form>
                 </div>
-
             </div>
         </nav>
+
         <!-- NAV BAR END --> 
-<?php
+    <?php
     }
+
 ?>
+

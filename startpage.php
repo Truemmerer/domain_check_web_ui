@@ -43,16 +43,6 @@ function show_startpage() {
                 </br>
                 - Add warning messages by bad Domain Status
             </div>
-
-            <div class="footer">
-                To contribute, visit <a href="https://github.com/Truemmerer/domain_check_web_ui/">Github Project</a>
-                </br>
-                </br>
-                This work is licenced under a <a rel="license" href="./LICENSE">GNU GENERAL PUBLIC LICENSE</a>.
-                </br>
-                Icon from <a href="https://icon-icons.com/icon/window-domain-www/52810">Icon-Icons.com</a> made by <a href="https://icon-icons.com/users/49oaZ80LDyqHrUI3wINLc/icon-sets/">Vecteezy</a> licensed under <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.
-                </br>                
-            </div>
         </div>
 
 <?php 
