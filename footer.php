@@ -8,23 +8,25 @@
 
         <nav class="navbar fixed-bottom navbar-expand-lg nav-color navbar-dark">
             <div class="container-fluid ms-auto">
-            <div class="d-flex ms-auto">
-                <div class="btn-group" role="group">
-                    <div class="dropup">
-                        <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown">Legal</button>
-                        <div class="dropdown-menu">
-                            <button type="button" class="btn" onclick="location.href='<?php echo $impressum ?>';">Legal notice</button>
-                            <button type="button" class="btn" onclick="location.href='<?php echo $privacy_policy ?>';">Privacy policy</button>
+                <div class="d-flex ms-auto">
+                    <div class="btn-group" role="group">
+                        <div class="dropup">
+                            <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown">Legal</button>
+                            <div class="dropdown-menu">
+                                <button type="button" class="btn" onclick="location.href='<?php echo $impressum ?>';">Legal notice</button>
+                                <button type="button" class="btn" onclick="location.href='<?php echo $privacy_policy ?>';">Privacy policy</button>
+                            </div>
                         </div>
+                        <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#licenses">Licenses</button>
+                        <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#contribute">Contribute</button>
                     </div>
-                    <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#licenses">Licenses</button>
-                    <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#contribute">Contribute</button>
                 </div>
             </div>
-            </div>
-                
-            <!-- Modal Licenses -->
-            <div class="modal" id="licenses">
+        </nav>
+
+
+                    <!-- Modal Licenses -->
+                    <div class="modal" id="licenses">
                 <div class="modal-dialog">
                     <div class="modal-content">
 
@@ -119,9 +121,6 @@
                     </div>
                 </div>
             </div>
-
-        </nav>
-
     
        <?php
 
