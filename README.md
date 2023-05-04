@@ -8,7 +8,7 @@
 <br/>
 
 ## Work in Progress 🎏
-</br>
+</br> 
 This tool is intended to provide simple and functional help in checking domains. 
 
 </br>
