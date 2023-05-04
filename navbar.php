@@ -14,21 +14,21 @@
                 <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="collapse navbar-collapse" id="navbarContent">
-                <form class="d-flex ms-auto" action="index.php" method="get">
-                    <input type="text" class="form-control me-2" placeholder="Enter Domain or IP" name="toproof" value="<?php echo $toproof; ?>">
-                    <div class="btn-group" role="group">
-                    <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                        Choose tool
-                    </button>
-                    <ul class="dropdown-menu" aria-labelledby="navbarContent">
-                        <li><button type="submit" class="dropdown-item" name="action" value="nslookup">nslookup</button></li>
-                        <li><button type="submit" class="dropdown-item" name="action" value="dig">dig</button></li>
-                        <li><button type="submit" class="dropdown-item" name="action" value="whois">whois</button></li>
-                        <li><button type="submit" class="dropdown-item" name="action" value="dnssec">dnssec</button></li>
-                        <li><button type="submit" class="dropdown-item" name="action" value="rdns-ptr">rDNS/PTR</button></li>
-                    </ul>
-                    </div>
-                </form>
+                    <form class="d-flex justify-content-center" action="index.php" method="get">
+                        <input type="text" class="form-control me-2" placeholder="Enter Domain or IP" name="toproof" value="<?php echo $toproof; ?>">
+                        <div class="btn-group" role="group">
+                        <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                            Choose tool
+                        </button>
+                        <ul class="dropdown-menu" aria-labelledby="navbarContent">
+                            <li><button type="submit" class="dropdown-item" name="action" value="nslookup">nslookup</button></li>
+                            <li><button type="submit" class="dropdown-item" name="action" value="dig">dig</button></li>
+                            <li><button type="submit" class="dropdown-item" name="action" value="whois">whois</button></li>
+                            <li><button type="submit" class="dropdown-item" name="action" value="dnssec">dnssec</button></li>
+                            <li><button type="submit" class="dropdown-item" name="action" value="rdns-ptr">rDNS/PTR</button></li>
+                        </ul>
+                        </div>
+                    </form>
                 </div>
             </div>
         </nav>
