@@ -13,9 +13,12 @@
     function authoritative_check($toproof) {
         $domain = escapeshellarg($toproof);
 
+
         // FIND THE Nameserver
 
-        $output_ns_detect = shell_exec("dig +short NS $domain");
+        /// Escape true Domain if Subdomain
+        $truedomain = extractDomain($domain);
+        $output_ns_detect = shell_exec("dig +short NS $truedomain");
          
         $nameservers = explode("\n", trim($output_ns_detect));
         $authoritative_ns = trim($nameservers[0]);

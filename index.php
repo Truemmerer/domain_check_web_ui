@@ -25,7 +25,7 @@
             require_once 'functions/dig.php';
             require_once 'functions/rdns-ptr.php';
 
-            include_once 'functions/whatisit.php';
+            include_once 'functions/helper.php';
             include_once 'config.php';
             include_once 'footer.php';
 
