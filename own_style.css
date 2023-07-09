@@ -62,3 +62,7 @@ a:active {
     background-color: #1e1e1e;
     color: white;
 }
+
+.btn-close {
+    background: transparent url("/assets/close.png") center/1em auto no-repeat;
+}
