@@ -33,7 +33,7 @@ function check_tld($toproof) {
 
 function whois_check($toproof) {
     $domain = escapeshellarg($toproof);
-    $command = "whois -q " . escapeshellcmd($domain);
+    $command = "whois " . escapeshellcmd($domain);
     $whois = shell_exec($command);
     $lines = explode("\n", $whois);
     array_shift($lines);
