@@ -20,6 +20,7 @@ This tool is intended to provide simple and functional help in checking domains.
 - whois
 - Whois summary so that information can be quickly tracked.
 - Dark Mode (only 🤗)  
+- Health Check (Status of a Domain, Nameserver, DNS Check, rDNS (IPv4) Check, PTR (IPv4) Check)
 
 </br>
 
@@ -28,11 +29,13 @@ This tool is intended to provide simple and functional help in checking domains.
 - dig
 - Support for more domains for whois summary
 - Warnings when the domain has a bad status.
+- PTR/rDNS Check for IPv6
 
 </br>
 
 ## Requirements
 - You need to edit config.php
+- bind-utils
 - LAMP Server
 
 </br>
