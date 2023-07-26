@@ -24,6 +24,7 @@
             require_once 'functions/dnssec.php';
             require_once 'functions/dig.php';
             require_once 'functions/rdns-ptr.php';
+            require_once 'functions/healthcheck.php';
 
             include_once 'functions/helper.php';
             include_once 'config.php';
@@ -59,10 +60,21 @@
                 } else { ?>
 
                     <!-- If to proof not empty --> 
+                
+                    <?php if(isset($_GET['action']) && !empty($_GET['action']) && ($_GET["action"] == "health-check")) : ?>
+                        <div class="container-fluid">
+                            <?php
+                                healthckeck($toproof);
+                            ?>
+                        </div>
+                    <?php endif; ?>    
+                
+                
+                
                     <?php if(isset($_GET['action']) && !empty($_GET['action']) && ($_GET["action"] == "nslookup")) : ?>
                         <div class="container-fluid">
                             <?php
-                                nslookup($toproof);
+                                build_nslookup($toproof);
                             ?>
                         </div>
                         

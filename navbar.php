@@ -21,6 +21,7 @@
                             Choose tool
                         </button>
                         <ul class="dropdown-menu" aria-labelledby="navbarContent">
+                            <li><button type="submit" class="dropdown-item" name="action" value="health-check">Health Check</button></li>
                             <li><button type="submit" class="dropdown-item" name="action" value="nslookup">nslookup</button></li>
                             <li><button type="submit" class="dropdown-item" name="action" value="dig">dig</button></li>
                             <li><button type="submit" class="dropdown-item" name="action" value="whois">whois</button></li>

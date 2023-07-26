@@ -10,50 +10,14 @@
 
     function nslookup($toproof) {
       
-        if (filter_var($toproof, FILTER_VALIDATE_IP)) {
-
-            $rdns = gethostbyaddr($toproof);
-
-            if ($rdns !== false) {
-
-                $ip_rdns = $toproof;
-                $toproof = $rdns;
-
-                ?>
-                    <div class="alert alert-info">
-                        <strong>Reverse DNS (rDNS): </strong><?php echo $toproof ?></a>.
-                    </div>
-                <?php
-
-            } else {
-
-                ?>
-                <div class="alert alert-info">
-                    <strong>Note!</strong> The IP has no reverse DNS (rDNS)</a>.
-                </div>
-                <?php
-
-                exit;
-
-            }
-            
-        }
         
             list($cloudflare_ipv4_addresses, $cloudflare_ipv6_addresses, $cloudflare_txt_records, $cloudflare_cname_records, $cloudflare_mx_records, $cloudflare_ns_records) = cloudflare_check($toproof);    
             list($google_ipv4_addresses, $google_ipv6_addresses, $google_txt_records, $google_cname_records, $google_mx_records, $google_ns_records) = google_check($toproof);   
             list($opendns_ipv4_addresses, $opendns_ipv6_addresses, $opendns_txt_records, $opendns_cname_records, $opendns_mx_records, $opendns_ns_records) = opendns_check($toproof);    
             list($authoritative_ipv4_addresses, $authoritative_ipv6_addresses, $authoritative_txt_records, $authoritative_cname_records, $authoritative_mx_records, $authoritative_ns_records, $authoritative_ip) = authoritative_check($toproof);    
 
-            if (in_array($ip_rdns, $authoritative_ipv4_addresses) || in_array($ip_rdns, $authoritative_ipv6_addresses)) {
-                ?>
-                <div class="alert alert-info">
-                    <strong>PTR: </strong>A PTR is set. The IP points to <?php echo $toproof ?> (rDNS), which in turn points to the IP <?php echo $ip_rdns ?> (DNS).</a>
-                </div>
-                <?php
-            }
 
-            build_nslookup($cloudflare_ipv4_addresses, $cloudflare_ipv6_addresses, $cloudflare_txt_records, $cloudflare_cname_records, $cloudflare_mx_records, $cloudflare_ns_records, $google_ipv4_addresses, $google_ipv6_addresses, $google_txt_records, $google_cname_records, $google_mx_records, $google_ns_records, $opendns_ipv4_addresses, $opendns_ipv6_addresses, $opendns_txt_records, $opendns_cname_records, $opendns_mx_records, $opendns_ns_records, $authoritative_ipv4_addresses, $authoritative_ipv6_addresses, $authoritative_txt_records, $authoritative_cname_records, $authoritative_mx_records, $authoritative_ns_records, $authoritative_ip);
-    
+            return [$cloudflare_ipv4_addresses, $cloudflare_ipv6_addresses, $cloudflare_txt_records, $cloudflare_cname_records, $cloudflare_mx_records, $cloudflare_ns_records, $google_ipv4_addresses, $google_ipv6_addresses, $google_txt_records, $google_cname_records, $google_mx_records, $google_ns_records, $opendns_ipv4_addresses, $opendns_ipv6_addresses, $opendns_txt_records, $opendns_cname_records, $opendns_mx_records, $opendns_ns_records, $authoritative_ipv4_addresses, $authoritative_ipv6_addresses, $authoritative_txt_records, $authoritative_cname_records, $authoritative_mx_records, $authoritative_ns_records, $authoritative_ip]; 
 
         
     }
@@ -61,80 +25,106 @@
  
     //------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     // OUTPUT 
-    function build_nslookup($cloudflare_ipv4_addresses, $cloudflare_ipv6_addresses, $cloudflare_txt_records, $cloudflare_cname_records, $cloudflare_mx_records, $cloudflare_ns_records, $google_ipv4_addresses, $google_ipv6_addresses, $google_txt_records, $google_cname_records, $google_mx_records, $google_ns_records, $opendns_ipv4_addresses, $opendns_ipv6_addresses, $opendns_txt_records, $opendns_cname_records, $opendns_mx_records, $opendns_ns_records, $authoritative_ipv4_addresses, $authoritative_ipv6_addresses, $authoritative_txt_records, $authoritative_cname_records, $authoritative_mx_records, $authoritative_ns_records, $authoritative_ip) {
-        ?>
+    function build_nslookup($toproof) {
 
-        <!-- Check if IPv4 same -->
+        list($cloudflare_ipv4_addresses, $cloudflare_ipv6_addresses, $cloudflare_txt_records, $cloudflare_cname_records, $cloudflare_mx_records, $cloudflare_ns_records, $google_ipv4_addresses, $google_ipv6_addresses, $google_txt_records, $google_cname_records, $google_mx_records, $google_ns_records, $opendns_ipv4_addresses, $opendns_ipv6_addresses, $opendns_txt_records, $opendns_cname_records, $opendns_mx_records, $opendns_ns_records, $authoritative_ipv4_addresses, $authoritative_ipv6_addresses, $authoritative_txt_records, $authoritative_cname_records, $authoritative_mx_records, $authoritative_ns_records) = nslookup ($toproof);
        
-       <?php 
-            if (ipv4_check($cloudflare_ipv4_addresses, $google_ipv4_addresses, $opendns_ipv4_addresses, $authoritative_ipv4_addresses) == false) {
-                ?>
-                    <div class="alert alert-warning">
-                        <strong>Warning!</strong> The IPv4 addresses differ from each other! <br/> Please note that changes take up to 48 hours to be distributed worldwide. This error message can therefore be ignored if the DNS have been set recently.</a>.
-                    </div>
-                <?php
+        // Check rDNS and PTR
+        if (filter_var($toproof, FILTER_VALIDATE_IP)) {
+
+        $rdns = gethostbyaddr($toproof);
+
+        if ($rdns !== false) {
+
+            $ip_rdns = $toproof;
+            $toproof = $rdns;
+
+            ?>
+                <div class="alert alert-info">
+                    <strong>Reverse DNS (rDNS): </strong><?php echo $toproof ?></a>.
+                </div>
+            <?php
+
+        } else {
+
+            ?>
+            <div class="alert alert-info">
+                <strong>Note!</strong> The IP has no reverse DNS (rDNS)</a>.
+            </div>
+            <?php
+
+            exit;
+
+        }
+
+        }
+
+
+        if (in_array($ip_rdns, $authoritative_ipv4_addresses) || in_array($ip_rdns, $authoritative_ipv6_addresses)) {
+            ?>
+            <div class="alert alert-info">
+                <strong>PTR: </strong>A PTR is set. The IP points to <?php echo $toproof ?> (rDNS), which in turn points to the IP <?php echo $ip_rdns ?> (DNS).</a>
+            </div>
+            <?php
+        }
+
+        ?>
+
+        <?php
+            list($dns_diff, $ipv4_diff, $ipv6_diff, $txt_diff, $cname_diff, $mx_diff, $ns_diff) = dns_check_different($cloudflare_ipv4_addresses, $cloudflare_ipv6_addresses, $cloudflare_txt_records, $cloudflare_cname_records, $cloudflare_mx_records, $cloudflare_ns_records, $google_ipv4_addresses, $google_ipv6_addresses, $google_txt_records, $google_cname_records, $google_mx_records, $google_ns_records, $opendns_ipv4_addresses, $opendns_ipv6_addresses, $opendns_txt_records, $opendns_cname_records, $opendns_mx_records, $opendns_ns_records, $authoritative_ipv4_addresses, $authoritative_ipv6_addresses, $authoritative_txt_records, $authoritative_cname_records, $authoritative_mx_records, $authoritative_ns_records);
+            // Check if DNS not same
+            if ($dns_diff === true) {
+               // Check if IPv4 same 
+                if ($ipv4_diff === true) {
+                    ?>
+                        <div class="alert alert-warning">
+                            <strong>Warning!</strong> The IPv4 addresses differ from each other! <br/> Please note that changes take up to 48 hours to be distributed worldwide. This error message can therefore be ignored if the DNS have been set recently.</a>.
+                        </div>
+                    <?php
+                }
+                // Check if IPv6 same
+                if ($ipv6_diff === true) {
+                    ?>
+                        <div class="alert alert-warning">
+                            <strong>Warning!</strong> The IPv6 addresses differ from each other! <br/> Please note that changes take up to 48 hours to be distributed worldwide. This error message can therefore be ignored if the DNS have been set recently.</a>.
+                        </div>
+                    <?php
+                }
+                // Check if txt same 
+                if ($txt_diff === true) {
+                    ?>
+                        <div class="alert alert-warning">
+                            <strong>Warning!</strong> The TXT records differ from each other! <br/> Please note that changes take up to 48 hours to be distributed worldwide. This error message can therefore be ignored if the DNS have been set recently.</a>.
+                        </div>
+                    <?php
+                }
+                // Check if cname same 
+                if ($cname_diff === true) {
+                    ?>
+                        <div class="alert alert-warning">
+                            <strong>Warning!</strong> The CNAME records differ from each other! <br/> Please note that changes take up to 48 hours to be distributed worldwide. This error message can therefore be ignored if the DNS have been set recently.</a>.
+                        </div>
+                    <?php
+                }
+                // Check if mx same
+                if ($mx_diff === true) {
+                    ?>
+                        <div class="alert alert-warning">
+                            <strong>Warning!</strong> The MX records differ from each other! <br/> Please note that changes take up to 48 hours to be distributed worldwide. This error message can therefore be ignored if the DNS have been set recently.</a>.
+                        </div>
+                    <?php
+                }
+                // Check if ns same
+                if ($ns_diff === true) {
+                    ?>
+                        <div class="alert alert-warning">
+                            <strong>Warning!</strong> The NS records differ from each other! <br/> Please note that changes take up to 48 hours to be distributed worldwide. This error message can therefore be ignored if the DNS have been set recently.</a>.
+                        </div>
+                    <?php
+                }
             }
         ?>
 
-       <!-- Check if IPv6 same -->
-       
-       <?php 
-            if (ipv6_check($cloudflare_ipv6_addresses, $google_ipv6_addresses, $opendns_ipv6_addresses, $authoritative_ipv6_addresses) == false) {
-                ?>
-                    <div class="alert alert-warning">
-                        <strong>Warning!</strong> The IPv6 addresses differ from each other! <br/> Please note that changes take up to 48 hours to be distributed worldwide. This error message can therefore be ignored if the DNS have been set recently.</a>.
-                    </div>
-                <?php
-            }
-        ?>
-
-        <!-- Check if txt same -->
-    
-       <?php 
-            if (txt_check($cloudflare_txt_records, $google_txt_records, $opendns_txt_records, $authoritative_txt_records) == false) {
-                ?>
-                    <div class="alert alert-warning">
-                        <strong>Warning!</strong> The TXT records differ from each other! <br/> Please note that changes take up to 48 hours to be distributed worldwide. This error message can therefore be ignored if the DNS have been set recently.</a>.
-                    </div>
-                <?php
-            }
-        ?>
-
-        <!-- Check if cname same -->
-    
-       <?php 
-            if (cname_check($cloudflare_cname_records, $google_cname_records, $opendns_cname_records, $authoritative_cname_records) == false) {
-                ?>
-                    <div class="alert alert-warning">
-                        <strong>Warning!</strong> The TXT records differ from each other! <br/> Please note that changes take up to 48 hours to be distributed worldwide. This error message can therefore be ignored if the DNS have been set recently.</a>.
-                    </div>
-                <?php
-            }
-        ?>
-
-        <!-- Check if mx same -->
-    
-       <?php 
-            if (mx_check($cloudflare_mx_records, $google_mx_records, $opendns_mx_records, $authoritative_mx_records) == false) {
-                ?>
-                    <div class="alert alert-warning">
-                        <strong>Warning!</strong> The TXT records differ from each other! <br/> Please note that changes take up to 48 hours to be distributed worldwide. This error message can therefore be ignored if the DNS have been set recently.</a>.
-                    </div>
-                <?php
-            }
-        ?>
-
-        <!-- Check if ns same -->
-    
-       <?php 
-            if (ns_check($cloudflare_ns_records, $google_ns_records, $opendns_ns_records, $authoritative_ns_records) == false) {
-                ?>
-                    <div class="alert alert-warning">
-                        <strong>Warning!</strong> The TXT records differ from each other! <br/> Please note that changes take up to 48 hours to be distributed worldwide. This error message can therefore be ignored if the DNS have been set recently.</a>.
-                    </div>
-                <?php
-            }
-        ?>
 
         <!-- Build the main output -->
 
@@ -142,7 +132,7 @@
             <div class="card-header" role="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
                 <h2 class="mb-0">Authoritative </h2> (              
                 <?php 
-                    echo $authoritative_ip;              
+                    //echo $authoritative_ip;              
                 ?>
                 )
             </div>

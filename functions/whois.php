@@ -24,12 +24,7 @@ function whois_output($toproof) {
     build_whois($whois, $status, $nameserver, $updated);
 }
 
-function check_tld($toproof) {
-    $domain_parts = explode(".", $toproof);
-    $tld = end($domain_parts);
 
-    return $tld;
-}
 
 function whois_check($toproof) {
     $domain = escapeshellarg($toproof);

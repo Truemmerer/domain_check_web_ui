@@ -64,6 +64,45 @@
         return array($rdns, $ip, $ptr);
     }
 
+    function ptr_rdns_check_ipv4($toproof) {
+        $type = whatisit($toproof);
+        $ptr = false;
+        // if $toproof a domain
+        if ($type == 2) {
+            $ip_array = gethostbynamel($toproof);
+            foreach ($ip_array as $ip) {
+                $rdns = gethostbyaddr($ip);
+
+                if ($rdns === $toproof) {
+                    $ptr = true;
+                    break;
+                }
+            }
+
+            return [$ip, $rdns, $ptr];
+
+        // if $toproof a ip
+        } elseif ($type == 1) {
+        
+            $rdns = gethostbyaddr($toproof);
+
+            // Check if rdns == domain
+            if (!$rdns || !filter_var($rdns, FILTER_VALIDATE_DOMAIN)) {
+                $rdns = NULL;
+                $return = NULL;
+                return [$return, $rdns, $ptr];
+            }
+
+            $ip_array = gethostbynamel($rdns);
+            foreach ($ip_array as $ip) {
+                if ($ip === $toproof) {
+                    $ptr = true;
+                    break;
+                }
+            }
+            return [$toproof, $rdns, $ptr];
+        }
+    }
 
 
     function rdns_ptr_print($toproof) {
