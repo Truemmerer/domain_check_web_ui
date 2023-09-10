@@ -1,4 +1,4 @@
-<html>
+<!DOCTYPE html>
 
     <head>
         <title>Domain Check - WebUI</title>
@@ -20,15 +20,14 @@
             require_once 'startpage.php';
             require_once 'navbar.php';
             require_once 'functions/whois.php';
-            require_once 'functions/nslookup.php';
+            require_once 'functions/nslookup/nslookup.php';
             require_once 'functions/dnssec.php';
             require_once 'functions/dig.php';
             require_once 'functions/rdns-ptr.php';
             require_once 'functions/healthcheck.php';
-
-            include_once 'functions/helper.php';
-            include_once 'config.php';
-            include_once 'footer.php';
+            require_once 'functions/helper.php';
+            require_once 'config.php';
+            require_once 'footer.php';
 
             
         // END Add Funcitons

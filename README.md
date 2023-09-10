@@ -14,13 +14,14 @@ This tool is intended to provide simple and functional help in checking domains.
 </br>
 
 ### Already available features:
-- nslookup (Authorative, Google, Cloudflare, OpenDNS)
+- nslookup (Default: Authorative, Google, Cloudflare, OpenDNS)
+- Configurable nameserver list
 - Warning if different name servers deliver different DNS.
-- PTR/rDNS
+- PTR/rDNS Check
 - whois
 - Whois summary so that information can be quickly tracked.
-- Dark Mode (only 🤗)  
 - Health Check (Status of a Domain, Nameserver, DNS Check, rDNS (IPv4) Check, PTR (IPv4) Check)
+- Dark Mode (only 🤗)  
 
 </br>
 
@@ -37,6 +38,7 @@ This tool is intended to provide simple and functional help in checking domains.
 - You need to edit config.php
 - bind-utils
 - LAMP Server
+- php-yaml
 
 </br>
 

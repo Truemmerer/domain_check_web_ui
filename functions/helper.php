@@ -85,7 +85,8 @@
 <!-- Check if DNS differ each Nameserver
 ------------------------------------------------------------------
 <?php 
-    function dns_check_different($cloudflare_ipv4_addresses, $cloudflare_ipv6_addresses, $cloudflare_txt_records, $cloudflare_cname_records, $cloudflare_mx_records, $cloudflare_ns_records, $google_ipv4_addresses, $google_ipv6_addresses, $google_txt_records, $google_cname_records, $google_mx_records, $google_ns_records, $opendns_ipv4_addresses, $opendns_ipv6_addresses, $opendns_txt_records, $opendns_cname_records, $opendns_mx_records, $opendns_ns_records, $authoritative_ipv4_addresses, $authoritative_ipv6_addresses, $authoritative_txt_records, $authoritative_cname_records, $authoritative_mx_records, $authoritative_ns_records) {
+    function dns_check_different($nameserver_array, $dns_array_result_authoritative) {
+              
         $ipv4_diff = false;
         $ipv6_diff = false;
         $txt_diff = false;
@@ -93,27 +94,27 @@
         $mx_diff = false;
         $ns_diff = false;
 
-        if (ipv4_check($cloudflare_ipv4_addresses, $google_ipv4_addresses, $opendns_ipv4_addresses, $authoritative_ipv4_addresses) == false) {
+        if (check_ipv4_same($nameserver_array, $dns_array_result_authoritative) == false) {
             $ipv4_diff = true;
         }
 
-        if (ipv6_check($cloudflare_ipv6_addresses, $google_ipv6_addresses, $opendns_ipv6_addresses, $authoritative_ipv6_addresses) == false) {
+        if (check_ipv6_same($nameserver_array, $dns_array_result_authoritative) == false) {
             $ipv6_diff = true;
         }
 
-        if (txt_check($cloudflare_txt_records, $google_txt_records, $opendns_txt_records, $authoritative_txt_records) == false) {
+        if (check_txt_same($nameserver_array, $dns_array_result_authoritative) == false) {
             $txt_diff = true;
         }
 
-        if (cname_check($cloudflare_cname_records, $google_cname_records, $opendns_cname_records, $authoritative_cname_records) == false) {
+        if (check_cname_same($nameserver_array, $dns_array_result_authoritative) == false) {
             $cname_diff = true;
         }
 
-        if (mx_check($cloudflare_mx_records, $google_mx_records, $opendns_mx_records, $authoritative_mx_records) == false) {
+        if (check_mx_same($nameserver_array, $dns_array_result_authoritative) == false) {
             $mx_diff = true;
         }
 
-        if (ns_check($cloudflare_ns_records, $google_ns_records, $opendns_ns_records, $authoritative_ns_records) == false) {
+        if (check_ns_same($nameserver_array, $dns_array_result_authoritative) == false) {
             $ns_diff = true;
         }
 
@@ -124,55 +125,185 @@
         
         
     }
+
+        // Check if all the ipv4 values in the nameserver arrays are the same
+        function check_ipv4_same($nameserver_array, $dns_array_result_authoritative) {
+            $nameserver_ipv4_values = [];
+            $authoritative_ipv4_values = [];
+        
+            // Extract all the ipv4 values from $nameserver_array
+            foreach ($nameserver_array as $nameserver) {
+                $nameserver_ipv4_values = array_merge($nameserver_ipv4_values, $nameserver['ipv4']);
+            }
+        
+            // Extract all the ipv4 values from $dns_array_result_authoritative
+            foreach ($dns_array_result_authoritative as $entry) {
+                $authoritative_ipv4_values = array_merge($authoritative_ipv4_values, $entry['ipv4']);
+            }
+        
+            // Check if all the ipv4 values in $nameserver_array are present in $dns_array_result_authoritative
+            $is_ipv4_same = count(array_diff($nameserver_ipv4_values, $authoritative_ipv4_values)) === 0;
+        
+            // return true or false
+            return $is_ipv4_same;
+        }
+    
+        // Check if all the ipv6 values in the nameserver arrays are the same
+        function check_ipv6_same($nameserver_array, $dns_array_result_authoritative) {
+            $nameserver_ipv6_values = [];
+            $authoritative_ipv6_values = [];
+        
+            // Extract all the ipv6 values from $nameserver_array
+            foreach ($nameserver_array as $nameserver) {
+                $nameserver_ipv6_values = array_merge($nameserver_ipv6_values, $nameserver['ipv6']);
+            }
+        
+            // Extract all the ipv6 values from $dns_array_result_authoritative
+            foreach ($dns_array_result_authoritative as $entry) {
+                $authoritative_ipv6_values = array_merge($authoritative_ipv6_values, $entry['ipv6']);
+            }
+        
+            // Check if all the ipv6 values in $nameserver_array are present in $dns_array_result_authoritative
+            $is_ipv6_same = count(array_diff($nameserver_ipv6_values, $authoritative_ipv6_values)) === 0;
+        
+            // return true or false
+            return $is_ipv6_same;
+        }
+    
+        // Check if all the txt values in the nameserver arrays are the same
+        function check_txt_same($nameserver_array, $dns_array_result_authoritative) {
+            $nameserver_txt_values = [];
+            $authoritative_txt_values = [];
+        
+            // Extract all the txt values from $nameserver_array
+            foreach ($nameserver_array as $nameserver) {
+                $nameserver_txt_values = array_merge($nameserver_txt_values, $nameserver['txt']);
+            }
+        
+            // Extract all the txt values from $dns_array_result_authoritative
+            foreach ($dns_array_result_authoritative as $entry) {
+                $authoritative_txt_values = array_merge($authoritative_txt_values, $entry['txt']);
+            }
+        
+            // Check if all the txt values in $nameserver_array are present in $dns_array_result_authoritative
+            $is_txt_same = count(array_diff($nameserver_txt_values, $authoritative_txt_values)) === 0;
+        
+            // return true or false
+            return $is_txt_same;
+        }
+    
+        // Check if all the cname values in the nameserver arrays are the same
+        function check_cname_same($nameserver_array, $dns_array_result_authoritative) {
+            $nameserver_cname_values = [];
+            $authoritative_cname_values = [];
+        
+            // Extract all the cname values from $nameserver_array
+            foreach ($nameserver_array as $nameserver) {
+                $nameserver_cname_values = array_merge($nameserver_cname_values, $nameserver['cname']);
+            }
+        
+            // Extract all the cname values from $dns_array_result_authoritative
+            foreach ($dns_array_result_authoritative as $entry) {
+                $authoritative_cname_values = array_merge($authoritative_cname_values, $entry['cname']);
+            }
+        
+            // Check if all the cname values in $nameserver_array are present in $dns_array_result_authoritative
+            $is_cname_same = count(array_diff($nameserver_cname_values, $authoritative_cname_values)) === 0;
+        
+            // return true or false
+            return $is_cname_same;
+        }
+    
+         // Check if all the mx values in the nameserver arrays are the same
+         function check_mx_same($nameserver_array, $dns_array_result_authoritative) {
+            $nameserver_mx_values = [];
+            $authoritative_mx_values = [];
+        
+            // Extract all the mx values from $nameserver_array
+            foreach ($nameserver_array as $nameserver) {
+                $nameserver_mx_values = array_merge($nameserver_mx_values, $nameserver['mx']);
+            }
+        
+            // Extract all the mx values from $dns_array_result_authoritative
+            foreach ($dns_array_result_authoritative as $entry) {
+                $authoritative_mx_values = array_merge($authoritative_mx_values, $entry['mx']);
+            }
+        
+            // Check if all the mx values in $nameserver_array are present in $dns_array_result_authoritative
+            $is_mx_same = count(array_diff($nameserver_mx_values, $authoritative_mx_values)) === 0;
+        
+            // return true or false
+            return $is_mx_same;
+        }   
+        
+        // Check if all the ns values in the nameserver arrays are the same
+        function check_ns_same($nameserver_array, $dns_array_result_authoritative) {
+            $nameserver_ns_values = [];
+            $authoritative_ns_values = [];
+    
+            // Extract all the ns values from $nameserver_array
+            foreach ($nameserver_array as $nameserver) {
+                $nameserver_ns_values = array_merge($nameserver_ns_values, $nameserver['ns']);
+            }
+    
+            // Extract all the ns values from $dns_array_result_authoritative
+            foreach ($dns_array_result_authoritative as $entry) {
+                $authoritative_ns_values = array_merge($authoritative_ns_values, $entry['ns']);
+            }
+    
+            // Check if all the ns values in $nameserver_array are present in $dns_array_result_authoritative
+            $is_ns_same = count(array_diff($nameserver_ns_values, $authoritative_ns_values)) === 0;
+    
+            // return true or false
+            return $is_ns_same;
+        }   
+    
 ?>
+
 
 <!-- Check if DNS arrays empty
 ------------------------------------------------------------------
 
 <?php
-    function dns_array_empty($cloudflare_ipv4_addresses, $cloudflare_ipv6_addresses, $cloudflare_txt_records, $cloudflare_cname_records, $cloudflare_mx_records, $cloudflare_ns_records, $google_ipv4_addresses, $google_ipv6_addresses, $google_txt_records, $google_cname_records, $google_mx_records, $google_ns_records, $opendns_ipv4_addresses, $opendns_ipv6_addresses, $opendns_txt_records, $opendns_cname_records, $opendns_mx_records, $opendns_ns_records, $authoritative_ipv4_addresses, $authoritative_ipv6_addresses, $authoritative_txt_records, $authoritative_cname_records, $authoritative_mx_records, $authoritative_ns_records) {
-        // Check if all IPv4 arrays are empty
-        $ipv4_empty = empty($cloudflare_ipv4_addresses) &&
-                    empty($google_ipv4_addresses) &&
-                    empty($opendns_ipv4_addresses) &&
-                    empty($authoritative_ipv4_addresses);
+function dns_array_empty($nameserver_array, $dns_array_result_authoritative) {
 
-        // Check if all IPv6 arrays are empty
-        $ipv6_empty = empty($cloudflare_ipv6_addresses) &&
-                    empty($google_ipv6_addresses) &&
-                    empty($opendns_ipv6_addresses) &&
-                    empty($authoritative_ipv6_addresses);
+    // Check if all IPv4 arrays are empty
+    $ipv4_empty = all_array_entries_empty($nameserver_array, 'ipv4') &&
+        all_array_entries_empty($dns_array_result_authoritative, 'ipv4');
 
-        // Check if all TXT arrays are empty       
-        $txt_empty = empty($cloudflare_txt_records) && 
-                    empty($google_txt_records) && 
-                    empty($opendns_txt_records) && 
-                    empty($authoritative_txt_records);
+    // Check if all IPv6 arrays are empty
+    $ipv6_empty = all_array_entries_empty($nameserver_array, 'ipv6') &&
+        all_array_entries_empty($dns_array_result_authoritative, 'ipv6');
 
-        // Check if all CNAME arrays are empty
-        $cname_empty = empty($cloudflare_cname_records) && 
-                    empty($google_cname_records) && 
-                    empty($opendns_cname_records) && 
-                    empty($authoritative_cname_records);
+    // Check if all TXT arrays are empty       
+    $txt_empty = all_array_entries_empty($nameserver_array, 'txt') &&
+        all_array_entries_empty($dns_array_result_authoritative, 'txt');
 
-        // Check if all MX arrays are empty
-        $mx_empty = empty($cloudflare_mx_records) && 
-                    empty($google_mx_records) && 
-                    empty($opendns_mx_records) && 
-                    empty($authoritative_mx_records);
+    // Check if all CNAME arrays are empty
+    $cname_empty = all_array_entries_empty($nameserver_array, 'cname') &&
+        all_array_entries_empty($dns_array_result_authoritative, 'cname');
 
-        // Check if all NS arrays are empty
-        $ns_empty = empty($cloudflare_ns_records) && 
-                    empty($google_ns_records) &&    
-                    empty($opendns_ns_records) && 
-                    empty($authoritative_ns_records);
+    // Check if all MX arrays are empty
+    $mx_empty = all_array_entries_empty($nameserver_array, 'mx') &&
+        all_array_entries_empty($dns_array_result_authoritative, 'mx');
 
-        //if any of the checks are true, then $dns_empty too.
-        $dns_empty = ($ipv4_empty || $ipv6_empty || $txt_empty || $cname_empty || $mx_empty || $ns_empty);
+    // Check if all NS arrays are empty
+    $ns_empty = all_array_entries_empty($nameserver_array, 'ns') &&
+        all_array_entries_empty($dns_array_result_authoritative, 'ns');
 
-        return [$dns_empty, $ipv4_empty, $ipv6_empty, $txt_empty, $cname_empty, $mx_empty, $ns_empty];
+    // If any of the checks are true, then $dns_empty too.
+    $dns_empty = ($ipv4_empty || $ipv6_empty || $txt_empty || $cname_empty || $mx_empty || $ns_empty);
 
-        
+    return [$dns_empty, $ipv4_empty, $ipv6_empty, $txt_empty, $cname_empty, $mx_empty, $ns_empty];
+}
+
+function all_array_entries_empty($array, $key) {
+    foreach ($array as $entry) {
+        if (!empty($entry[$key])) {
+            return false;
+        }
     }
+    return true;
+}
 
 ?>
