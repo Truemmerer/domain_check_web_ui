@@ -4,23 +4,28 @@
     require_once 'functions/nslookup/authoritative.php';
 
     function nslookup($toproof) {
-      
-        
-            $nameserver_array = nameserver_check($toproof);            
-            $dns_array_result_authoritative = authoritative_check($toproof);    
+            $whatisit = whatisit($toproof);
 
+            if ($whatisit === 2) {
+                $nameserver_array = nameserver_check($toproof);            
+                $dns_array_result_authoritative = authoritative_check($toproof);    
 
-            return [$nameserver_array, $dns_array_result_authoritative]; 
+                build_nslookup($nameserver_array, $dns_array_result_authoritative);
 
+            } else {     
+                ?>
+                <div class="alert alert-info">
+                    <strong>Note:</strong> nslookup works only with a domain</a>.
+                </div>
+                <?php
+            }
         
     }
 
  
     //------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     // OUTPUT 
-    function build_nslookup($toproof) {
-
-        list($nameserver_array, $dns_array_result_authoritative) = nslookup ($toproof);
+    function build_nslookup($nameserver_array, $dns_array_result_authoritative) {
 
         // Check if the DNS are different each other
         list($dns_diff, $ipv4_diff, $ipv6_diff, $txt_diff, $cname_diff, $mx_diff, $ns_diff) = dns_check_different($nameserver_array, $dns_array_result_authoritative);

@@ -73,7 +73,7 @@
                     <?php if(isset($_GET['action']) && !empty($_GET['action']) && ($_GET["action"] == "nslookup")) : ?>
                         <div class="container-fluid">
                             <?php
-                                build_nslookup($toproof);
+                                nslookup($toproof);
                             ?>
                         </div>
                         

@@ -16,34 +16,34 @@ function healthckeck($toproof){
         // Return Nameserver
         $nameserver = whois_nameserver($whois, $tld);
 
+        // Get DNS
+        list($nameserver_array, $dns_array_result_authoritative) = nslookup($toproof);
+        
+        // Check if the DNS are different each other
+        list($dns_diff, $ipv4_diff, $ipv6_diff, $txt_diff, $cname_diff, $mx_diff, $ns_diff) = dns_check_different($nameserver_array, $dns_array_result_authoritative);
+        list($dns_empty, $ipv4_empty, $ipv6_empty, $txt_empty, $cname_empty, $mx_empty, $ns_empty) = dns_array_empty($nameserver_array, $dns_array_result_authoritative);
+
     } else {
         $status = NULL;
         $nameserver = NULL; 
+        $dns_diff = $ipv4_diff = $ipv6_diff = $txt_diff = $cname_diff = $mx_diff = $ns_diff = NULL;
+        $dns_empty = $ipv4_empty = $ipv6_empty = $txt_empty = $cname_empty = $mx_empty = $ns_empty = NULL;
     }
 
     // RDNS / PTR CHECK
     list($ip, $rDNS, $ptr) = ptr_rdns_check_ipv4($toproof);
 
 
-
-    // Get DNS
-    list($nameserver_array, $dns_array_result_authoritative) = nslookup($toproof);
-    
-    // Check if the DNS are different each other
-    list($dns_diff, $ipv4_diff, $ipv6_diff, $txt_diff, $cname_diff, $mx_diff, $ns_diff) = dns_check_different($nameserver_array, $dns_array_result_authoritative);
-    list($dns_empty, $ipv4_empty, $ipv6_empty, $txt_empty, $cname_empty, $mx_empty, $ns_empty) = dns_array_empty($nameserver_array, $dns_array_result_authoritative);
-
-
     //---------------------------------------------------------------------
     // Open Print Function
-    print_healthcheck($status, $nameserver, $rDNS, $ip, $ptr, $ipv4_diff, $ipv6_diff, $txt_diff, $cname_diff, $mx_diff, $ns_diff, $dns_empty, $ipv4_empty, $ipv6_empty, $txt_empty, $cname_empty, $mx_empty, $ns_empty);
+    print_healthcheck($status, $nameserver, $rDNS, $ip, $ptr, $ipv4_diff, $ipv6_diff, $txt_diff, $cname_diff, $mx_diff, $ns_diff, $dns_empty, $ipv4_empty, $ipv6_empty, $txt_empty, $cname_empty, $mx_empty, $ns_empty, $whatisit);
 
 
 }
 
 
 // Print Healthcheck on the screen
-function print_healthcheck($status, $nameserver, $rDNS, $ip, $ptr, $ipv4_diff, $ipv6_diff, $txt_diff, $cname_diff, $mx_diff, $ns_diff, $dns_empty, $ipv4_empty, $ipv6_empty, $txt_empty, $cname_empty, $mx_empty, $ns_empty) {
+function print_healthcheck($status, $nameserver, $rDNS, $ip, $ptr, $ipv4_diff, $ipv6_diff, $txt_diff, $cname_diff, $mx_diff, $ns_diff, $dns_empty, $ipv4_empty, $ipv6_empty, $txt_empty, $cname_empty, $mx_empty, $ns_empty, $whatisit) {
 
     // Domain Status
     if ($status === NULL) {
@@ -81,6 +81,8 @@ function print_healthcheck($status, $nameserver, $rDNS, $ip, $ptr, $ipv4_diff, $
         <h3> DNS Check </h3>
         <h4>
         <?php
+
+        if ( $whatisit === 2) {
             // Check if IPv4 same 
             if ($ipv4_diff === true) {
                 ?>
@@ -165,6 +167,11 @@ function print_healthcheck($status, $nameserver, $rDNS, $ip, $ptr, $ipv4_diff, $
                     <span class="badge bg-success">NS</span> 
                 <?php
             }
+        } else {
+            ?>
+            <h4><span class="badge bg-secondary">There are no DNS for IPs</span></h4>
+            <?php
+        }
         ?>
         </h4>
 
