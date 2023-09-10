@@ -1,7 +1,7 @@
 <?php
 
-    require_once 'nslookup/custom_nameserver.php';
-    require_once 'nslookup/authoritative.php';
+    require_once 'functions/nslookup/custom_nameserver.php';
+    require_once 'functions/nslookup/authoritative.php';
 
     function nslookup($toproof) {
       
@@ -82,7 +82,7 @@
         <!-- Build the main output -->
         <br>
         <br>
-        <div class="alert alert-dark">
+        <div class="alert card-box-nslookup-separator">
             <strong>Info:</strong> The following nameservers are the authoritative name servers:
         </div>
 
@@ -175,7 +175,7 @@
         ?>
             <br>
             <br>
-            <div class="alert alert-dark">
+            <div class="alert card-box-nslookup-separator">
             <strong>Info:</strong> The following nameservers were also checked:
             </div>
         <?php

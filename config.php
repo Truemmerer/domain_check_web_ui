@@ -14,4 +14,7 @@ $privacy_policy = "https://domain.tld";
 // The URL to the Github project. 
 $contribute = "https://github.com/Truemmerer/domain_check_web_ui";
 
+// Show the version number
+$show_version = true;
+
 ?>

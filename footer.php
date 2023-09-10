@@ -6,15 +6,15 @@
 
         <div style="height: 50px;"></div>
 
-        <nav class="navbar fixed-bottom navbar-expand-lg nav-color navbar-dark">
+        <nav class="navbar fixed-bottom navbar-expand-lg footer-color navbar-dark">
             <div class="container-fluid ms-auto">
                 <div class="d-flex ms-auto">
                     <div class="btn-group" role="group">
                         <div class="dropup">
                             <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown">Legal</button>
                             <div class="dropdown-menu">
-                                <button type="button" class="btn" onclick="location.href='<?php echo $impressum ?>';">Legal notice</button>
-                                <button type="button" class="btn" onclick="location.href='<?php echo $privacy_policy ?>';">Privacy policy</button>
+                                <button type="button" class="btn custom" onclick="location.href='<?php echo $impressum ?>';">Legal notice</button>
+                                <button type="button" class="btn custom" onclick="location.href='<?php echo $privacy_policy ?>';">Privacy policy</button>
                             </div>
                         </div>
                         <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#licenses">Licenses</button>
@@ -117,7 +117,7 @@
                         <button type="button" class="btn btn-success" onclick="location.href='https://github.com/Truemmerer/domain_check_web_ui/';">GitHub Page</button>
                         <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
                     </div>
-
+                    
                     </div>
                 </div>
             </div>

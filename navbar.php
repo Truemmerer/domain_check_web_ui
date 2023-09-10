@@ -15,7 +15,7 @@
                 </button>
                 <div class="collapse navbar-collapse" id="navbarContent">
                     <form class="d-flex justify-content-center" action="index.php" method="get">
-                        <input type="text" class="form-control me-2" placeholder="Enter Domain or IP" name="toproof" value="<?php echo $toproof; ?>">
+                        <input type="text" class="form-control me-2 search-color" placeholder="Enter Domain or IP" name="toproof" value="<?php echo $toproof; ?>">
                         <div class="btn-group" role="group">
                         <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
                             Choose tool

@@ -5,7 +5,29 @@
 }
 
 .nav-color {
-    background-color: #242424;
+    background-color: #1B1D1E;
+    border-bottom: 4px solid #152A48;
+}
+
+.footer-color {
+    background-color: #1B1D1E;
+    border-top: 4px solid #152A48;
+}
+
+.dropdown-menu{
+    background-color: #181A1B;
+    border-color: #152A48;
+    border-style: solid;
+    border-width: 4px;
+}
+
+.dropdown-item {
+    color: #F7F7F7;
+}
+
+.dropdown-item:hover {
+    background-color: #181A1B;
+    color: #7F858F;
 }
 
 .modal-dialog {
@@ -13,7 +35,7 @@
 }
 
 .body-color {
-    background-color: #353535;
+    background-color: #181A1B;
     color: #ffffff;
 }
 
@@ -58,11 +80,40 @@ a:active {
     color: white;
 }
 
+.card-box-nslookup-separator{
+    background-color: #313537;
+    color: #BFBDBA;
+    border-color: #42484B;
+    border-style: solid;
+}
+
 .modal-content {
     background-color: #1e1e1e;
     color: white;
 }
 
+.search-color {
+    background-color: #181A1B;
+    color: #F7F7F7;
+    border-color: #3C4144;
+    border-style: solid;
+}
+
+.form-control:focus {
+    background-color: #181A1B;
+    color: #F7F7F7;
+    border-color: #152A48;
+    border-style: solid;
+}
+
 .btn-close {
     background: transparent url("/assets/close.png") center/1em auto no-repeat;
+}
+
+.btn.custom {
+    color: #F7F7F7;
+}
+
+.btn.custom:hover {
+    color: #7F858F;
 }
