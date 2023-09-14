@@ -1,6 +1,7 @@
 <?php
-
     function footer($impressum, $privacy_policy) {
+        $version_number = importVersion();
+        $changelog = importChangelog();
 
         ?>
 
@@ -18,6 +19,7 @@
                             </div>
                         </div>
                         <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#licenses">Licenses</button>
+                        <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#changelog"><?php echo $version_number ?></button>
                         <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#contribute">Contribute</button>
                     </div>
                 </div>
@@ -121,9 +123,48 @@
                     </div>
                 </div>
             </div>
+
+            <!-- Modal Changelog -->
+            <div class="modal" id="changelog">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+
+                    <!-- Modal Header -->
+                    <div class="modal-header">
+                        <h4 class="modal-title">Version <?php echo $version_number ?></h4>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+
+                    <!-- Modal body -->
+                    <div class="modal-body">
+                        <h3>Changelog</h3>
+                        <pre>
+                            <?php echo $changelog ?>
+                        </pre>
+                    </div>
+
+                    <!-- Modal footer -->
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-success" onclick="location.href='https://github.com/Truemmerer/domain_check_web_ui/';">GitHub Page</button>
+                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                    </div>
+                    
+                    </div>
+                </div>
+            </div>
     
        <?php
 
+    }
+
+    function importChangelog() {
+        $filename = "Changelog.md";
+        return file_get_contents($filename);    
+    }
+
+    function importVersion() {
+        $filename = "Version.txt";
+        return file_get_contents($filename);    
     }
 
 ?>
