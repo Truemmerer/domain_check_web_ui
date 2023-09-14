@@ -1,5 +1,8 @@
 # Changelog
 
+### 09.2023.1
+- Add IDN to Puny Converter as Standalone Tool.
+- Add IDN to Puny Converter for nslookup, healthcheck, whois
 ### 09.2023.0
 - The name servers can now be customized. 
 <br> nameserverlist.yaml

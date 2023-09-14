@@ -21,6 +21,7 @@ This tool is intended to provide simple and functional help in checking domains.
 - whois
 - Whois summary so that information can be quickly tracked.
 - Health Check (Status of a Domain, Nameserver, DNS Check, rDNS (IPv4) Check, PTR (IPv4) Check)
+- IDN > Puny Converter
 - Dark Mode (only 🤗)  
 
 </br>
@@ -39,6 +40,7 @@ This tool is intended to provide simple and functional help in checking domains.
 - bind-utils
 - LAMP Server
 - php-yaml
+- php-intl
 
 </br>
 

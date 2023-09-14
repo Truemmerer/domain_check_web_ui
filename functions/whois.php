@@ -5,9 +5,16 @@ function whois_output($toproof) {
     // Check if $toproof is a domain, ip, url, e-mail-adress
     $whatisthat = whatisit($toproof);
 
+    // Check if Domain is in IDN and Convert it to Puny
+    if ( is_idn($toproof) ) {
+        $toproof = idn_to_puny($toproof);
+    }
+
+    // Get Whois
     $whois = whois_check($toproof);
 
     if ($whatisthat === 2) {
+
         $tld = check_tld($toproof);
         $status = whois_status($whois, $tld);
         $nameserver = whois_nameserver($whois, $tld);

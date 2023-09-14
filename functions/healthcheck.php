@@ -4,6 +4,12 @@ function healthckeck($toproof){
 
     $whatisit = whatisit($toproof);
     if ($whatisit === 2) {
+
+        // Check if Domain is in IDN and Convert it to Puny
+        if ( is_idn($toproof) ) {
+            $toproof = idn_to_puny($toproof);
+        }
+
         // Get tld
         $tld = check_tld($toproof);
 

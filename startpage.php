@@ -29,6 +29,8 @@ function show_startpage() {
         <br>
         - Health Check (Status of a Domain, Nameserver, DNS Check, rDNS (IPv4) Check, PTR (IPv4) Check)
         <br>
+        - IDN > Puny Converter
+        <br>
         - Dark Mode (only 🤗)
         <br>
         <br>

@@ -7,6 +7,12 @@
             $whatisit = whatisit($toproof);
 
             if ($whatisit === 2) {
+
+                // Check if Domain is in IDN
+                if ( is_idn($toproof) ) {
+                    $toproof = idn_to_puny($toproof);
+                }
+
                 $nameserver_array = nameserver_check($toproof);            
                 $dns_array_result_authoritative = authoritative_check($toproof);    
 

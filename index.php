@@ -20,6 +20,7 @@
             require_once 'startpage.php';
             require_once 'navbar.php';
             require_once 'functions/whois.php';
+            require_once 'functions/punyconvert.php';
             require_once 'functions/nslookup/nslookup.php';
             require_once 'functions/dnssec.php';
             require_once 'functions/dig.php';
@@ -119,6 +120,14 @@
                             ?>
                             </div>    
                     <?php endif; ?>   
+                    <?php 
+                        if(isset($_GET['action']) && !empty($_GET['action']) && ($_GET["action"] == "puny")) : ?>
+                            <div class="container-fluid">                        
+                            <?php 
+                                punyconvert_print($toproof);
+                            ?>
+                            </div>    
+                    <?php endif; ?>  
                 <?php } ?>
             <?php endif; ?>    
 

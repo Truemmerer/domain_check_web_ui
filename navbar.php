@@ -27,6 +27,7 @@
                             <li><button type="submit" class="dropdown-item" name="action" value="whois">whois</button></li>
                             <li><button type="submit" class="dropdown-item" name="action" value="dnssec">dnssec</button></li>
                             <li><button type="submit" class="dropdown-item" name="action" value="rdns-ptr">rDNS/PTR</button></li>
+                            <li><button type="submit" class="dropdown-item" name="action" value="puny">Punyconvert</button></li>
                         </ul>
                         </div>
                     </form>
