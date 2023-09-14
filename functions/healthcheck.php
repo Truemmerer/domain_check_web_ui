@@ -17,7 +17,8 @@ function healthckeck($toproof){
         $nameserver = whois_nameserver($whois, $tld);
 
         // Get DNS
-        list($nameserver_array, $dns_array_result_authoritative) = nslookup($toproof);
+        $nameserver_array = nameserver_check($toproof);            
+        $dns_array_result_authoritative = authoritative_check($toproof);    
         
         // Check if the DNS are different each other
         list($dns_diff, $ipv4_diff, $ipv6_diff, $txt_diff, $cname_diff, $mx_diff, $ns_diff) = dns_check_different($nameserver_array, $dns_array_result_authoritative);
