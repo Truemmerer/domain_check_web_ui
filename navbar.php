@@ -23,13 +23,49 @@
                         <ul class="dropdown-menu" aria-labelledby="navbarContent">
                             <li><button type="submit" class="dropdown-item" name="action" value="health-check">Health Check</button></li>
                             <li><button type="submit" class="dropdown-item" name="action" value="nslookup">nslookup</button></li>
-                            <li><button type="submit" class="dropdown-item" name="action" value="dig">dig</button></li>
+                            <li><button type="button" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#dig_choose">dig</button></li>
                             <li><button type="submit" class="dropdown-item" name="action" value="whois">whois</button></li>
                             <li><button type="submit" class="dropdown-item" name="action" value="dnssec">dnssec</button></li>
                             <li><button type="submit" class="dropdown-item" name="action" value="rdns-ptr">rDNS/PTR</button></li>
                             <li><button type="submit" class="dropdown-item" name="action" value="puny">Punyconvert</button></li>
+                            <!-- <li><button type="submit" class="dropdown-item" name="action" value="mtr">MTR</button></li> -->
                         </ul>
                         </div>
+
+                        <!-- Modal dig choose -->
+                        <div class="modal" id="dig_choose">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+
+                                <!-- Modal Header -->
+                                <div class="modal-header">
+                                    <h4 class="modal-title">Dig Choose</h4>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                </div>
+
+                                <!-- Modal body -->
+                                <div class="modal-body">
+                                    <pre>Please select what you would like to check here</pre>
+
+                                    <form class="d-flex justify-content-center" action="index.php" method="get">
+                                        <div class="btn-group-vertical">
+                                            <li><button type="submit" class="dropdown-item" name="action" value="digA">A Records (IPv4)</button></li>
+                                            <li><button type="submit" class="dropdown-item" name="action" value="digAAAA">AAAA Records (IPv6)</button></li>
+                                            <li><button type="submit" class="dropdown-item" name="action" value="digTXT">TXT Records</button></li>
+                                            <li><button type="submit" class="dropdown-item" name="action" value="digMX">MX Records</button></li>
+                                        </div>
+                                    </form>
+                                </div>
+
+                                <!-- Modal footer -->
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                                </div>
+                                
+                                </div>
+                            </div>
+                        </div>
+
                     </form>
                 </div>
             </div>
@@ -40,4 +76,5 @@
     }
 
 ?>
+
 

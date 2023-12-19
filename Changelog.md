@@ -1,4 +1,7 @@
 
+### 12.2023.1
+- dig inplemented
+
 ### 09.2023.1
 - Add IDN to Puny Converter as Standalone Tool.
 - Add IDN to Puny Converter for nslookup, healthcheck, whois

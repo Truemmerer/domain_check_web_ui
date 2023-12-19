@@ -27,6 +27,7 @@
             require_once 'functions/rdns-ptr.php';
             require_once 'functions/healthcheck.php';
             require_once 'functions/helper.php';
+            require_once 'functions/mtr_ping.php';
             require_once 'config.php';
             require_once 'footer.php';
 
@@ -104,14 +105,55 @@
 
                     <!-- press dig? -->
                     <?php 
-                        if(isset($_GET['action']) && !empty($_GET['action']) && ($_GET["action"] == "dig")) : ?>
+                    // -----------------
+                    // DIG SECTION START
+                        if(isset($_GET['action']) && !empty($_GET['action']) && ($_GET["action"] == "digA")) : ?>
                             <div class="container-fluid">                        
                             <?php 
-                                dig($toproof);
+                                $typeToCheck = "A";
+                                dig($toproof, $typeToCheck);
                             ?>
                             </div>    
                     <?php endif; ?>   
-                    <!-- press dig? -->
+                   
+                    <?php 
+                    // -----------------
+                    // DIG SECTION START
+                        if(isset($_GET['action']) && !empty($_GET['action']) && ($_GET["action"] == "digAAAA")) : ?>
+                            <div class="container-fluid">                        
+                            <?php 
+                                $typeToCheck = "AAAA";
+                                dig($toproof, $typeToCheck);
+                            ?>
+                            </div>    
+                    <?php endif; ?>   
+
+                    <?php 
+                    // -----------------
+                    // DIG SECTION START
+                        if(isset($_GET['action']) && !empty($_GET['action']) && ($_GET["action"] == "digTXT")) : ?>
+                            <div class="container-fluid">                        
+                            <?php 
+                                $typeToCheck = "TXT";
+                                dig($toproof, $typeToCheck);
+                            ?>
+                            </div>    
+                    <?php endif; ?>   
+
+                    <?php 
+                        if(isset($_GET['action']) && !empty($_GET['action']) && ($_GET["action"] == "digMX")) : ?>
+                            <div class="container-fluid">                        
+                            <?php 
+                                $typeToCheck = "MX";
+                                dig($toproof, $typeToCheck);
+                            ?>
+                            </div>    
+
+                    <!-- -- DIG SECTION END -- -->
+
+                    <?php endif; ?>   
+
+                    <!-- press rdns-ptr? -->
                     <?php 
                         if(isset($_GET['action']) && !empty($_GET['action']) && ($_GET["action"] == "rdns-ptr")) : ?>
                             <div class="container-fluid">                        
@@ -120,6 +162,7 @@
                             ?>
                             </div>    
                     <?php endif; ?>   
+                    <!-- press punyconvert? -->
                     <?php 
                         if(isset($_GET['action']) && !empty($_GET['action']) && ($_GET["action"] == "puny")) : ?>
                             <div class="container-fluid">                        
@@ -128,6 +171,15 @@
                             ?>
                             </div>    
                     <?php endif; ?>  
+                    <!-- press mtr-ping? -->
+                    <?php 
+                        if(isset($_GET['action']) && !empty($_GET['action']) && ($_GET["action"] == "mtr")) : ?>
+                            <div class="container-fluid">                        
+                            <?php 
+                                mtr_check($toproof);
+                            ?>
+                            </div>    
+                    <?php endif; ?>   
                 <?php } ?>
             <?php endif; ?>    
 

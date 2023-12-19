@@ -71,6 +71,36 @@
     }
 ?>
 
+<!-- Get authorative nameserver IP and Name
+------------------------------------------------------------------
+
+<?php
+    // get nameserver ips
+    function get_nameserver_ip($toproof) {
+        // get the domain from a subdomain
+        $truedomain = extractDomain($toproof);
+        // get Nameservers with dig
+        $output_ns_detect = shell_exec("dig +short NS $truedomain");
+        $nameservers = explode("\n", trim($output_ns_detect));
+        $nameserver_array = array();
+        foreach ($nameservers as $nameserver) {
+            // get IP of a Nameserver
+            $ip = trim(shell_exec("dig +short A $nameserver"));
+            // add IP to array
+            $nameserver_ips[] = $ip;
+
+            $nameserver_array[] = [
+                'ns_ip' => $ip,
+                'ns_name' => $nameserver,
+            ];
+
+        }
+
+        return $nameserver_array;
+
+    }
+?>
+
 <!-- Extract the tld
 ------------------------------------------------------------------
 <?php 
