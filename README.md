@@ -38,7 +38,7 @@ This tool is intended to provide simple and functional help in checking domains.
 ## Requirements
 - You need to edit config.php
 - bind-utils
-- LAMP Server
+- Webserver with php
 - php-yaml
 - php-intl
 
