@@ -41,6 +41,7 @@ This tool is intended to provide simple and functional help in checking domains.
 - Webserver with php
 - php-yaml
 - php-intl
+- whois
 
 </br>
 
