@@ -2,15 +2,29 @@
 
 function dig($toproof, $typeToCheck) {
 
-    $domain = escapeshellarg($toproof);
+    $domain = ($toproof);
 
-    // Check nameserver in nameserver.yaml
-    $authorative_nameserver_array = dig_authorative_nameserver($domain, $typeToCheck);
-    $custom_nameserver_array = dig_custom_nameserver($domain, $typeToCheck);
+    $whatisit = whatisit($domain);
+    if ($whatisit === 2) {        
         
-    // Build output
-    build_dig($authorative_nameserver_array, $custom_nameserver_array);
+        // Check if Domain is in IDN
+        if ( is_idn($domain) ) {
+            $domain = idn_to_puny($domain);
+        }
 
+        // Check nameserver in nameserver.yaml
+        $authorative_nameserver_array = dig_authorative_nameserver($domain, $typeToCheck);
+        $custom_nameserver_array = dig_custom_nameserver($domain, $typeToCheck);
+            
+        // Build output
+        build_dig($authorative_nameserver_array, $custom_nameserver_array);
+    } else {     
+        ?>
+        <div class="alert alert-info">
+            <strong>Note:</strong> nslookup works only with a domain</a>.
+        </div>
+        <?php
+    }
 }
 
 function build_dig($authorative_nameserver_array, $custom_nameserver_array) {
