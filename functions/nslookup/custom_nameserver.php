@@ -51,7 +51,7 @@
             //-----------------------------------------------------------------------------------
             // TXT Records 
 
-            $command_txt = "nslookup -q=txt " . escapeshellcmd($domain) . " $nameserver_ip";
+            $command_txt = "nslookup -q=txt " . escapeshellcmd($domain) . " $ns_ip";
             $output_txt = shell_exec($command_txt);
             $pattern = '/text = "([^"]+)"/';
             preg_match_all($pattern, $output_txt, $matches_txt);
@@ -60,7 +60,7 @@
             //-----------------------------------------------------------------------------------
             // CNAME Records 
 
-            $command_cname = "nslookup -q=CNAME " . escapeshellcmd($domain) . " $nameserver_ip";
+            $command_cname = "nslookup -q=CNAME " . escapeshellcmd($domain) . " $ns_ip";
             $output_cname = shell_exec($command_cname);
             $pattern_cname = '/canonical name = (.+)/';
             preg_match_all($pattern_cname, $output_cname, $matches_cname);
@@ -68,7 +68,7 @@
 
             //-----------------------------------------------------------------------------------
             // MX Records
-            $command_mx = "nslookup -q=MX " . escapeshellcmd($domain) . " $nameserver_ip";
+            $command_mx = "nslookup -q=MX " . escapeshellcmd($domain) . " $ns_ip";
             $output_mx = shell_exec($command_mx);
             $pattern = '/exchanger = (.+)/';
             preg_match_all($pattern, $output_mx, $matches_mx);
@@ -76,7 +76,7 @@
 
             //-----------------------------------------------------------------------------------
             // NS Records
-            $command_ns = "nslookup -q=ns " . escapeshellcmd($domain) . " $nameserver_ip";
+            $command_ns = "nslookup -q=ns " . escapeshellcmd($domain) . " $ns_ip";
             $output_ns = shell_exec($command_ns);
             $pattern = '/nameserver = (.+)/';
             preg_match_all($pattern, $output_ns, $matches_ns);
