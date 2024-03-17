@@ -1,4 +1,7 @@
 
+### 03.2024.2
+- Page title configuration added
+
 ### 03.2024.1
 - nslookup: MX Records priority and destination separated
 - nslookup: DNS type explanation has been added.

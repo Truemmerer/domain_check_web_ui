@@ -1,13 +1,13 @@
 <?php        
         
-    function show_navbar($toproof, $working_domain) {        
+    function show_navbar($toproof, $working_domain, $pageTitle) {        
         ?>
         <!-- NAV BAR START -->
 
         <nav class="navbar navbar-expand-lg nav-color navbar-dark">
             <div class="container-fluid">
                 <a class="navbar-brand" href="<?php echo $working_domain ?>">
-                   <img src="assets/window-domain_icon-icons.com_52810.png" alt="" style="width:40px;" class="rounded-pill">  Domain Check - WebUI 
+                   <img src="assets/window-domain_icon-icons.com_52810.png" alt="" style="width:40px;" class="rounded-pill">  <?php echo $pageTitle ?>
                 </a>
 
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent" aria-controls="navbarContent" aria-expanded="true" aria-label="Toggle navigation">

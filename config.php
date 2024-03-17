@@ -2,6 +2,9 @@
 
 // Note: You can edit the list of nameservers in the nameserverlist.yaml file.  
 
+// Page title
+$pageTitle = "Domain Check Web UI";
+
 // This Domain is used if you click on the logo
 $working_domain = "https://domain.tld";
 

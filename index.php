@@ -43,7 +43,7 @@
         }
 
         // Generate navbar
-        show_navbar($toproof, $working_domain);
+        show_navbar($toproof, $working_domain, $pageTitle);
 
         //What is to do, if a button are clickt
 
