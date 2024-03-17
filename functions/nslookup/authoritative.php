@@ -67,9 +67,21 @@
             // MX Records
             $command_mx = "nslookup -q=MX " . escapeshellcmd($domain) . " $authoritative_ip";
             $output_mx = shell_exec($command_mx);
-            $pattern = '/exchanger = (.+)/';
-            preg_match_all($pattern, $output_mx, $matches_mx);
-            $authoritative_mx_records = $matches_mx[1];
+            $authoritative_mx_records = array();
+
+            $lines = explode("\n", $output_mx);
+
+            foreach ($lines as $line) {
+                if (trim($line) !== '') {
+                    if (preg_match('/=(\s+)?(\d+)(\s+)?(\S+)/', $line, $matches)) {
+                        $priority = (int)$matches[2];
+                        $destination = $matches[4];
+                        $authoritative_mx_records[] = array('priority' => $priority, 'destination' => $destination);
+                    } else {
+                      
+                    }
+                }
+            }
 
             //-----------------------------------------------------------------------------------
             // NS Records

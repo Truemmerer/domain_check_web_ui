@@ -49,10 +49,15 @@
 
                                     <form class="d-flex justify-content-center" action="index.php" method="get">
                                         <div class="btn-group-vertical">
-                                            <li><button type="submit" class="dropdown-item" name="action" value="digA">A Records (IPv4)</button></li>
-                                            <li><button type="submit" class="dropdown-item" name="action" value="digAAAA">AAAA Records (IPv6)</button></li>
-                                            <li><button type="submit" class="dropdown-item" name="action" value="digTXT">TXT Records</button></li>
-                                            <li><button type="submit" class="dropdown-item" name="action" value="digMX">MX Records</button></li>
+                                            <li><button type="submit" class="dropdown-item" name="action" value="digA">A (IPv4)</button></li>
+                                            <li><button type="submit" class="dropdown-item" name="action" value="digAAAA">AAAA (IPv6)</button></li>
+                                            <li><button type="submit" class="dropdown-item" name="action" value="digTXT">TXT</button></li>
+                                            <li><button type="submit" class="dropdown-item" name="action" value="digMX">MX</button></li>
+                                            <li><button type="submit" class="dropdown-item" name="action" value="digCNAME">CNAME</button></li>
+                                            <!-- <li><button type="submit" class="dropdown-item" name="action" value="digCAA">CAA</button></li> -->
+                                            <!-- <li><button type="submit" class="dropdown-item" name="action" value="digDS">DS</button></li> -->
+                                            <li><button type="submit" class="dropdown-item" name="action" value="digOPENPGPKEY">OPENPGPKEY</button></li>
+                                            <li><button type="submit" class="dropdown-item" name="action" value="digSSHFP">SSHFP</button></li>
                                         </div>
                                     </form>
                                 </div>

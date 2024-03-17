@@ -1,4 +1,17 @@
 
+### 03.2024.1
+- nslookup: MX Records priority and destination separated
+- nslookup: DNS type explanation has been added.
+- dig: Support for the following DNS records added: CNAME, OPENPGPKEY, SSHFP
+
+### 01.2024.2
+- Add DNSSEC (Partial) 
+- Add DNSSEC in Healthcheck
+
+### 01.2024.1
+- Error in nslookup fixed
+- Fixed bug that idn domains did not work in dig
+
 ### 12.2023.1
 - dig inplemented
 

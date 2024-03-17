@@ -41,16 +41,21 @@ function healthckeck($toproof){
     list($ip, $rDNS, $ptr) = ptr_rdns_check_ipv4($toproof);
 
 
+    //dnssec check
+    $dnssec_active = dnssec_check_enabled($toproof);
+    $dnssec_validate = validate_dnssec($toproof);
+
+
     //---------------------------------------------------------------------
     // Open Print Function
-    print_healthcheck($status, $nameserver, $rDNS, $ip, $ptr, $ipv4_diff, $ipv6_diff, $txt_diff, $cname_diff, $mx_diff, $ns_diff, $dns_empty, $ipv4_empty, $ipv6_empty, $txt_empty, $cname_empty, $mx_empty, $ns_empty, $whatisit);
+    print_healthcheck($dnssec_active, $dnssec_validate, $status, $nameserver, $rDNS, $ip, $ptr, $ipv4_diff, $ipv6_diff, $txt_diff, $cname_diff, $mx_diff, $ns_diff, $dns_empty, $ipv4_empty, $ipv6_empty, $txt_empty, $cname_empty, $mx_empty, $ns_empty, $whatisit);
 
 
 }
 
 
 // Print Healthcheck on the screen
-function print_healthcheck($status, $nameserver, $rDNS, $ip, $ptr, $ipv4_diff, $ipv6_diff, $txt_diff, $cname_diff, $mx_diff, $ns_diff, $dns_empty, $ipv4_empty, $ipv6_empty, $txt_empty, $cname_empty, $mx_empty, $ns_empty, $whatisit) {
+function print_healthcheck($dnssec_active, $dnssec_validate, $status, $nameserver, $rDNS, $ip, $ptr, $ipv4_diff, $ipv6_diff, $txt_diff, $cname_diff, $mx_diff, $ns_diff, $dns_empty, $ipv4_empty, $ipv6_empty, $txt_empty, $cname_empty, $mx_empty, $ns_empty, $whatisit) {
 
     // Domain Status
     if ($status === NULL) {
@@ -210,8 +215,39 @@ function print_healthcheck($status, $nameserver, $rDNS, $ip, $ptr, $ipv4_diff, $
         <?php  
     }
 
+    ?>
+
+    <?php
+    // DNSSEC
+    echo '<h3>DNSSEC</h3>'; 
+
+    ?>
+    <div class="alert alert-danger">
+        <strong>Attention!</strong> This function is still under development and has not yet been sufficiently tested. It is recommended to check the results with another tool. For example: <a href="https://dnssec-analyzer.verisignlabs.com/" class="alert-link">DNSSEC-Analyzer from Verisignlabs.com</a>.
+    </div>
+
+    <?php
+
+    if ($dnssec_active === true) { 
+        ?>
+            <h4><span class="badge bg-success">DNSSEC enabled</span></h4>
+        <?php
+    } else {
+        ?>
+            <h4><span class="badge bg-warning">DNSSEC disabled</span></h4>
+        <?php
+    }
+    if ($dnssec_validate === true) { 
+        ?>
+            <h4><span class="badge bg-success">DNSSEC validated</span></h4>
+        <?php
+    } else {
+        ?>
+            <h4><span class="badge bg-warning">DNSSEC not validated</span></h4>
+        <?php
+    }
+
+
 }
 
 ?>
-
-

@@ -119,7 +119,9 @@
             echo '<div class="container-fluid">';
             echo '<div class="card">';
             echo '<div class="card-body card-body-style">';
-            echo '<h4>A Records (IPv4)</h4>';
+            echo '<h4>A Records (IPv4)';
+            aModal();
+            echo '</h4>';
             if (!empty($ipv4)) {
                 foreach ($ipv4 as $ip) {
                     echo $ip . "<br>";
@@ -129,7 +131,9 @@
             echo '</div>';
             echo '<div class="card">';
             echo '<div class="card-body card-body-style">';
-            echo '<h4>AAAA Records (IPv6)</h4>';
+            echo '<h4>AAAA Records (IPv6)';
+            aaaaModal();
+            echo '</h4>';
             if (!empty($ipv6)) {
                 foreach ($ipv6 as $ip) {
                     echo $ip . "<br>";
@@ -149,7 +153,9 @@
             echo '</div>';
             echo '<div class="card">';
             echo '<div class="card-body card-body-style">';
-            echo '<h4>TXT Records</h4>';
+            echo '<h4>TXT Records';
+            txtModal();
+            echo '</h4>';
             if (!empty($txt)) {
                 foreach ($txt as $record) {
                     echo $record . "<br>";
@@ -159,17 +165,19 @@
             echo '</div>';
             echo '<div class="card">';
             echo '<div class="card-body card-body-style">';
-            echo '<h4>MX Records</h4>';
+            echo '<h4>MX Records';
+            mxModal();
+            echo '</h4>';
             if (!empty($mx)) {
-                foreach ($mx as $record) {
-                    echo $record . "<br>";
-                }
+                mx_table($mx);
             }
             echo '</div>';
             echo '</div>';
             echo '<div class="card">';
             echo '<div class="card-body card-body-style">';
-            echo '<h4>NS Records</h4>';
+            echo '<h4>NS Records';
+            nsModal();
+            echo '</h4>';
             if (!empty($ns)) {
                 foreach ($ns as $record) {
                     echo $record . "<br>";
@@ -212,7 +220,9 @@
             echo '<div class="container-fluid">';
             echo '<div class="card">';
             echo '<div class="card-body card-body-style">';
-            echo '<h4>A Records (IPv4)</h4>';
+            echo '<h4>A Records (IPv4)';
+            aModal();
+            echo '</h4>';
             if (!empty($ipv4)) {
                 foreach ($ipv4 as $ip) {
                     echo $ip . "<br>";
@@ -222,7 +232,9 @@
             echo '</div>';
             echo '<div class="card">';
             echo '<div class="card-body card-body-style">';
-            echo '<h4>AAAA Records (IPv6)</h4>';
+            echo '<h4>AAAA Records (IPv6)';
+            aaaaModal();
+            echo '</h4>';
             if (!empty($ipv6)) {
                 foreach ($ipv6 as $ip) {
                     echo $ip . "<br>";
@@ -232,7 +244,9 @@
             echo '</div>';
             echo '<div class="card">';
             echo '<div class="card-body card-body-style">';
-            echo '<h4>CNAME Records</h4>';
+            echo '<h4>CNAME Records';
+            cnameModal();
+            echo '</h4>';
             if (!empty($cname)) {
                 foreach ($cname as $record) {
                     echo $record . "<br>";
@@ -242,7 +256,9 @@
             echo '</div>';
             echo '<div class="card">';
             echo '<div class="card-body card-body-style">';
-            echo '<h4>TXT Records</h4>';
+            echo '<h4>TXT Records';
+            txtModal();
+            echo '</h4>';
             if (!empty($txt)) {
                 foreach ($txt as $record) {
                     echo $record . "<br>";
@@ -252,17 +268,19 @@
             echo '</div>';
             echo '<div class="card">';
             echo '<div class="card-body card-body-style">';
-            echo '<h4>MX Records</h4>';
+            echo '<h4>MX Records ';
+            mxModal();
+            echo '</h4>';
             if (!empty($mx)) {
-                foreach ($mx as $record) {
-                    echo $record . "<br>";
-                }
+                mx_table($mx);
             }
             echo '</div>';
             echo '</div>';
             echo '<div class="card">';
             echo '<div class="card-body card-body-style">';
-            echo '<h4>NS Records</h4>';
+            echo '<h4>NS Records';
+            nsModal();
+            echo '</h4>';
             if (!empty($ns)) {
                 foreach ($ns as $record) {
                     echo $record . "<br>";
@@ -274,10 +292,209 @@
             echo '</div>';
             echo '</div>';
             echo '</div>';
+
+
+            // MODAL with explanation of dns-records
+            ?>
+                <div class="modal" id="mxModal">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+        
+                        <!-- Modal Header -->
+                        <div class="modal-header">
+                            <h4 class="modal-title">MX-Records</h4>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                        </div>
+        
+                        <!-- Modal body -->
+                        <div class="modal-body">
+                        <?php
+        
+                            mxExplain();
+        
+                        ?>
+                        </div>
+        
+                        <!-- Modal footer -->
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-success" data-bs-dismiss="modal">Close</button>
+                        </div>
+                        
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal" id="aaaaModal">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+        
+                        <!-- Modal Header -->
+                        <div class="modal-header">
+                            <h4 class="modal-title">AAAA-Records</h4>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                        </div>
+        
+                        <!-- Modal body -->
+                        <div class="modal-body">
+                        <?php
+        
+                            aaaaExplain();
+        
+                        ?>
+                        </div>
+        
+                        <!-- Modal footer -->
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-success" data-bs-dismiss="modal">Close</button>
+                        </div>
+                        
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal" id="aModal">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+        
+                        <!-- Modal Header -->
+                        <div class="modal-header">
+                            <h4 class="modal-title">A-Records</h4>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                        </div>
+        
+                        <!-- Modal body -->
+                        <div class="modal-body">
+                        <?php
+        
+                            aExplain();
+        
+                        ?>
+                        </div>
+        
+                        <!-- Modal footer -->
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-success" data-bs-dismiss="modal">Close</button>
+                        </div>
+                        
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal" id="cnameModal">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+        
+                        <!-- Modal Header -->
+                        <div class="modal-header">
+                            <h4 class="modal-title">CNAME-Records</h4>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                        </div>
+        
+                        <!-- Modal body -->
+                        <div class="modal-body">
+                        <?php
+        
+                            cnameExplain();
+        
+                        ?>
+                        </div>
+        
+                        <!-- Modal footer -->
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-success" data-bs-dismiss="modal">Close</button>
+                        </div>
+                        
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal" id="nsModal">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+        
+                        <!-- Modal Header -->
+                        <div class="modal-header">
+                            <h4 class="modal-title">NS-Records</h4>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                        </div>
+        
+                        <!-- Modal body -->
+                        <div class="modal-body">
+                        <?php
+        
+                            nsExplain();
+        
+                        ?>
+                        </div>
+        
+                        <!-- Modal footer -->
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-success" data-bs-dismiss="modal">Close</button>
+                        </div>
+                        
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal" id="txtModal">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+        
+                        <!-- Modal Header -->
+                        <div class="modal-header">
+                            <h4 class="modal-title">TXT-Records</h4>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                        </div>
+        
+                        <!-- Modal body -->
+                        <div class="modal-body">
+                        <?php
+        
+                            txtExplain();
+        
+                        ?>
+                        </div>
+        
+                        <!-- Modal footer -->
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-success" data-bs-dismiss="modal">Close</button>
+                        </div>
+                        
+                        </div>
+                    </div>
+                </div>
+            <?php
         }
     
     }
 
 ?>
         
-        
+<?php    
+    function mx_table($mx) {
+        echo '<div class="row">';
+        echo '<div class="col">';
+        echo '<table class="table table-dark table-borderless">';
+        echo '<thead>';
+        echo '<tr>';
+        echo '<th>Destination</th>';
+        echo '<th>Priority</th>';
+        echo '</tr>';
+        echo '</thead>';
+        echo '<tbody>';
+        foreach ($mx as $record) {
+            echo '<tr>';
+            echo '<td>' . $record['destination'] . '</td>';
+            echo '<td>' . $record['priority'] . '</td>';
+            echo '</tr>';
+        }
+        echo '</tbody>';
+        echo '</table>';
+        echo '</div>';
+        echo '<div class="col">';
+        echo '</div>';
+        echo '<div class="col">';
+        echo '</div>';
+        echo '</div>';
+    }
+?>

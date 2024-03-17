@@ -42,6 +42,7 @@ This tool is intended to provide simple and functional help in checking domains.
 - php-yaml
 - php-intl
 - whois
+- pear/net_dns2 (dnssec)
 
 </br>
 
@@ -68,3 +69,7 @@ Icon from [Icon-Icons.com](https://icon-icons.com/icon/window-domain-www/52810) 
 The page uses the Bootstrap framework.
 The integration is implemented locally. 
 Bootsrap uses the <a rel="license" href="https://raw.githubusercontent.com/twbs/bootstrap/main/LICENSE">MIT license</a>.
+
+The page uses [Feather Icons](https://feathericons.com/)
+Feather uses the <a rel="license" href="https://github.com/feathericons/feather/blob/main/LICENSE">MIT license</a>.
+

@@ -124,27 +124,32 @@
         $mx_diff = false;
         $ns_diff = false;
 
-        if (check_ipv4_same($nameserver_array, $dns_array_result_authoritative) == false) {
+        // merge arrays
+        $mergedArray = array_merge_recursive($nameserver_array, $dns_array_result_authoritative);
+
+        //print_r($mergedArray);
+
+        if (check_ipv4_same($mergedArray) == false) {
             $ipv4_diff = true;
         }
 
-        if (check_ipv6_same($nameserver_array, $dns_array_result_authoritative) == false) {
+        if (check_ipv6_same($mergedArray) == false) {
             $ipv6_diff = true;
         }
 
-        if (check_txt_same($nameserver_array, $dns_array_result_authoritative) == false) {
+        if (check_txt_same($mergedArray) == false) {
             $txt_diff = true;
         }
 
-        if (check_cname_same($nameserver_array, $dns_array_result_authoritative) == false) {
+        if (check_cname_same($mergedArray) == false) {
             $cname_diff = true;
         }
 
-        if (check_mx_same($nameserver_array, $dns_array_result_authoritative) == false) {
+        if (check_mx_same($mergedArray) == false) {
             $mx_diff = true;
         }
 
-        if (check_ns_same($nameserver_array, $dns_array_result_authoritative) == false) {
+        if (check_ns_same($mergedArray) == false) {
             $ns_diff = true;
         }
 
@@ -157,136 +162,136 @@
     }
 
         // Check if all the ipv4 values in the nameserver arrays are the same
-        function check_ipv4_same($nameserver_array, $dns_array_result_authoritative) {
-            $nameserver_ipv4_values = [];
-            $authoritative_ipv4_values = [];
+        function check_ipv4_same($mergedArray) {
+            $entries = array_map(function($entry) {
+                return $entry['ipv4'];
+            }, $mergedArray);
         
-            // Extract all the ipv4 values from $nameserver_array
-            foreach ($nameserver_array as $nameserver) {
-                $nameserver_ipv4_values = array_merge($nameserver_ipv4_values, $nameserver['ipv4']);
+            $firstentry = $entries[0];
+        
+            foreach ($entries as $entry) {
+                if (count($entry) !== count($firstentry)) {
+                    return false;
+                }
+                foreach ($entry as $value) {
+                    if (!in_array($value, $firstentry)) {
+                        return false;
+                    }
+                }
             }
         
-            // Extract all the ipv4 values from $dns_array_result_authoritative
-            foreach ($dns_array_result_authoritative as $entry) {
-                $authoritative_ipv4_values = array_merge($authoritative_ipv4_values, $entry['ipv4']);
-            }
-        
-            // Check if all the ipv4 values in $nameserver_array are present in $dns_array_result_authoritative
-            $is_ipv4_same = count(array_diff($nameserver_ipv4_values, $authoritative_ipv4_values)) === 0;
-        
-            // return true or false
-            return $is_ipv4_same;
+            return true; // All entries are the same
         }
+        
     
         // Check if all the ipv6 values in the nameserver arrays are the same
-        function check_ipv6_same($nameserver_array, $dns_array_result_authoritative) {
-            $nameserver_ipv6_values = [];
-            $authoritative_ipv6_values = [];
+        function check_ipv6_same($mergedArray) {
+            $entries = array_map(function($entry) {
+                return $entry['ipv6'];
+            }, $mergedArray);
         
-            // Extract all the ipv6 values from $nameserver_array
-            foreach ($nameserver_array as $nameserver) {
-                $nameserver_ipv6_values = array_merge($nameserver_ipv6_values, $nameserver['ipv6']);
+            $firstentry = $entries[0];
+        
+            foreach ($entries as $entry) {
+                if (count($entry) !== count($firstentry)) {
+                    return false;
+                }
+                foreach ($entry as $value) {
+                    if (!in_array($value, $firstentry)) {
+                        return false;
+                    }
+                }
             }
         
-            // Extract all the ipv6 values from $dns_array_result_authoritative
-            foreach ($dns_array_result_authoritative as $entry) {
-                $authoritative_ipv6_values = array_merge($authoritative_ipv6_values, $entry['ipv6']);
-            }
-        
-            // Check if all the ipv6 values in $nameserver_array are present in $dns_array_result_authoritative
-            $is_ipv6_same = count(array_diff($nameserver_ipv6_values, $authoritative_ipv6_values)) === 0;
-        
-            // return true or false
-            return $is_ipv6_same;
+            return true; // All entries are the same
         }
     
         // Check if all the txt values in the nameserver arrays are the same
-        function check_txt_same($nameserver_array, $dns_array_result_authoritative) {
-            $nameserver_txt_values = [];
-            $authoritative_txt_values = [];
+        function check_txt_same($mergedArray) {
+            $entries = array_map(function($entry) {
+                return $entry['txt'];
+            }, $mergedArray);
         
-            // Extract all the txt values from $nameserver_array
-            foreach ($nameserver_array as $nameserver) {
-                $nameserver_txt_values = array_merge($nameserver_txt_values, $nameserver['txt']);
+            $firstentry = $entries[0];
+        
+            foreach ($entries as $entry) {
+                if (count($entry) !== count($firstentry)) {
+                    return false;
+                }
+                foreach ($entry as $value) {
+                    if (!in_array($value, $firstentry)) {
+                        return false;
+                    }
+                }
             }
         
-            // Extract all the txt values from $dns_array_result_authoritative
-            foreach ($dns_array_result_authoritative as $entry) {
-                $authoritative_txt_values = array_merge($authoritative_txt_values, $entry['txt']);
-            }
-        
-            // Check if all the txt values in $nameserver_array are present in $dns_array_result_authoritative
-            $is_txt_same = count(array_diff($nameserver_txt_values, $authoritative_txt_values)) === 0;
-        
-            // return true or false
-            return $is_txt_same;
+            return true; // All entries are the same
         }
-    
         // Check if all the cname values in the nameserver arrays are the same
-        function check_cname_same($nameserver_array, $dns_array_result_authoritative) {
-            $nameserver_cname_values = [];
-            $authoritative_cname_values = [];
+        function check_cname_same($mergedArray) {
+            $entries = array_map(function($entry) {
+                return $entry['cname'];
+            }, $mergedArray);
         
-            // Extract all the cname values from $nameserver_array
-            foreach ($nameserver_array as $nameserver) {
-                $nameserver_cname_values = array_merge($nameserver_cname_values, $nameserver['cname']);
+            $firstentry = $entries[0];
+        
+            foreach ($entries as $entry) {
+                if (count($entry) !== count($firstentry)) {
+                    return false;
+                }
+                foreach ($entry as $value) {
+                    if (!in_array($value, $firstentry)) {
+                        return false;
+                    }
+                }
             }
         
-            // Extract all the cname values from $dns_array_result_authoritative
-            foreach ($dns_array_result_authoritative as $entry) {
-                $authoritative_cname_values = array_merge($authoritative_cname_values, $entry['cname']);
-            }
-        
-            // Check if all the cname values in $nameserver_array are present in $dns_array_result_authoritative
-            $is_cname_same = count(array_diff($nameserver_cname_values, $authoritative_cname_values)) === 0;
-        
-            // return true or false
-            return $is_cname_same;
+            return true; // All entries are the same
         }
-    
+
          // Check if all the mx values in the nameserver arrays are the same
-         function check_mx_same($nameserver_array, $dns_array_result_authoritative) {
-            $nameserver_mx_values = [];
-            $authoritative_mx_values = [];
+         function check_mx_same($mergedArray) {
+            $mxEntries = array_map(function($entry) {
+                return $entry['mx'];
+            }, $mergedArray);
         
-            // Extract all the mx values from $nameserver_array
-            foreach ($nameserver_array as $nameserver) {
-                $nameserver_mx_values = array_merge($nameserver_mx_values, $nameserver['mx']);
+            $firstentry = $mxEntries[0];
+        
+            foreach ($mxEntries as $entry) {
+                if (count($entry) !== count($firstentry)) {
+                    return false;
+                }
+                foreach ($entry as $mx) {
+                    if (!in_array($mx, $firstentry)) {
+                        return false;
+                    }
+                }
             }
         
-            // Extract all the mx values from $dns_array_result_authoritative
-            foreach ($dns_array_result_authoritative as $entry) {
-                $authoritative_mx_values = array_merge($authoritative_mx_values, $entry['mx']);
-            }
-        
-            // Check if all the mx values in $nameserver_array are present in $dns_array_result_authoritative
-            $is_mx_same = count(array_diff($nameserver_mx_values, $authoritative_mx_values)) === 0;
-        
-            // return true or false
-            return $is_mx_same;
-        }   
-        
+            return true; // All MX entries are the same
+        }
+
         // Check if all the ns values in the nameserver arrays are the same
-        function check_ns_same($nameserver_array, $dns_array_result_authoritative) {
-            $nameserver_ns_values = [];
-            $authoritative_ns_values = [];
-    
-            // Extract all the ns values from $nameserver_array
-            foreach ($nameserver_array as $nameserver) {
-                $nameserver_ns_values = array_merge($nameserver_ns_values, $nameserver['ns']);
+        function check_ns_same($mergedArray) {
+            $entries = array_map(function($entry) {
+                return $entry['ns'];
+            }, $mergedArray);
+        
+            $firstentry = $entries[0];
+        
+            foreach ($entries as $entry) {
+                if (count($entry) !== count($firstentry)) {
+                    return false;
+                }
+                foreach ($entry as $value) {
+                    if (!in_array($value, $firstentry)) {
+                        return false;
+                    }
+                }
             }
-    
-            // Extract all the ns values from $dns_array_result_authoritative
-            foreach ($dns_array_result_authoritative as $entry) {
-                $authoritative_ns_values = array_merge($authoritative_ns_values, $entry['ns']);
-            }
-    
-            // Check if all the ns values in $nameserver_array are present in $dns_array_result_authoritative
-            $is_ns_same = count(array_diff($nameserver_ns_values, $authoritative_ns_values)) === 0;
-    
-            // return true or false
-            return $is_ns_same;
-        }   
+        
+            return true; // All entries are the same
+        }
     
 ?>
 

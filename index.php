@@ -30,6 +30,7 @@
             require_once 'functions/mtr_ping.php';
             require_once 'config.php';
             require_once 'footer.php';
+            require_once 'dnsexplain.php';
 
             
         // END Add Funcitons
@@ -129,8 +130,6 @@
                     <?php endif; ?>   
 
                     <?php 
-                    // -----------------
-                    // DIG SECTION START
                         if(isset($_GET['action']) && !empty($_GET['action']) && ($_GET["action"] == "digTXT")) : ?>
                             <div class="container-fluid">                        
                             <?php 
@@ -148,11 +147,65 @@
                                 dig($toproof, $typeToCheck);
                             ?>
                             </div>    
-
-                    <!-- -- DIG SECTION END -- -->
-
+                    <?php endif; ?>   
+                    <?php 
+                        if(isset($_GET['action']) && !empty($_GET['action']) && ($_GET["action"] == "digMX")) : ?>
+                            <div class="container-fluid">                        
+                            <?php 
+                                $typeToCheck = "MX";
+                                dig($toproof, $typeToCheck);
+                            ?>
+                            </div>    
+                    <?php endif; ?>   
+                    <?php 
+                        if(isset($_GET['action']) && !empty($_GET['action']) && ($_GET["action"] == "digCNAME")) : ?>
+                            <div class="container-fluid">                        
+                            <?php 
+                                $typeToCheck = "CNAME";
+                                dig($toproof, $typeToCheck);
+                            ?>
+                            </div>    
+                    <?php endif; ?>   
+                    <?php 
+                        if(isset($_GET['action']) && !empty($_GET['action']) && ($_GET["action"] == "digCAA")) : ?>
+                            <div class="container-fluid">                        
+                            <?php 
+                                $typeToCheck = "CAA";
+                                dig($toproof, $typeToCheck);
+                            ?>
+                            </div>    
+                    <?php endif; ?>   
+                    <?php 
+                        if(isset($_GET['action']) && !empty($_GET['action']) && ($_GET["action"] == "digOPENPGPKEY")) : ?>
+                            <div class="container-fluid">                        
+                            <?php 
+                                $typeToCheck = "OPENPGPKEY";
+                                dig($toproof, $typeToCheck);
+                            ?>
+                            </div>    
+                    <?php endif; ?>   
+                    <?php 
+                        if(isset($_GET['action']) && !empty($_GET['action']) && ($_GET["action"] == "digSSHFP")) : ?>
+                            <div class="container-fluid">                        
+                            <?php 
+                                $typeToCheck = "SSHFP";
+                                dig($toproof, $typeToCheck);
+                            ?>
+                            </div>    
+                    <?php endif; ?>   
+                    <?php 
+                        if(isset($_GET['action']) && !empty($_GET['action']) && ($_GET["action"] == "digCAA")) : ?>
+                            <div class="container-fluid">                        
+                            <?php 
+                                $typeToCheck = "CAA";
+                                dig($toproof, $typeToCheck);
+                            ?>
+                            </div>    
                     <?php endif; ?>   
 
+
+
+                    <!-- -- DIG SECTION END -- -->
                     <!-- press rdns-ptr? -->
                     <?php 
                         if(isset($_GET['action']) && !empty($_GET['action']) && ($_GET["action"] == "rdns-ptr")) : ?>

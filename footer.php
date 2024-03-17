@@ -80,6 +80,20 @@
                                 </div>
                             </div>
                         </div>
+
+                        <div class="card bg-dark">
+                            <div class="card-header" role="button" data-bs-toggle="collapse" data-bs-target="#collapseBoot" aria-expanded="false" aria-controls="collapseBoot">
+                            <a class="btn" data-bs-toggle="collapse" href="#collapseBoot">
+                                Feather
+                            </a>
+                            </div>
+                            <div id="collapseBoot" class="collapse show" data-bs-parent="#accordion">
+                                <div class="card-body card-body-style">
+                                The page uses Feather Icons
+                                Feather uses the <a rel="license" href="https://github.com/feathericons/feather/blob/main/LICENSE">MIT license</a>.
+                                </div>
+                            </div>
+                        </div>
                 
 
                     </div>
@@ -138,9 +152,9 @@
                     <!-- Modal body -->
                     <div class="modal-body">
                         <h3>Changelog</h3>
-                        <pre>
-                            <?php echo $changelog ?>
-                        </pre>
+                        <p>
+                            <?php echo nl2br($changelog) ?>
+                        </p>
                     </div>
 
                     <!-- Modal footer -->

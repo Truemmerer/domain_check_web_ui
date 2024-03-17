@@ -21,7 +21,7 @@ function dig($toproof, $typeToCheck) {
     } else {     
         ?>
         <div class="alert alert-info">
-            <strong>Note:</strong> nslookup works only with a domain</a>.
+            <strong>Note:</strong> This function works only with a domain</a>.
         </div>
         <?php
     }
@@ -64,26 +64,26 @@ function build_dig($authorative_nameserver_array, $custom_nameserver_array) {
 
     // Output nameserver from nameserver.yaml
     ?>
-        <br>
-        <br>
-        <div class="alert card-box-nslookup-separator">
-            <strong>Info:</strong> The following nameservers were also checked:
-        </div>
-    <?php
-    foreach ($custom_nameserver_array as $result) {
+    <br>
+    <br>
+    <div class="alert card-box-nslookup-separator">
+        <strong>Info:</strong> The following nameservers were also checked:
+    </div>
+<?php
+foreach ($custom_nameserver_array as $result) {
 
-        $ns_ip = $result['ns_ip'];
-        $ns_name = $result['ns_name'];
-        $ns_output = $result['ns_output'];
+    $ns_ip = $result['ns_ip'];
+    $ns_name = $result['ns_name'];
+    $ns_output = $result['ns_output'];
 
-        $collapseId = 'collapse' . ucfirst(str_replace(['_', '.'], '', $ns_name));
+    $collapseId = 'collapse' . ucfirst(str_replace(['_', '.'], '', $ns_name));
 
-        echo '<div class="card card-box-style">';
-        echo '<div class="card-header" role="button" data-bs-toggle="collapse" data-bs-target="#' . $collapseId . '" aria-expanded="false" aria-controls="' . $collapseId . '">';
-        echo '<h2 class="mb-0">' . $ns_name . ' (' . $ns_ip . ')</h2>';
-        echo '</div>';
-        echo '<div class="collapse" id="' . $collapseId . '">';
-        echo '<div class="card-body card-body-style">';
+    echo '<div class="card card-box-style">';
+    echo '<div class="card-header" role="button" data-bs-toggle="collapse" data-bs-target="#' . $collapseId . '" aria-expanded="false" aria-controls="' . $collapseId . '">';
+    echo '<h2 class="mb-0">' . $ns_name . ' (' . $ns_ip . ')</h2>';
+    echo '</div>';
+    echo '<div class="collapse" id="' . $collapseId . '">';
+    echo '<div class="card-body card-body-style">';
         echo '<div class="container-fluid">';
         echo '<pre>' . $ns_output . '</pre>';
         echo '</div>';

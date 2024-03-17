@@ -117,3 +117,12 @@ a:active {
 .btn.custom:hover {
     color: #7F858F;
 }
+
+.table {
+    color: #FFFFFF;
+}
+
+.table-hover tbody tr:hover {
+    color: #FFFFFF;
+    cursor: pointer;
+}
