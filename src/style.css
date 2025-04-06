@@ -1,0 +1,222 @@
+/* 
+    This is the style.css from the Domain Check Web UI tool. 
+    Github Page: https://github.com/Truemmerer/domain_check_web_ui/
+*/
+
+/* 
+    root style
+    -------------
+*/
+
+:root {
+    --shared-background-color: #181A1B !important;
+}
+
+
+/*
+    Startpage styles
+    ----------------
+*/
+.startpage_welcome {
+    text-align: center;
+    color: rgb(190, 190, 190);
+    align-self: center;
+    font-size: 32px;
+    font-weight: cursive;
+    padding-top: 15%;
+    margin-bottom: 15px;
+
+}
+
+.startpage_search {
+    position: relative;
+    top: 20px;
+    text-align: center;
+    color: rgb(190, 190, 190);
+    padding-left: 25%;
+    padding-right: 25%;
+}
+
+.startpage-searchbar {
+    height: 45px;
+    font-size: 18px;
+}
+
+/* 
+    Content styles 
+    --------------
+*/
+
+.table-head-background {
+    --bs-table-bg: #2B2B2B;
+}
+
+.table-head-bigfont {
+    font-size: 1.5em;
+}
+
+.table-head-smalfont {
+    font-size: 1.2em;
+}
+
+.table-info-btn {
+    fill: white;
+}
+
+#copyText {
+    display: inline-block;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.copy-button {
+    top: 50%;
+    right: -25px;
+    /* Adjust based on button size */
+    background: none;
+    border: none;
+    font-size: 16px;
+    cursor: pointer;
+    opacity: 1;
+}
+
+.separator {
+    border-top: 1px solid #152A48;
+    border: none;
+    margin: 20px 0;
+}
+
+.content {
+    padding-top: 20px;
+    height: max-content;
+    width: 50%;
+    text-align: left;
+    margin-bottom: 25px;
+}
+
+.content-header {
+    font-size: 1.8em;
+    padding-top: 40px;
+    padding-bottom: 20px;
+}
+
+.nav-color {
+    background-color: #1B1D1E;
+    border-bottom: 4px solid #152A48;
+}
+
+.footer-color {
+    background-color: #1B1D1E;
+    border-top: 4px solid #152A48;
+}
+
+.dropdown-menu {
+    background-color: var(--shared-background-color);
+    border-color: #152A48;
+    border-style: solid;
+    border-width: 4px;
+}
+
+.dropdown-item {
+    color: #F7F7F7;
+}
+
+.dropdown-item:hover {
+    background-color: var(--shared-background-color);
+    color: #7F858F;
+}
+
+.modal-dialog {
+    color: black;
+}
+
+.body-color {
+    background-color: var(--shared-background-color);
+    color: #ffffff !important;
+}
+
+.card-box-style {
+    background-color: #0d6efd;
+    color: white;
+}
+
+.card-body-style {
+    background-color: #1e1e1e;
+    color: white;
+}
+
+.card-box-nslookup-separator {
+    background-color: #313537;
+    color: #BFBDBA;
+    border-color: #42484B;
+    border-style: solid;
+}
+
+.modal-content {
+    background-color: #1e1e1e;
+    color: white;
+}
+
+.search-color {
+    background-color: var(--shared-background-color);
+    color: #F7F7F7;
+    border-color: #3C4144;
+    border-style: solid;
+}
+
+.form-control:focus {
+    background-color: var(--shared-background-color);
+    color: #F7F7F7;
+    border-color: #152A48;
+    border-style: solid;
+}
+
+.btn-close {
+    background: transparent url("/assets/close.png") center/1em auto no-repeat;
+}
+
+.btn.custom {
+    color: #F7F7F7;
+}
+
+.btn.custom:hover {
+    color: #7F858F;
+}
+
+.table {
+    color: #FFFFFF;
+}
+
+.table-hover tbody tr:hover {
+    color: #FFFFFF;
+    cursor: pointer;
+}
+
+
+/*
+    Link styles
+    -----------
+*/
+a:link {
+    color: #ffffff;
+    background-color: transparent;
+    text-decoration: none;
+}
+
+a:visited {
+    color: #ffffff;
+    background-color: transparent;
+    text-decoration: none;
+}
+
+a:hover {
+    color: #ffffff;
+    background-color: transparent;
+    text-decoration: none;
+}
+
+a:active {
+    color: #ffffff;
+    background-color: transparent;
+    text-decoration: none;
+}
