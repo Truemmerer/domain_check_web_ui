@@ -16,7 +16,7 @@
         $spf_records = [];
 
         foreach ($txt_records as $txt_record) {
-            echo $txt_record . " SPF1 <br/>";
+            echo $txt_record;
 
             // remove " from string
             $txt_record = trim($txt_record, '"');
@@ -35,24 +35,64 @@
             // Output
             $parts = explode(' ', $spf_record);
 
+            echo '<table>';
+
             foreach ($parts as $part) {
+                echo '<tr>';
                 if (strpos($part, 'v=') === 0) {
-                    echo 'Version: ' . substr($part, 2) . ' (SPF version)<br>';
+                    echo '<td>';
+                    echo 'SPF Version:';
+                    echo '</td><td>';
+                    echo substr($part, 2);
+                    echo '</td>';
                 } elseif (strpos($part, 'a') === 0) {
-                    echo 'Mechanism: a (Allow mail from the domain\'s A record)<br>';
+                    echo '<td>';
+                    echo 'Mechanism:';
+                    echo '</td><td>';
+                    echo 'a (Allow mail from the domain\'s A record)';
+                    echo '</td>';
                 } elseif (strpos($part, 'mx') === 0) {
-                    echo 'Mechanism: mx (Allow mail from the domain\'s MX record)<br>';
+                    echo '<td>';
+                    echo 'Mechanism:';
+                    echo '</td><td>';
+                    echo 'mx (Allow mail from the domain\'s MX record)';
+                    echo '</td>';
                 } elseif (strpos($part, 'ip4:') === 0) {
-                    echo 'Mechanism: ip4 (Allow mail from the specified IPv4 address) - ' . substr($part, 4) . '<br>';
+                    echo '<td>';
+                    echo 'Mechanism:';
+                    echo '</td><td>';
+                    echo 'ip4 (Allow mail from the specified IPv4 address)';
+                    echo '</td><tr><td></td><td>';
+                    echo substr($part, 4);
+                    echo '</td>';
                 } elseif (strpos($part, 'include:') === 0) {
-                    echo 'Mechanism: include (Include the SPF record from the specified domain) - ' . substr($part, 8) . '<br>';
+                    echo '<td>';
+                    echo 'Mechanism:';
+                    echo '</td><td>';
+                    echo '(Include the SPF record from the specified domain)';
+                    echo '</td><tr><td></td><td>';
+                    echo substr($part, 8);
+                    echo '</td>';
                 } elseif (strpos($part, '-all') === 0) {
-                    echo 'Default Policy: -all (Reject all mail that doesn\'t match any of the above mechanisms)<br>';
+                    echo '<td>';
+                    echo 'Default Policy:';
+                    echo '</td><td>';
+                    echo '-all (Reject all mail that doesn\'t match any of the above mechanisms)';
+                    echo '</td>';
                 } elseif (strpos($part, '~all') === 0) {
-                    echo 'Default Policy: ~all (Allow all mail that doesn\'t match any of the above mechanisms)<br>';
+                    echo '<td>';
+                    echo 'Default Policy:';
+                    echo '</td><td>';
+                    echo '~all (Allow all mail that doesn\'t match any of the above mechanisms)';
+                    echo '</td>';
                 } else {
-                    echo 'Unknown Mechanism: ' . $part . '<br>';
+                    echo '<td>';
+                    echo 'Unknown Mechanism:';
+                    echo '</td><td>';
+                    echo $part;
+                    echo '</td>';
                 }
+                echo '</tr>';
             }
         }
 
