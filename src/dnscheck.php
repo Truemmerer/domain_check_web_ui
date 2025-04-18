@@ -1,5 +1,10 @@
 <?php
 
+    /** 
+     * Checking the DNS records of a domain
+     * @param $toproof - Domain
+    */
+
     require_once 'src/dnsexplain.php';
 
     function dns_check($toproof, $tld) {
@@ -37,6 +42,99 @@
 
     }
 
+    // -------------------------------------
+    // Get DNS Records
+    // -------------------------------------
+    
+    // get A records
+    function get_a_records($toproof, $ns_ip) {
+        
+        $ipv4_addresses = [];
+        
+        $command = "dig +short A " . escapeshellcmd($toproof) . " @" . escapeshellcmd($ns_ip) . " | sort";
+        $output = shell_exec($command);
+        $ipv4_a = explode("\n", $output);
+        foreach ($ipv4_a as $ipv4_entry) {
+            if (trim($ipv4_entry) !== '') {
+                $ipv4_addresses[] = $ipv4_entry;
+            }
+        }
+        return $ipv4_addresses;
+    }
+
+    // get AAAA records
+    function get_aaaa_records($toproof, $ns_ip) {
+
+        $ipv6_addresses = [];
+
+        $command = "dig +short AAAA " . escapeshellcmd($toproof) . " @" . escapeshellcmd($ns_ip) . " | sort";
+        $output = shell_exec($command);
+        $ipv6_a = explode("\n", $output);
+        foreach ($ipv6_a as $ipv6_entry) {
+            if (trim($ipv6_entry) !== '') {
+                $ipv6_addresses[] = $ipv6_entry;
+            }
+        }
+        return $ipv6_addresses;
+    }
+
+    // get TXT records
+    function get_txt_records($toproof, $ns_ip) {
+
+        $txt_adresses = [];
+
+        $command = "dig +short TXT " . escapeshellcmd($toproof) . " @" . escapeshellcmd($ns_ip) . " | sort";
+        $output = shell_exec($command);
+        $txt_a = explode("\n", $output);
+        foreach ($txt_a as $txt_entry) {
+            if (trim($txt_entry) !== '') {
+                $txt_adresses[] = $txt_entry;
+            }
+        }
+        return $txt_adresses;
+    }
+
+    // get CNAME records
+    function get_cname_records($toproof, $ns_ip) {
+
+        $cname_adresses = [];
+
+        $command = "dig +short CNAME " . escapeshellcmd($toproof) . " @" . escapeshellcmd($ns_ip) . " | sort";
+        $output = shell_exec($command);
+        $cname_a = explode("\n", $output);
+        foreach ($cname_a as $cname_entry) {
+            if (trim($cname_entry) !== '') {
+                $cname_adresses[] = $cname_entry;
+            }
+        }
+        return $cname_adresses;
+    }
+
+    // get mx records
+    function get_mx_records($toproof, $ns_ip) {
+
+        $mx_addresses = [];
+
+        $command = "dig +short MX " . escapeshellcmd($toproof) . " @" . escapeshellcmd($ns_ip) . " | sort";
+        $output = shell_exec($command);
+        $mx_a = explode("\n", $output);
+        foreach ($mx_a as $mx_entry) {
+            if (trim($mx_entry) !== '') {
+                $parts = explode(' ', $mx_entry);
+                $priority = (int)$parts[0];
+                $destination = $parts[1];
+                $mx_addresses[] = array('priority' => $priority, 'destination' => $destination);
+            }
+        }
+        return $mx_addresses;
+    }
+    // -------------------------------------
+    // END Get DNS Records
+    // -------------------------------------
+
+
+    // DNSCHECK
+
     function get_default_dns($toproof, $nameserverlist) {
         $dns_array_result = [];
 
@@ -46,77 +144,14 @@
             $ns_name = $nameserver['ns_name'];
             $type = $nameserver['type'];
 
-            $ipv4_addresses = [];
-            $ipv6_addresses = [];
-            $txt_adresses = [];
-            $cname_adresses = [];
-            $mx_addresses = [];
-            $ns_adresses = [];
+            // get default DNS records (A; AAAA; TXT; CNAME; MX)
+            $ipv4_addresses = get_a_records($toproof, $ns_ip);
+            $ipv6_addresses = get_aaaa_records($toproof, $ns_ip);
+            $txt_adresses = get_txt_records($toproof, $ns_ip);
+            $cname_adresses = get_cname_records($toproof, $ns_ip);
+            $mx_addresses = get_mx_records($toproof, $ns_ip);
 
-            
-            //-----------------------------------------------------------------------------------
-            // IPv4 Records
-
-            $command = "dig +short A " . escapeshellcmd($toproof) . " @" . escapeshellcmd($ns_ip) . " | sort";
-            $output = shell_exec($command);
-            $ipv4_a = explode("\n", $output);
-            foreach ($ipv4_a as $ipv4_entry) {
-                if (trim($ipv4_entry) !== '') {
-                    $ipv4_addresses[] = $ipv4_entry;
-                }
-            }
-
-            //-----------------------------------------------------------------------------------
-            // IPv6 Records
-            $command = "dig +short AAAA " . escapeshellcmd($toproof) . " @" . escapeshellcmd($ns_ip) . " | sort";
-            $output = shell_exec($command);
-            $ipv6_a = explode("\n", $output);
-            foreach ($ipv6_a as $ipv6_entry) {
-                if (trim($ipv6_entry) !== '') {
-                    $ipv6_addresses[] = $ipv6_entry;
-                }
-            }
-
-
-            //-----------------------------------------------------------------------------------
-            // TXT Records 
-
-            $command = "dig +short TXT " . escapeshellcmd($toproof) . " @" . escapeshellcmd($ns_ip) . " | sort";
-            $output = shell_exec($command);
-            $txt_a = explode("\n", $output);
-            foreach ($txt_a as $txt_entry) {
-                if (trim($txt_entry) !== '') {
-                    $txt_adresses[] = $txt_entry;
-                }
-            }
-
-            //-----------------------------------------------------------------------------------
-            // CNAME Records 
-            $command = "dig +short CNAME " . escapeshellcmd($toproof) . " @" . escapeshellcmd($ns_ip) . " | sort";
-            $output = shell_exec($command);
-            $cname_a = explode("\n", $output);
-            foreach ($cname_a as $cname_entry) {
-                if (trim($cname_entry) !== '') {
-                    $cname_adresses[] = $cname_entry;
-                }
-            }
-
-            //-----------------------------------------------------------------------------------
-            // MX Records
-            $command = "dig +short MX " . escapeshellcmd($toproof) . " @" . escapeshellcmd($ns_ip) . " | sort";
-            $output = shell_exec($command);
-            $mx_a = explode("\n", $output);
-            foreach ($mx_a as $mx_entry) {
-                if (trim($mx_entry) !== '') {
-                    $parts = explode(' ', $mx_entry);
-                    $priority = (int)$parts[0];
-                    $destination = $parts[1];
-                    $mx_addresses[] = array('priority' => $priority, 'destination' => $destination);
-                }
-            }
-
-
-            $dns_array_result[] = [
+        $dns_array_result[] = [
                 'ns_ip' => $ns_ip,
                 'ns_name' => $ns_name,
                 'type' => $type,
@@ -132,6 +167,7 @@
 
         return $dns_array_result;
     }
+
 
     function print_dns_check($dns_array) {
         foreach ($dns_array as $result) {

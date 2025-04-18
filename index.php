@@ -29,7 +29,8 @@
         ?>
 
         <!-- Own CSS -->
-        <link rel="stylesheet" type="text/css" href="src/style.css">
+        <link rel="stylesheet" type="text/css" href="src/style/main.css">
+        <link rel="stylesheet" type="text/css" href="src/style/desktop.css" media="(min-width: 769px)">
 
         <!-- Favicon -->
         <link rel="icon" type="image/x-icon" href="assets/window-domain_icon-icons.com_52810.ico">

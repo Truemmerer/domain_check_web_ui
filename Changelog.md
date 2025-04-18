@@ -1,4 +1,8 @@
 
+### 04.2025.1-dev
+- Improvements for spf check
+- Mobile style
+
 ### 04.2025.0-dev
 - Buttons on the start page are now the same size as the search bar.
 - Optimized display of the DNS check.
