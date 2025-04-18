@@ -79,6 +79,16 @@
         }
     }
 
+    function remove_dot_if_last_char($string) {
+        // Check if the last character is a dot
+        if (substr($string, -1) === '.') {
+            // Remove the last dot
+            return substr($string, 0, -1);
+        }
+        // Return the original string if it doesn't end with a dot
+        return $string;
+    }
+
     /** Get domain from a subdomain */
     function get_domain($toproof, $tld) {
         /* get the full domain without the tld */

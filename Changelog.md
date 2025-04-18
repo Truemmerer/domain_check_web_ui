@@ -1,3 +1,8 @@
+### 04.2025.3
+- Release of the new version
+
+### 04.2025.2-dev
+- Revised rDNS (ipv4 only) 
 
 ### 04.2025.1-dev
 - Improvements for spf check
