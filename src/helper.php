@@ -79,6 +79,11 @@
         }
     }
 
+    /*
+        This function removes a dot if it is the last char
+        Example:
+        example.tld. -> example.tld
+    */
     function remove_dot_if_last_char($string) {
         // Check if the last character is a dot
         if (substr($string, -1) === '.') {
@@ -90,15 +95,31 @@
     }
 
     /** Get domain from a subdomain */
-    function get_domain($toproof, $tld) {
-        /* get the full domain without the tld */
-        $domain = str_replace($tld, '', $toproof);#
-        /* get the domain from a subdomain */
-        $domain = preg_replace('/^.*\.(?=.*\.*$)/', '', $domain);
-        /* add tld again to domain */
-        $domain = $domain . $tld;
-        return $domain;
-        
+    function get_domain($subdomain, $tld) {
+
+        // Ensure the TLD starts with a dot
+        if ($tld[0] !== '.') {
+            $tld = '.' . $tld;
+        }
+
+        // Remove the $tld from the end of the $subdomain
+        if (substr($subdomain, -strlen($tld)) === $tld) {
+            $domain_without_tld = substr($subdomain, 0, -strlen($tld));
+        } else {
+            $domain_without_tld = $subdomain;
+        }
+
+        // remove subdomain from $domain_without_tld
+        $parts = explode('.', $subdomain);
+
+        if (count($parts) >= 2) {
+            $secondLevelDomain = $parts[count($parts) -2];
+
+            // Add $tld again to $secondLevelDomain and return it
+            return $secondLevelDomain . $tld; 
+
+        }
+
     }
 
     /** Get Authorative Nameservers */

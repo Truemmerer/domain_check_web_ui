@@ -1,3 +1,10 @@
+
+### 04.2025.4
+- Added to dnscheck that authoritative nameservers are marked accordingly. 
+- Fix whois check for subdomains
+- Fix rdns/ptr check for subdomains
+- The checking of differences between entries between nameservers has been added again.
+
 ### 04.2025.3
 - Release of the new version
 

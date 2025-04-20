@@ -38,14 +38,11 @@
                                     echo '<span class="badge bg-success">rDNS</span>';  
                                     echo '<span class="badge bg-success">DNS</span>';  
                                     echo '<span class="badge bg-success">PTR</span>';  
-
-
                                 } else {
                                     echo 'The IP adress '. $toproof . ' points to ' . $rdns_to_check . '. But the domain is not on ' . $toproof . '  ';
                                     echo '<span class="badge bg-success">rDNS</span>';  
                                     echo '<span class="badge bg-danger">DNS</span>';  
                                     echo '<span class="badge bg-danger">PTR</span>';  
-
                                 }
                             }
                         }
@@ -53,7 +50,7 @@
 
                 }
             } else {
-                echo 'No rDNS entries were found.';
+                echo 'No rDNS entries were found for the ip ' . $toproof . '  ';
                 echo '<span class="badge bg-danger">rDNS</span>';  
                 echo '<span class="badge bg-danger">DNS</span>';  
                 echo '<span class="badge bg-danger">PTR</span>';  
@@ -66,6 +63,8 @@
 
 
             $tld = get_tld($toproof);
+
+            // get Domain if entry is a subdomain
             $nameservers = get_authorative_nameservers($toproof, $tld);
             $nameserver_ip = false;
             if (!empty($nameservers)) {
@@ -93,12 +92,12 @@
                                     echo '<span class="badge bg-success">rDNS</span>';  
                                     echo '<span class="badge bg-success">DNS</span>';  
                                     echo '<span class="badge bg-success">PTR</span>';  
-
                                 } else {
                                     echo 'The Domain '. $toproof . ' points to ' . $ip_adress . '. But this in turn points not to the Domain ' . $toproof . '  ';
                                     echo '<span class="badge bg-danger">rDNS</span>';  
                                     echo '<span class="badge bg-success">DNS</span>';  
                                     echo '<span class="badge bg-danger">PTR</span>';  
+
                                 }
                             }
 
@@ -109,7 +108,7 @@
 
                 }
             } else {
-                echo 'No IPv4 entries were found for the domain.';
+                echo 'No IPv4 entries were found for the domain ' . $toproof . '  ';
                 echo '<span class="badge bg-danger">rDNS</span>';  
                 echo '<span class="badge bg-danger">DNS</span>';  
                 echo '<span class="badge bg-danger">PTR</span>';  
@@ -117,8 +116,6 @@
 
 
         }
-
-
     }
 
     function get_rdns_of_ip($ip_adress) {
@@ -134,5 +131,6 @@
         }
         return $rdns_domains;
     }
+
 
 ?>

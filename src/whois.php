@@ -3,7 +3,7 @@
 function whois_output($toproof) {
 
     // Check if $toproof is a domain, ip, url, e-mail-adress
-    $whatisthat = whatisit($toproof);
+    $type = whatisit($toproof);
 
     // Check if Domain is in IDN and Convert it to Puny
     if ( is_idn($toproof) ) {
@@ -11,7 +11,7 @@ function whois_output($toproof) {
     }
 
     // Get Whois
-    $whois = whois_check($toproof);
+    $whois = whois_check($toproof, $type);
 
     /*
     if ($whatisthat === "Domain") {
@@ -33,8 +33,7 @@ function whois_output($toproof) {
 }
 
 
-function get_tld_Server($toproof) {
-    $tld_with_dot = get_tld($toproof);
+function get_tld_Server($toproof, $tld_with_dot) {
     // removes the first character if it is a dort
     $tld = get_string_after_last_dot($tld_with_dot);
     $comamand = 'whois ' . $tld;
@@ -48,14 +47,25 @@ function get_tld_Server($toproof) {
     }
 }
 
-function whois_check($toproof) {
-    $domain = escapeshellarg($toproof);
-    $whois_server = get_tld_Server($toproof);
+function whois_check($toproof, $type) {
+
+    $whois_server = false;
+
+    if ($type === 'Domain') {
+        
+        // get a domain if $toproof is a $subdoamin
+        $tld = get_tld($toproof);
+        $domain = get_domain($toproof, $tld);
+
+        // get whois server of tld
+        $whois_server = get_tld_Server($domain, $tld);
+    } 
+
 
     if ($whois_server != false) {
-        $command = 'whois -h ' . $whois_server . ' ' . escapeshellcmd($domain); 
+        $command = 'whois -h ' . $whois_server . ' ' . escapeshellcmd($toproof); 
     } else {
-        $command = 'whois ' . escapeshellcmd($domain);
+        $command = 'whois ' . escapeshellcmd($toproof);
     }
     $whois = shell_exec($command);
     $lines = explode("\n", $whois);

@@ -33,9 +33,9 @@
         // Get default dns
         $dns_array = get_default_dns($toproof, $nameservers);
 
-        //header('Content-Type: application/json');
-        //echo json_encode($dns_array);
-        
+        //check for divergences between nameservers
+        check_dns_divergences($dns_array);
+
         // Print DNS
         print_dns_check($dns_array);        
 
@@ -59,6 +59,7 @@
                 $ipv4_addresses[] = $ipv4_entry;
             }
         }
+        sort($ipv4_addresses); //Sort entries for better readability
         return $ipv4_addresses;
     }
 
@@ -75,6 +76,7 @@
                 $ipv6_addresses[] = $ipv6_entry;
             }
         }
+        sort($ipv6_addresses); //Sort entries for better readability
         return $ipv6_addresses;
     }
 
@@ -91,6 +93,7 @@
                 $txt_adresses[] = $txt_entry;
             }
         }
+        sort($txt_adresses); //Sort entries for better readability
         return $txt_adresses;
     }
 
@@ -107,6 +110,7 @@
                 $cname_adresses[] = $cname_entry;
             }
         }
+        sort($cname_adresses); //Sort entries for better readability
         return $cname_adresses;
     }
 
@@ -126,6 +130,7 @@
                 $mx_addresses[] = array('priority' => $priority, 'destination' => $destination);
             }
         }
+        sort($mx_addresses); //Sort entries for better readability
         return $mx_addresses;
     }
     // -------------------------------------
@@ -151,7 +156,7 @@
             $cname_adresses = get_cname_records($toproof, $ns_ip);
             $mx_addresses = get_mx_records($toproof, $ns_ip);
 
-        $dns_array_result[] = [
+            $dns_array_result[] = [
                 'ns_ip' => $ns_ip,
                 'ns_name' => $ns_name,
                 'type' => $type,
@@ -168,11 +173,89 @@
         return $dns_array_result;
     }
 
+    function check_dns_divergences($dns_array) {
+
+        // check if array is empty
+        if (empty($dns_array)) {
+            return false;
+        }
+
+        $ipv4_are_same = true;
+        $ipv6_are_same = true;
+        $txt_are_same = true;
+        $cname_are_same = true;
+        $mx_are_same = true;
+
+        // Reference entrys
+        $reference_ipv4 = $dns_array[0]['ipv4'];
+        $reference_ipv6 = $dns_array[0]['ipv6'];
+        $reference_txt = $dns_array[0]['txt'];
+        $reference_cname = $dns_array[0]['cname'];
+        $reference_mx = $dns_array[0]['mx'];
+
+        foreach ($dns_array as $nameserver) {
+
+            // current entrys
+            $current_ipv4 = $nameserver['ipv4'];
+            $current_ipv6 = $nameserver['ipv6'];
+            $current_txt = $nameserver['txt'];
+            $current_cname = $nameserver['cname'];
+            $current_mx = $nameserver['mx'];
+       
+            //check if entrys are same
+            if ($current_ipv4 !== $reference_ipv4) {
+                $ipv4_are_same = false;
+            }
+            if ($current_ipv6 !== $reference_ipv6) {
+                $ipv6_are_same = false;
+            }
+            if ($current_txt !== $reference_txt) {
+                $txt_are_same = false;
+            }
+            if ($current_cname !== $reference_cname) {
+                $cname_are_same = false;
+            }
+            if ($current_mx !== $reference_mx) {
+                $mx_are_same = false;
+            }
+        }
+
+        // report a error if nameserver_arrays are not the same 
+        if ($ipv4_are_same === false) {
+            echo '<div class="alert alert-warning">';
+                echo '<strong>Note!</strong> The ipv4 entries differ from nameserver to nameserver.</a>';
+            echo '</div>';
+        }
+        if ($ipv6_are_same === false) {
+            echo '<div class="alert alert-warning">';
+                echo '<strong>Note!</strong> The ipv6 entries differ from nameserver to nameserver.</a>';
+            echo '</div>';
+        }
+        if ($txt_are_same === false) {
+            echo '<div class="alert alert-warning">';
+                echo '<strong>Note!</strong> The txt entries differ from nameserver to nameserver.</a>';
+            echo '</div>';
+        }
+        if ($cname_are_same === false) {
+            echo '<div class="alert alert-warning">';
+                echo '<strong>Note!</strong> The cname entries differ from nameserver to nameserver.</a>';
+            echo '</div>';
+        }
+        if ($mx_are_same === false) {
+            echo '<div class="alert alert-warning">';
+                echo '<strong>Note!</strong> The mx entries differ from nameserver to nameserver.</a>';
+            echo '</div>';
+        }
+
+
+    }
+
 
     function print_dns_check($dns_array) {
         foreach ($dns_array as $result) {
             $ns_ip = $result['ns_ip'];
             $ns_name = $result['ns_name'];
+            $ns_type = $result['type'];
             $ipv4 = $result['ipv4'];
             $ipv6 = $result['ipv6'];
             $txt = $result['txt'];
@@ -180,7 +263,11 @@
             $mx = $result['mx'];
             // $ns = $result['ns'];
             
-            echo '<div class="content-header">' . $ns_name . ' (' . $ns_ip . ')</div>';
+            if ($ns_type === "authorative") {
+                echo '<div class="content-header">' . $ns_name . ' (' . $ns_ip . ') (Authorative)</div>';
+            } else {
+                echo '<div class="content-header">' . $ns_name . ' (' . $ns_ip . ')</div>';
+            }
 
             echo '<table class="table table-borderless">';
             echo '<thead class="table-head-background table-head-bigfont">';
