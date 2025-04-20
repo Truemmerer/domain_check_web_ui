@@ -1,4 +1,42 @@
 
+### 04.2025.4
+- Added to dnscheck that authoritative nameservers are marked accordingly. 
+- Fix whois check for subdomains
+- Fix rdns/ptr check for subdomains
+- The checking of differences between entries between nameservers has been added again.
+
+### 04.2025.3
+- Release of the new version
+
+### 04.2025.2-dev
+- Revised rDNS (ipv4 only) 
+
+### 04.2025.1-dev
+- Improvements for spf check
+- Mobile style
+
+### 04.2025.0-dev
+- Buttons on the start page are now the same size as the search bar.
+- Optimized display of the DNS check.
+
+Whois reworked:
+  - Quick information are removed (temporary) 
+    The reason for this is that this has only worked for a few tlds so far.
+    This should therefore be corrected and then reintegrated.
+  - Collapse are removed. For a more clean look.
+  - Whois now uses whois -h instead of whois to provide more accurate information.
+    
+### 10.2024.0-dev
+This version contains major changes to the last version.
+- Revised navigation bar. Optimized for smaller screens.
+- nslookup and dig to DNS Check merged.
+- DNS check is again the default search
+- DNS-Check has been completely rewritten and some bugs have been fixed.
+- Individual checks can be deactivated in config.php.
+- Provider Check has been added. Currently only netcup webhostings are supported.
+- Health Check has been removed.
+- Pagetitle is now the title in the tab
+
 ### 03.2024.2
 - Page title configuration added
 
