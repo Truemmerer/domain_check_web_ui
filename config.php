@@ -38,7 +38,7 @@ $whois = true;
 $puny = true;
 $dnssec = false;
 $rdns = true;
-$provider = true;
+$provider = false; // not implemented yet
 $spfcheck = true;
 
 ?>
