@@ -4,13 +4,15 @@
 # Domain Check Web UI
 
 ### Description
+
 This tool is intended to be a simple and clear tool to obtain the necessary information to recognize problems with domains.
 </br>
 You can already use the tool at the following URL:
 <a href="https://domcheck.org">domcheck.org</a>
 </br>
 
-### Already available features:
+### Available features
+
 - DNS Lookup (Default: Authorative, Google, Cloudflare, OpenDNS)
 - Warning if different nameservers deliver different DNS.
 - PTR/rDNS Check
@@ -18,6 +20,7 @@ You can already use the tool at the following URL:
 - SPF Check
 - IDN <-> Puny Converter  
 - Configurable nameserver list
+- OpenSearch support
 
 </br>
 
@@ -28,7 +31,8 @@ You can already use the tool at the following URL:
 |              SPF Check              |          rDNS/PTR Check           |
 |  ![SPF Details](docs/spfcheck.png)  | ![rDNS PTR Check](docs/rdns.png) |
 
-### ToDo:
+### ToDo
+
 - DNSSEC
 - WHOIS summary(WHOIS Lookup)
 - Warnings when the domain has a bad status (WHOIS Lookup).
@@ -38,6 +42,7 @@ You can already use the tool at the following URL:
 </br>
 
 ## Requirements
+
 - You need to edit config.php
 - bind-utils
 - Webserver with php
@@ -48,9 +53,10 @@ You can already use the tool at the following URL:
 </br>
 
 # Work in Progress 🎏
+
 ## Collaboration 👥
 
-Let's make it better together! <br/> 
+Let's make it better together! <br/>
 Feel free to open an issue if you have any problem or suggestions 🤍
 
 ### Contributors 🧑🏾‍🤝‍🧑🏼
@@ -64,12 +70,12 @@ Made with [contrib.rocks](https://contrib.rocks).
 </br>
 
 ### Info
+
 Icon from [Icon-Icons.com](https://icon-icons.com/icon/window-domain-www/52810) made by [Vecteezy](https://icon-icons.com/users/49oaZ80LDyqHrUI3wINLc/icon-sets/) licensed under <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.
 
 The page uses the Bootstrap framework.
-You can use it locally. See config.php. 
+You can use it locally. See config.php.
 Bootsrap uses the <a rel="license" href="https://raw.githubusercontent.com/twbs/bootstrap/main/LICENSE">MIT license</a>.
 
 The page uses [Feather Icons](https://feathericons.com/)
 Feather uses the <a rel="license" href="https://github.com/feathericons/feather/blob/main/LICENSE">MIT license</a>.
-
