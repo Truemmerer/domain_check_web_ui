@@ -48,6 +48,9 @@
                         }
                     }
 
+                    echo '</br>';
+                    echo '</br>';
+
                 }
             } else {
                 echo 'No rDNS entries were found for the ip ' . $toproof . '  ';
@@ -102,6 +105,9 @@
                             }
 
                         }
+
+                        echo '</br>';
+                        echo '</br>';
 
                     }
 

@@ -2,6 +2,7 @@
 ### 04.2025.5
 
 - OpenSearch is now supported
+- rDNS style fix, if multiple rDNS are found
 
 ### 04.2025.4
 
