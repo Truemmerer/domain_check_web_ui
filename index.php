@@ -28,21 +28,21 @@
         }
 
         // OpenSearch 
-        if ($opensearch === true) {
+        if ($opensearch_enabled === true) {
             if ($dns_search === true) {
-                echo '<link rel="search" type="application/opensearchdescription+xml" title="dns" href="opensearch/dns.xml">'
+                echo '<link rel="search" type="application/opensearchdescription+xml" title="dns" href="opensearch/dns.xml">';
             }
             if ($whois_search === true) {
-                echo '<link rel="search" type="application/opensearchdescription+xml" title="dns" href="opensearch/whois.xml">'
+                echo '<link rel="search" type="application/opensearchdescription+xml" title="dns" href="opensearch/whois.xml">';
             }
             if ($rdns_search === true) {
-                echo '<link rel="search" type="application/opensearchdescription+xml" title="dns" href="opensearch/rdns.xml">'
+                echo '<link rel="search" type="application/opensearchdescription+xml" title="dns" href="opensearch/rdns.xml">';
             }
             if ($punyconvert_search === true) {
-                echo '<link rel="search" type="application/opensearchdescription+xml" title="dns" href="opensearch/puny.xml">'
+                echo '<link rel="search" type="application/opensearchdescription+xml" title="dns" href="opensearch/puny.xml">';
             }
             if (spf_search === true) {
-                echo '<link rel="search" type="application/opensearchdescription+xml" title="dns" href="opensearch/spf.xml">'
+                echo '<link rel="search" type="application/opensearchdescription+xml" title="dns" href="opensearch/spf.xml">';
             }
         }
         // END of OpenSearch
