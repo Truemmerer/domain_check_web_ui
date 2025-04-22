@@ -26,6 +26,27 @@
             <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"></script>
             <?php
         }
+
+        // OpenSearch 
+        if ($opensearch === true) {
+            if ($dns_search === true) {
+                echo '<link rel="search" type="application/opensearchdescription+xml" title="dns" href="opensearch/dns.xml">'
+            }
+            if ($whois_search === true) {
+                echo '<link rel="search" type="application/opensearchdescription+xml" title="dns" href="opensearch/whois.xml">'
+            }
+            if ($rdns_search === true) {
+                echo '<link rel="search" type="application/opensearchdescription+xml" title="dns" href="opensearch/rdns.xml">'
+            }
+            if ($punyconvert_search === true) {
+                echo '<link rel="search" type="application/opensearchdescription+xml" title="dns" href="opensearch/puny.xml">'
+            }
+            if (spf_search === true) {
+                echo '<link rel="search" type="application/opensearchdescription+xml" title="dns" href="opensearch/spf.xml">'
+            }
+        }
+        // END of OpenSearch
+
         ?>
 
         <!-- Own CSS -->
