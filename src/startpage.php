@@ -1,7 +1,7 @@
 <?php
 
 
-function show_startpage($pageTitle, $whois, $dnssec, $rdns, $puny, $provider, $spfcheck) {
+function show_startpage($pageTitle, $whois, $dnssec, $rdns, $puny, $provider, $spf) {
 
     require_once 'navbar.php';
     ?>
@@ -19,7 +19,7 @@ function show_startpage($pageTitle, $whois, $dnssec, $rdns, $puny, $provider, $s
                 <button type="button" class="btn btn-dark dropdown-toggle" style="width: 40%;" data-bs-toggle="dropdown" aria-expanded="false">
                 Other tools
                 </button>
-                <?php navbar_menu($whois, $dnssec, $rdns, $puny, $provider, $spfcheck); ?>
+                <?php navbar_menu($whois, $dnssec, $rdns, $puny, $provider, $spf); ?>
             </div>
         </form>
     </div> 

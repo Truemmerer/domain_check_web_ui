@@ -50,7 +50,7 @@ $spf_search = true;
  * dnssec = Check DNSSEC Errors
  * rdns = rDNS and PTR Check
  * provider = Provider Check
- * spfcheck = SPF Check
+ * spf = SPF Check
 */
 
 $whois = true;
@@ -58,6 +58,6 @@ $puny = true;
 $dnssec = false;
 $rdns = true;
 $provider = false; // not implemented yet
-$spfcheck = true;
+$spf = true;
 
 ?>

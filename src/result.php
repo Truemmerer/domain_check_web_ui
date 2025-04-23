@@ -55,7 +55,7 @@ function show_resultpage($toproof, $action) {
         punyconvert_print($toproof);
     } elseif ($action === "dnscheck" && $type === "Domain") {
         dns_check($toproof, $tld);
-    } elseif ($action === "spfcheck" && $type === "Domain") {
+    } elseif ($action === "spf" && $type === "Domain") {
         spf_check($toproof);
     } elseif ($action === "provider" && $type === "Domain") {
         provider_check($toproof);

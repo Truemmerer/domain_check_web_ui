@@ -1,6 +1,6 @@
 <?php        
         
-    function show_navbar($toproof, $working_domain, $pageTitle, $whois, $dnssec, $rdns, $puny, $provider, $spfcheck) {        
+    function show_navbar($toproof, $working_domain, $pageTitle, $whois, $dnssec, $rdns, $puny, $provider, $spf) {        
         ?>
         <!-- NAV BAR START -->
             <nav class="navbar navbar-expand-lg nav-color navbar-dark">
@@ -16,7 +16,7 @@
                             <button type="button" class="btn btn-dark dropdown-toggle" style="width: 40%;" data-bs-toggle="dropdown" aria-expanded="false">
                             Other tools
                             </button>
-                            <?php navbar_menu($whois, $dnssec, $rdns, $puny, $provider, $spfcheck); ?>
+                            <?php navbar_menu($whois, $dnssec, $rdns, $puny, $provider, $spf); ?>
                         </div>
                     </form>
                 </div>
@@ -37,7 +37,7 @@
     <?php
     }
 
-    function navbar_menu($whois, $dnssec, $rdns, $puny, $provider, $spfcheck) {
+    function navbar_menu($whois, $dnssec, $rdns, $puny, $provider, $spf) {
         echo '<ul class="dropdown-menu" style="width: 100%;" aria-labelledby="navbarContent">';
 
                 if ($whois) {
@@ -55,8 +55,8 @@
                 if ($provider) {
                     echo '<li><button type="submit" class="dropdown-item" name="action" value="provider">Provider Check</button></li>';
                 }
-                if ($spfcheck) {
-                    echo '<li><button type="submit" class="dropdown-item" name="action" value="spfcheck">SPF Check</button></li>';
+                if ($spf) {
+                    echo '<li><button type="submit" class="dropdown-item" name="action" value="spf">SPF Check</button></li>';
                 }
             
         echo '</ul>';
