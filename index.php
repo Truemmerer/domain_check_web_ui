@@ -88,6 +88,8 @@
                 'rdns' => $rdns,
                 'provider' => $provider,
                 'spf' => $spf,
+                'myip' => $myip,
+                'geo' => $geo,
                 'dnscheck' => true
             ));
             
@@ -101,7 +103,7 @@
             /* Case when action and toproof is set */
             if (!empty($toproof) && $action != "empty" && $action_allowed) {
             echo "<div class='container-fluid'>";
-                show_navbar($toproof, $working_domain, $pageTitle, $whois, $dnssec, $rdns, $puny, $provider, $spf);
+                show_navbar($toproof, $working_domain, $pageTitle, $whois, $dnssec, $rdns, $puny, $provider, $spf, $myip, $geo);
             echo "</div>";
             echo "<div class='container-fluid content'>";
                 show_resultpage($toproof, $action);
@@ -116,7 +118,7 @@
                     show_navbar_startpage($working_domain);
                 echo "</div>";
                 echo "<div class='container-fluid'>";
-                    show_startpage($pageTitle, $whois, $dnssec, $rdns, $puny, $provider, $spf);
+                    show_startpage($pageTitle, $whois, $dnssec, $rdns, $puny, $provider, $spf, $myip, $geo);
                 echo "</div>";
                 echo "<div class='container-fluid'>";
                     show_footer($impressum, $privacy_policy);

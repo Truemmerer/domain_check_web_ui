@@ -11,6 +11,8 @@ function show_resultpage($toproof, $action) {
     require_once 'src/spf_check.php';
     require_once 'src/provider_check.php';
     require_once 'src/rdns.php';
+    require_once 'src/myip.php';
+    require_once 'src/geo.php';
     require_once 'config.php';
 
     // Check that toproof is not empty
@@ -20,7 +22,7 @@ function show_resultpage($toproof, $action) {
         echo '</div>';        
     return;
     }
-
+  
     // Check if user entry is a domain, ip, url, e-mail-adress
     $type = whatisit($toproof);
 
@@ -38,7 +40,7 @@ function show_resultpage($toproof, $action) {
     }
 
     // Filter Functions that are only compatible with Domain
-    if ($type !== "Domain" && $action !== "whois" && $action !== "rdns") {
+    if ($type !== "Domain" && $action !== "whois" && $action !== "rdns" && $action !== "geo") {
         echo '<div class="alert alert-warning">';
         echo '<strong>Note!</strong> The function ' . $action . ' is only supported together with a domain</a>';
         echo '</div>';
@@ -59,6 +61,10 @@ function show_resultpage($toproof, $action) {
         spf_check($toproof);
     } elseif ($action === "provider" && $type === "Domain") {
         provider_check($toproof);
+    } elseif ($action === "myip") {
+        myip();
+    } elseif ($action === "geo") {
+        geo($toproof, $type);
     }
 }
 ?>

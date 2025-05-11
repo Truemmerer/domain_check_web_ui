@@ -1,4 +1,10 @@
 
+### 05.2025.2
+
+- Add geolocation support
+- Add Home IP support (Not yet complete. Cannot be used with a proxy.)
+- DNS Check | Added quick access to further DNS checks and to Geo Location.
+
 ### 05.2025.1
 
 - rename action spfcheck to spf in code

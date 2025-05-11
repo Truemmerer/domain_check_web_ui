@@ -55,9 +55,11 @@ $spf_search = true;
 
 $whois = true;
 $puny = true;
-$dnssec = false;
+$dnssec = false; // not full implemented yet
 $rdns = true;
 $provider = false; // not implemented yet
 $spf = true;
+$myip = false; // nightly
+$geo = true;
 
 ?>

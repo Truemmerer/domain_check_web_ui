@@ -127,7 +127,9 @@
                 $parts = explode(' ', $mx_entry);
                 $priority = (int)$parts[0];
                 $destination = $parts[1];
-                $mx_addresses[] = array('priority' => $priority, 'destination' => $destination);
+                //remove last dot of string. example.com. -> example.com
+                $destination_without_dot = remove_dot_if_last_char($destination);
+                $mx_addresses[] = array('priority' => $priority, 'destination' => $destination_without_dot);
             }
         }
         sort($mx_addresses); //Sort entries for better readability
@@ -272,14 +274,15 @@
             echo '<table class="table table-borderless">';
             echo '<thead class="table-head-background table-head-bigfont">';
             echo '<tr>';
-            echo '<th>IPv4</th>';
+            echo '<th>IPv4';
             ?>
-            <th>
                 <button type="button" class="btn table-info btn-sm" data-bs-toggle="modal" data-bs-target="#aModal">
                     <img src="assets/feather/info.svg" alt="Info" width="32" height="16">
                 </button>
-            </th>
             <?php
+            echo '</th>';
+            echo '<th>';
+            echo '</th>';
             echo '</tr>';
             echo '</thead>';
             echo '<tbody>';
@@ -291,8 +294,19 @@
             } else {
                 foreach ($ipv4 as $ipv4_entry) {
                     echo '<tr>';
-                    echo '<th>' . $ipv4_entry . '</th>';
-                    echo '<th></th>';
+                    echo '<th>'; 
+                    ?>
+                        <form action="index.php" method="get">
+                            <?php echo $ipv4_entry; ?>
+                            <input type="hidden" name="toproof" value="<?php echo $ipv4_entry; ?>">
+                            <button type="submit" class="btn table-info btn-sm" name="action" value="geo">
+                                <img src="assets/feather/map-pin.svg" alt="GEO" width="32" height="16">
+                            </button>
+                        </form>
+                    <?php
+                    echo '</th>';
+                    echo '<th>';
+                    echo '</th>';
                     echo '</tr>';
                 }
             }
@@ -301,14 +315,15 @@
             // IPv6
             echo '<thead class="table-head-background table-head-bigfont">';
             echo '<tr>';
-            echo '<th>IPv6</th>';
+            echo '<th>IPv6';
             ?>
-            <th>
                 <button type="button" class="btn table-info btn-sm" data-bs-toggle="modal" data-bs-target="#aaaaModal">
                     <img src="assets/feather/info.svg" alt="Info" width="32" height="16">
                 </button>
-            </th>
             <?php
+            echo '<th>';
+            echo '</th>';
+            echo '</th>';
             echo '</tr>';
             echo '</thead>';
             echo '<tbody>';
@@ -320,8 +335,19 @@
             } else {
                 foreach ($ipv6 as $ipv6_entry) {
                     echo '<tr>';
-                    echo '<th>' . $ipv6_entry . '</th>';
-                    echo '<th></th>';
+                    echo '<th>'; 
+                    ?>
+                        <form action="index.php" method="get">
+                            <?php echo $ipv6_entry; ?>
+                            <input type="hidden" name="toproof" value="<?php echo $ipv6_entry; ?>">
+                            <button type="submit" class="btn table-info btn-sm" name="action" value="geo">
+                                <img src="assets/feather/map-pin.svg" alt="GEO" width="32" height="16">
+                            </button>
+                        </form>
+                    <?php
+                    echo '</th>';
+                    echo '<th>';
+                    echo '</th>';
                     echo '</tr>';
                 }
             }
@@ -330,14 +356,15 @@
             // TXT
             echo '<thead class="table-head-background table-head-bigfont">';
             echo '<tr>';
-            echo '<th>TXT</th>';
-           ?>
-           <th>
+            echo '<th>TXT';
+            ?>
                 <button type="button" class="btn table-info btn-sm" data-bs-toggle="modal" data-bs-target="#txtModal">
                     <img src="assets/feather/info.svg" alt="Info" width="32" height="16">
                 </button>
-            </th>
             <?php
+            echo '</th>';
+            echo '<th>';
+            echo '</th>';
             echo '</tr>';
             echo '</thead>';
             echo '<tbody>';
@@ -359,14 +386,15 @@
             // CNAME
             echo '<thead class="table-head-background table-head-bigfont">';
             echo '<tr>';
-            echo '<th>CNAME</th>';
+            echo '<th>CNAME';
             ?>
-            <th>
                 <button type="button" class="btn table-info btn-sm" data-bs-toggle="modal" data-bs-target="#cnameModal">
                     <img src="assets/feather/info.svg" alt="Info" width="32" height="16">
                 </button>
-            </th>
             <?php
+            echo '</th>';
+            echo '<th>';
+            echo '</th>';
             echo '</tr>';
             echo '</thead>';
             echo '<tbody>';
@@ -378,7 +406,17 @@
             } else {
                 foreach ($cname as $cname_entry) {
                     echo '<tr>';
-                    echo "<th>" . $cname_entry . "</th>";
+                    echo "<th>";
+                    ?>
+                        <form action="index.php" method="get">
+                            <?php echo $ipv6_entry; ?>
+                            <input type="hidden" name="toproof" value="<?php echo $cname_entry; ?>">
+                            <button type="submit" class="btn table-info btn-sm" name="action" value="geo">
+                                <img src="assets/feather/map-pin.svg" alt="GEO" width="32" height="16">
+                            </button>
+                        </form>
+                    <?php
+                    echo '</th>';
                     echo '<th></th>';
                     echo '</tr>';
                 }
@@ -388,14 +426,15 @@
             // MX
             echo '<thead class="table-head-background table-head-bigfont">';
             echo '<tr>';
-            echo '<th>MX</th>';
+            echo '<th>MX';
             ?>
-            <th>
                 <button type="button" class="btn table-info btn-sm" data-bs-toggle="modal" data-bs-target="#mxModal">
                     <img src="assets/feather/info.svg" alt="Info" width="32" height="16">
                 </button>
-            </th>
             <?php
+            echo '</th>';
+            echo '<th>';
+            echo '</th>';
             echo '</tr>';
             echo '</thead>';
             echo '<thead class="table-head-background table-head-smallfont">';
@@ -415,7 +454,17 @@
                     $priority = $mx_entry['priority'];
                     $destination = $mx_entry['destination'];
                     echo '<tr>';
-                    echo "<th>" . $destination . "</th>";
+                    echo "<th>";
+                                        ?>
+                        <form action="index.php" method="get">
+                            <?php echo $destination; ?>
+                            <input type="hidden" name="toproof" value="<?php echo $destination; ?>">
+                            <button type="submit" class="btn table-info btn-sm" name="action" value="dnscheck">
+                                <img src="assets/feather/globe.svg" alt="GEO" width="32" height="16">
+                            </button>
+                        </form>
+                    <?php
+                    echo '</th>';
                     echo '<th>' . $priority . '</th>';
                     echo '</tr>';
                 }

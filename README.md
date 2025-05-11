@@ -18,6 +18,7 @@ You can already use the tool at the following URL:
 - PTR/rDNS Check
 - WHOIS Lookup
 - SPF Check
+- Geolocation
 - IDN <-> Puny Converter  
 - Configurable nameserver list
 - OpenSearch support
@@ -28,8 +29,9 @@ You can already use the tool at the following URL:
 | :----------------------------------: | :-----------------------------: |
 |              DNS Lookup              |             WHOIS Lookup        |
 | ![DNS Records](docs/dnscheck.png) |  ![WHOIS Lookup](docs/whois.png)   |
-|              SPF Check              |          rDNS/PTR Check           |
+|              SPF Check              |          rDNS/PTR Check          |
 |  ![SPF Details](docs/spfcheck.png)  | ![rDNS PTR Check](docs/rdns.png) |
+
 
 ### ToDo
 
