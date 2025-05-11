@@ -1,4 +1,8 @@
 
+### 05.2025.1
+
+- rename action spfcheck to spf in code
+
 ### 04.2025.5
 
 - OpenSearch is now supported
