@@ -39,6 +39,7 @@ $whois_search = true;
 $rdns_search = true;
 $punyconvert_search = true;
 $spf_search = true;
+$geolocation = true;
 
 /* -------------------------------
  * Enabled functions

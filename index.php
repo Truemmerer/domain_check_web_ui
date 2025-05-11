@@ -44,6 +44,9 @@
             if ($spf_search === true) {
                 echo '<link rel="search" type="application/opensearchdescription+xml" title="spf" href="opensearch/spf.xml">';
             }
+            if ($geolocation === true) {
+                echo '<link rel="search" type="application/opensearchdescription+xml" title="spf" href="opensearch/geolocation.xml">';
+            }
         }
         // END of OpenSearch
 
