@@ -1,3 +1,5 @@
+### 05.2025.3
+- Add whois shortcut for DNS Lookup
 
 ### 05.2025.2
 

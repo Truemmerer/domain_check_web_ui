@@ -277,7 +277,7 @@
             echo '<th>IPv4';
             ?>
                 <button type="button" class="btn table-info btn-sm" data-bs-toggle="modal" data-bs-target="#aModal">
-                    <img src="assets/feather/info.svg" alt="Info" width="32" height="16">
+                    <img src="assets/feather/info.svg" alt="Info" width="16" height="16">
                 </button>
             <?php
             echo '</th>';
@@ -299,8 +299,11 @@
                         <form action="index.php" method="get">
                             <?php echo $ipv4_entry; ?>
                             <input type="hidden" name="toproof" value="<?php echo $ipv4_entry; ?>">
+                            <button type="submit" class="btn table-info btn-sm" name="action" value="whois">
+                                <img src="assets/feather/eye.svg" alt="WHOIS" width="16" height="16">
+                            </button>
                             <button type="submit" class="btn table-info btn-sm" name="action" value="geo">
-                                <img src="assets/feather/map-pin.svg" alt="GEO" width="32" height="16">
+                                <img src="assets/feather/map-pin.svg" alt="GEO" width="16" height="16">
                             </button>
                         </form>
                     <?php
@@ -318,7 +321,7 @@
             echo '<th>IPv6';
             ?>
                 <button type="button" class="btn table-info btn-sm" data-bs-toggle="modal" data-bs-target="#aaaaModal">
-                    <img src="assets/feather/info.svg" alt="Info" width="32" height="16">
+                    <img src="assets/feather/info.svg" alt="Info" width="16" height="16">
                 </button>
             <?php
             echo '<th>';
@@ -340,8 +343,11 @@
                         <form action="index.php" method="get">
                             <?php echo $ipv6_entry; ?>
                             <input type="hidden" name="toproof" value="<?php echo $ipv6_entry; ?>">
+                            <button type="submit" class="btn table-info btn-sm" name="action" value="whois">
+                                <img src="assets/feather/eye.svg" alt="WHOIS" width="16" height="16">
+                            </button>
                             <button type="submit" class="btn table-info btn-sm" name="action" value="geo">
-                                <img src="assets/feather/map-pin.svg" alt="GEO" width="32" height="16">
+                                <img src="assets/feather/map-pin.svg" alt="GEO" width="16" height="16">
                             </button>
                         </form>
                     <?php
@@ -359,7 +365,7 @@
             echo '<th>TXT';
             ?>
                 <button type="button" class="btn table-info btn-sm" data-bs-toggle="modal" data-bs-target="#txtModal">
-                    <img src="assets/feather/info.svg" alt="Info" width="32" height="16">
+                    <img src="assets/feather/info.svg" alt="Info" width="16" height="16">
                 </button>
             <?php
             echo '</th>';
@@ -389,7 +395,7 @@
             echo '<th>CNAME';
             ?>
                 <button type="button" class="btn table-info btn-sm" data-bs-toggle="modal" data-bs-target="#cnameModal">
-                    <img src="assets/feather/info.svg" alt="Info" width="32" height="16">
+                    <img src="assets/feather/info.svg" alt="Info" width="16" height="16">
                 </button>
             <?php
             echo '</th>';
@@ -412,7 +418,7 @@
                             <?php echo $ipv6_entry; ?>
                             <input type="hidden" name="toproof" value="<?php echo $cname_entry; ?>">
                             <button type="submit" class="btn table-info btn-sm" name="action" value="geo">
-                                <img src="assets/feather/map-pin.svg" alt="GEO" width="32" height="16">
+                                <img src="assets/feather/map-pin.svg" alt="GEO" width="16" height="16">
                             </button>
                         </form>
                     <?php
@@ -429,7 +435,7 @@
             echo '<th>MX';
             ?>
                 <button type="button" class="btn table-info btn-sm" data-bs-toggle="modal" data-bs-target="#mxModal">
-                    <img src="assets/feather/info.svg" alt="Info" width="32" height="16">
+                    <img src="assets/feather/info.svg" alt="Info" width="16" height="16">
                 </button>
             <?php
             echo '</th>';
@@ -460,7 +466,7 @@
                             <?php echo $destination; ?>
                             <input type="hidden" name="toproof" value="<?php echo $destination; ?>">
                             <button type="submit" class="btn table-info btn-sm" name="action" value="dnscheck">
-                                <img src="assets/feather/globe.svg" alt="GEO" width="32" height="16">
+                                <img src="assets/feather/globe.svg" alt="GEO" width="16" height="16">
                             </button>
                         </form>
                     <?php
