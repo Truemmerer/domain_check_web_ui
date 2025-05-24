@@ -1,5 +1,6 @@
 ### 05.2025.3
 - Add whois shortcut for DNS Lookup
+- Info added if no SPF record was found.
 
 ### 05.2025.2
 
