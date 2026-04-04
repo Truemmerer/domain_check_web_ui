@@ -63,6 +63,6 @@ $provider = false; // not implemented yet
 $spf = true;
 $myip = false; // nightly
 $geo = true;
-$cdns = true
+$cdns = true;
 
 ?>
