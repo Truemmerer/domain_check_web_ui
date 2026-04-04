@@ -1,3 +1,8 @@
+
+### 04.2026.1
+- Add exceptions in whois for domains like .ch and .li
+- Add "Custom DNS check".   
+
 ### 05.2025.3
 - Add whois shortcut for DNS Lookup
 - Info added if no SPF record was found.

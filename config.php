@@ -52,6 +52,7 @@ $geolocation = true;
  * rdns = rDNS and PTR Check
  * provider = Provider Check
  * spf = SPF Check
+ * cdns = custom dns check - choose own nameserver
 */
 
 $whois = true;
@@ -62,5 +63,6 @@ $provider = false; // not implemented yet
 $spf = true;
 $myip = false; // nightly
 $geo = true;
+$cdns = true
 
 ?>

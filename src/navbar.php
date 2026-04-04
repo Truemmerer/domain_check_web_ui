@@ -1,6 +1,6 @@
 <?php        
         
-    function show_navbar($toproof, $working_domain, $pageTitle, $whois, $dnssec, $rdns, $puny, $provider, $spf, $myip, $geo) {        
+    function show_navbar($toproof, $working_domain, $pageTitle, $whois, $dnssec, $rdns, $puny, $provider, $spf, $myip, $geo, $cdns) {        
         ?>
         <!-- NAV BAR START -->
             <nav class="navbar navbar-expand-lg nav-color navbar-dark">
@@ -16,7 +16,7 @@
                             <button type="button" class="btn btn-dark dropdown-toggle" style="width: 40%;" data-bs-toggle="dropdown" aria-expanded="false">
                             Other tools
                             </button>
-                            <?php navbar_menu($whois, $dnssec, $rdns, $puny, $provider, $spf, $myip, $geo); ?>
+                            <?php navbar_menu($whois, $dnssec, $rdns, $puny, $provider, $spf, $myip, $geo, $cdns); ?>
                         </div>
                     </form>
                 </div>
@@ -37,7 +37,7 @@
     <?php
     }
 
-    function navbar_menu($whois, $dnssec, $rdns, $puny, $provider, $spf, $myip, $geo) {
+    function navbar_menu($whois, $dnssec, $rdns, $puny, $provider, $spf, $myip, $geo, $cdns) {
         echo '<ul class="dropdown-menu" style="width: 100%;" aria-labelledby="navbarContent">';
 
                 if ($whois) {
@@ -63,6 +63,9 @@
                 }
                 if ($myip) {
                     echo '<li><button type="submit" class="dropdown-item" name="action" value="myip">What is my IP</button></li>';
+                }
+                if ($cdns) {
+                    echo '<li><button type="submit" class="dropdown-item" name="action" value="cdns">Custom DNS check</button></li>';
                 }
             
         echo '</ul>';

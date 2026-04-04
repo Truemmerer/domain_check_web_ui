@@ -1,6 +1,6 @@
 <?php
 
-function show_resultpage($toproof, $action) {
+function show_resultpage($toproof, $action, $cnsa) {
 
     // Import all files that needed
     require_once 'src/whois.php';
@@ -13,6 +13,8 @@ function show_resultpage($toproof, $action) {
     require_once 'src/rdns.php';
     require_once 'src/myip.php';
     require_once 'src/geo.php';
+    //require_once 'src/dnssec.php';
+    require_once 'src/cdns.php';
     require_once 'config.php';
 
     // Check that toproof is not empty
@@ -40,7 +42,7 @@ function show_resultpage($toproof, $action) {
     }
 
     // Filter Functions that are only compatible with Domain
-    if ($type !== "Domain" && $action !== "whois" && $action !== "rdns" && $action !== "geo") {
+    if ($type !== "Domain" && $action !== "whois" && $action !== "rdns" && $action !== "geo" && $action !== "cdns") {
         echo '<div class="alert alert-warning">';
         echo '<strong>Note!</strong> The function ' . $action . ' is only supported together with a domain</a>';
         echo '</div>';
@@ -65,6 +67,8 @@ function show_resultpage($toproof, $action) {
         myip();
     } elseif ($action === "geo") {
         geo($toproof, $type);
+    } elseif ($action === "cdns" && $type === "Domain") {
+        cdns($toproof, $cnsa);
     }
 }
 ?>

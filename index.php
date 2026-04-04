@@ -78,9 +78,17 @@
                 } else {
                     $action = $_GET['action'];
                 }
+
+                if (!isset($_GET['cnsa']) || empty($_GET['cnsa'])) {
+                    $cnsa = null;
+                } else {
+                    $cnsa = $_GET['cnsa'];
+                }
+
             } else {
                 $toproof = "";
                 $action = "empty";
+                $cnsa = null;
             }
 
 
@@ -93,6 +101,7 @@
                 'spf' => $spf,
                 'myip' => $myip,
                 'geo' => $geo,
+                'cdns' => $cdns,
                 'dnscheck' => true
             ));
             
@@ -102,14 +111,13 @@
                 $action_allowed = false;
             }
 
-
             /* Case when action and toproof is set */
             if (!empty($toproof) && $action != "empty" && $action_allowed) {
             echo "<div class='container-fluid'>";
-                show_navbar($toproof, $working_domain, $pageTitle, $whois, $dnssec, $rdns, $puny, $provider, $spf, $myip, $geo);
+                show_navbar($toproof, $working_domain, $pageTitle, $whois, $dnssec, $rdns, $puny, $provider, $spf, $myip, $geo, $cdns);
             echo "</div>";
             echo "<div class='container-fluid content'>";
-                show_resultpage($toproof, $action);
+                show_resultpage($toproof, $action, $cnsa);
             echo "</div>";
             echo "<div class='container-fluid'>";
                 show_footer($impressum, $privacy_policy);
@@ -121,7 +129,7 @@
                     show_navbar_startpage($working_domain);
                 echo "</div>";
                 echo "<div class='container-fluid'>";
-                    show_startpage($pageTitle, $whois, $dnssec, $rdns, $puny, $provider, $spf, $myip, $geo);
+                    show_startpage($pageTitle, $whois, $dnssec, $rdns, $puny, $provider, $spf, $myip, $geo, $cdns);
                 echo "</div>";
                 echo "<div class='container-fluid'>";
                     show_footer($impressum, $privacy_policy);
