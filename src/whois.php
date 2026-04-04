@@ -13,22 +13,6 @@ function whois_output($toproof) {
     // Get Whois
     $whois = whois_check($toproof, $type);
 
-    /*
-    if ($whatisthat === "Domain") {
-
-        $tld = get_tld($toproof);
-        $status = whois_status($whois, $tld);
-        $nameserver = whois_nameserver($whois, $tld);
-
-    } else {
-        $tld = "none";
-        $status = "Not found";
-        $nameserver = "Not found";
-    }
-
-    $updated = whois_updatet($whois, $tld);
-    */
-
     build_whois($whois/*, $status, $nameserver, $updated*/);
 }
 
@@ -55,6 +39,13 @@ function whois_check($toproof, $type) {
         
         // get a domain if $toproof is a $subdoamin
         $tld = get_tld($toproof);
+        $is_excepted = is_excepted($tld); // check if tld is blacklisted.
+
+        
+        if ($is_excepted !== null) {
+            return $is_excepted;
+        }
+        
         $domain = get_domain($toproof, $tld);
 
         // get whois server of tld
@@ -200,5 +191,33 @@ function pattern_warn_status($status) {
         return null;
     }
 }
+
+function is_excepted($tld) {
+
+    $tld_without_dot = get_string_after_last_dot($tld);
+
+    $yamlFile = __DIR__ . "/excepted_tlds.yaml";
+    
+    // read yaml file
+    $yamlContent = file_get_contents($yamlFile);
+    if ($yamlContent === false) { // return null, if yaml content can't read. 
+        return null;
+    }
+
+    // parse yaml file to array
+    $except_list = yaml_parse($yamlContent);
+    if ($except_list === false) { // return null, if yaml content cant't parse
+        return null;
+    }
+
+    // check if tld exists in the array. If yes, return message from array.
+    if (array_key_exists($tld, $except_list)) {
+        return $except_list[$tld_without_dot];
+    } else {
+        return null;
+    }
+
+}
+
 
 ?>
