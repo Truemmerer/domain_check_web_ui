@@ -1,16 +1,17 @@
-<?php        
-        
-    function show_navbar($toproof, $working_domain, $pageTitle, $whois, $dnssec, $rdns, $puny, $provider, $spf, $myip, $geo, $cdns) {        
+<?php
+    require_once 'src/helper.php';
+
+    function show_navbar($toproof, $working_domain, $pageTitle, $whois, $dnssec, $rdns, $puny, $provider, $spf, $myip, $geo, $cdns) {
         ?>
         <!-- NAV BAR START -->
             <nav class="navbar navbar-expand-lg nav-color navbar-dark">
                 <div class="container-fluid">
-                    <a class="navbar-brand" href="<?php echo $working_domain ?>">
-                       <img src="assets/window-domain_icon-icons.com_52810.png" alt="" style="width:40px;" class="rounded-pill">  <?php echo $pageTitle ?>
+                    <a class="navbar-brand" href="<?php echo h($working_domain) ?>">
+                       <img src="assets/window-domain_icon-icons.com_52810.png" alt="" style="width:40px;" class="rounded-pill">  <?php echo h($pageTitle) ?>
                     </a>
                     <br/>
                     <form class="d-flex flex-wrap justify-content-center" action="index.php" method="get">
-                        <input type="text" class="form-control me-2 search-color" placeholder="Enter Domain or IP" name="toproof" value="<?php echo $toproof; ?>">
+                        <input type="text" class="form-control me-2 search-color" placeholder="Enter Domain or IP" name="toproof" value="<?php echo h($toproof); ?>">
                         <div class="btn-group mt-2 w-100">
                             <button type="submit" class="btn btn-success" style="width: 60%;" name="action" value="dnscheck">DNS Check</button>
                             <button type="button" class="btn btn-dark dropdown-toggle" style="width: 40%;" data-bs-toggle="dropdown" aria-expanded="false">
@@ -21,19 +22,19 @@
                     </form>
                 </div>
             </nav>
-        <!-- NAV BAR END --> 
+        <!-- NAV BAR END -->
     <?php
     }
 
-    function show_navbar_startpage($working_domain) {        
+    function show_navbar_startpage($working_domain) {
         ?>
         <!-- NAV BAR START -->
             <nav class="navbar navbar-expand-lg nav-color navbar-dark">
                 <div class="container-fluid">
-                    <a class="navbar-brand" href="<?php echo $working_domain ?>"></a>
+                    <a class="navbar-brand" href="<?php echo h($working_domain) ?>"></a>
                 </div>
             </nav>
-        <!-- NAV BAR END --> 
+        <!-- NAV BAR END -->
     <?php
     }
 
@@ -67,8 +68,7 @@
                 if ($cdns) {
                     echo '<li><button type="submit" class="dropdown-item" name="action" value="cdns">Custom DNS check</button></li>';
                 }
-            
+
         echo '</ul>';
     }
-
 ?>

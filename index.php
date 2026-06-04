@@ -1,7 +1,7 @@
-
 <?php
 // Import other php files
     require_once 'config.php';
+    require_once 'src/helper.php';
     require_once 'src/navbar.php';
     require_once 'src/footer.php';
     require_once 'src/startpage.php';
@@ -12,6 +12,30 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <!-- Security headers (best-effort) -->
+        <?php
+            // Send a moderate Content-Security-Policy when headers are still
+            // mutable. Allows Bootstrap from jsdelivr (kept compatible with
+            // the existing CDN include) and inline styles for Bootstrap-driven
+            // theme attributes. No inline scripts.
+            if (!headers_sent()) {
+                header("X-Content-Type-Options: nosniff");
+                header("X-Frame-Options: SAMEORIGIN");
+                header("Referrer-Policy: no-referrer");
+                header(
+                    "Content-Security-Policy: " .
+                    "default-src 'self'; " .
+                    "img-src 'self' data:; " .
+                    "style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; " .
+                    "script-src 'self' https://cdn.jsdelivr.net; " .
+                    "connect-src 'self'; " .
+                    "frame-ancestors 'self'; " .
+                    "base-uri 'self'; " .
+                    "form-action 'self'"
+                );
+            }
+        ?>
 
         <!-- Bootstrap -->
         <?php
@@ -27,7 +51,7 @@
             <?php
         }
 
-        // OpenSearch 
+        // OpenSearch
         if ($opensearch_enabled === true) {
             if ($dns_search === true) {
                 echo '<link rel="search" type="application/opensearchdescription+xml" title="dns" href="opensearch/dns.xml">';
@@ -60,69 +84,87 @@
         <link rel="icon" type="image/x-icon" href="assets/window-domain_icon-icons.com_52810.ico">
 
         <!-- Page Title Can changed in config.php -->
-        <title><?php echo $pageTitle ?></title>
+        <title><?php echo h($pageTitle) ?></title>
 
     </head>
     <body class="body-color">
-        
+
         <?php
-            if ($_SERVER["REQUEST_METHOD"] == "GET") {
-                if(isset($_GET['toproof']) && !empty($_GET['toproof'])) {
-                    $toproof = str_replace(' ', '', $_GET['toproof']);
+            // --------------------------------------------------------------
+            //  Input handling (hardened)
+            // --------------------------------------------------------------
+            //  - Only GET requests are accepted (matches original behaviour).
+            //  - toproof is whitespace-stripped and length-capped.
+            //  - action is restricted to a known whitelist.
+            //  - cnsa is validated as a hostname OR IP. Invalid -> null.
+            // --------------------------------------------------------------
+
+            $allowed_action_keys = ['whois','puny','dnssec','rdns','provider','spf','myip','geo','cdns','dnscheck'];
+
+            if ($_SERVER["REQUEST_METHOD"] === "GET") {
+                if (isset($_GET['toproof']) && is_string($_GET['toproof']) && $_GET['toproof'] !== '') {
+                    // strip ALL whitespace, normalise (lowercase, drop trailing dot)
+                    // and length-cap to a sane domain length.
+                    $toproof = preg_replace('/\s+/', '', $_GET['toproof']);
+                    if (strlen($toproof) > 320) { // 254 (e-mail) + safety margin
+                        $toproof = substr($toproof, 0, 320);
+                    }
+                    $toproof = normalize_input($toproof);
                 } else {
                     $toproof = "";
                 }
-            
-                if(!isset($_GET['action']) || empty($_GET['action'])) {
-                    $action = "empty";
-                } else {
+
+                if (isset($_GET['action']) && is_string($_GET['action']) && in_array($_GET['action'], $allowed_action_keys, true)) {
                     $action = $_GET['action'];
-                }
-
-                if (!isset($_GET['cnsa']) || empty($_GET['cnsa'])) {
-                    $cnsa = null;
                 } else {
-                    $cnsa = $_GET['cnsa'];
+                    $action = "empty";
                 }
 
+                if (isset($_GET['cnsa']) && is_string($_GET['cnsa']) && $_GET['cnsa'] !== '') {
+                    $cnsa_candidate = preg_replace('/\s+/', '', $_GET['cnsa']);
+                    $cnsa_candidate = normalize_input($cnsa_candidate);
+                    if (is_safe_host($cnsa_candidate)) {
+                        $cnsa = $cnsa_candidate;
+                    } else {
+                        $cnsa = null;
+                    }
+                } else {
+                    $cnsa = null;
+                }
             } else {
                 $toproof = "";
                 $action = "empty";
                 $cnsa = null;
             }
 
-
-            $allowed_actions = array_filter(array(
-                'whois' => $whois,
-                'puny' => $puny,
-                'dnssec' => $dnssec,
-                'rdns' => $rdns,
+            // Map action to per-feature toggle from config.php
+            $feature_enabled = [
+                'whois'    => $whois,
+                'puny'     => $puny,
+                'dnssec'   => $dnssec,
+                'rdns'     => $rdns,
                 'provider' => $provider,
-                'spf' => $spf,
-                'myip' => $myip,
-                'geo' => $geo,
-                'cdns' => $cdns,
-                'dnscheck' => true
-            ));
-            
-            if (isset($_GET['action']) && in_array($_GET['action'], array_keys($allowed_actions)) || $action == "empty") {
-                $action_allowed = true;
-            } else {
-                $action_allowed = false;
-            }
+                'spf'      => $spf,
+                'myip'     => $myip,
+                'geo'      => $geo,
+                'cdns'     => $cdns,
+                'dnscheck' => true,
+            ];
+
+            $action_allowed = ($action === "empty") || (isset($feature_enabled[$action]) && $feature_enabled[$action] === true);
 
             /* Case when action and toproof is set */
-            if (!empty($toproof) && $action != "empty" && $action_allowed) {
-            echo "<div class='container-fluid'>";
-                show_navbar($toproof, $working_domain, $pageTitle, $whois, $dnssec, $rdns, $puny, $provider, $spf, $myip, $geo, $cdns);
-            echo "</div>";
-            echo "<div class='container-fluid content'>";
-                show_resultpage($toproof, $action, $cnsa);
-            echo "</div>";
-            echo "<div class='container-fluid'>";
-                show_footer($impressum, $privacy_policy);
-            echo "</div>";
-            
+            if (!empty($toproof) && $action !== "empty" && $action_allowed) {
+                echo "<div class='container-fluid'>";
+                    show_navbar($toproof, $working_domain, $pageTitle, $whois, $dnssec, $rdns, $puny, $provider, $spf, $myip, $geo, $cdns);
+                echo "</div>";
+                echo "<div class='container-fluid content'>";
+                    show_resultpage($toproof, $action, $cnsa);
+                echo "</div>";
+                echo "<div class='container-fluid'>";
+                    show_footer($impressum, $privacy_policy);
+                echo "</div>";
+
             /* Case when no action or toproof is set */
             } else {
                 echo "<div class='container-fluid'>";

@@ -1,7 +1,9 @@
+### 06.2026.1
+- Add security fixes
 
 ### 04.2026.1
 - Add exceptions in whois for domains like .ch and .li
-- Add "Custom DNS check".   
+- Add "Custom DNS check".
 
 ### 05.2025.3
 - Add whois shortcut for DNS Lookup

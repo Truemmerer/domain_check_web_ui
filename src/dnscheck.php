@@ -1,34 +1,50 @@
 <?php
 
-    /** 
+    /**
      * Checking the DNS records of a domain
      * @param $toproof - Domain
-    */
+     */
 
     require_once 'src/dnsexplain.php';
+    require_once 'src/helper.php';
 
     function dns_check($toproof, $tld) {
+
+        // Strict validation (defense in depth — also done in result.php)
+        if (!is_safe_domain($toproof)) {
+            echo '<div class="alert alert-warning"><strong>Note!</strong> Invalid domain.</div>';
+            return;
+        }
 
         // Get authorative nameservers
         $authorativelist = get_authorative_nameservers($toproof, $tld);
 
         // Import the nameserverlist.yaml as array
-        $yamlContent = file_get_contents("nameservers.yaml");
-        $customns = yaml_parse($yamlContent);
-
-        // convert custom nameservers in correct format
-        $custom_ns_format = array();
-        foreach ($customns as $name => $ip) {
-            $custom_ns_format[] = array(
-                "ns_name" => $name,
-                "ns_ip" => $ip,
-                "type" => "custom"
-            );
+        $yamlPath = __DIR__ . "/../nameservers.yaml";
+        $custom_ns_format = [];
+        $customns = parse_yaml_file_safe($yamlPath);
+        if (is_array($customns)) {
+            foreach ($customns as $name => $ip) {
+                // Validate every custom NS entry from the yaml file
+                // even though it's admin-provided: belt-and-braces.
+                if (!is_string($name) || !is_string($ip)) continue;
+                if (!is_safe_ip($ip) && !is_safe_domain($ip)) continue;
+                if (!preg_match('/^[a-zA-Z0-9._\-]{1,63}$/', $name)) continue;
+                $custom_ns_format[] = [
+                    "ns_name" => $name,
+                    "ns_ip"   => $ip,
+                    "type"    => "custom"
+                ];
+            }
         }
 
         // Merge authorative nameservers and custom nameservers to one array
         $nameservers = array_merge($authorativelist, $custom_ns_format);
 
+        if (empty($nameservers)) {
+            echo '<div class="alert alert-warning"><strong>Note!</strong> No nameservers available for query.</div>';
+            return;
+        }
 
         // Get default dns
         $dns_array = get_default_dns($toproof, $nameservers);
@@ -37,102 +53,88 @@
         check_dns_divergences($dns_array);
 
         // Print DNS
-        print_dns_check($dns_array);        
-
-
+        print_dns_check($dns_array);
     }
 
     // -------------------------------------
     // Get DNS Records
     // -------------------------------------
-    
-    // get A records
-    function get_a_records($toproof, $ns_ip) {
-        
-        $ipv4_addresses = [];
-        
-        $command = "dig +short A " . escapeshellcmd($toproof) . " @" . escapeshellcmd($ns_ip) . " | sort";
+    //
+    // SECURITY NOTE
+    //  - Every call to dig validates both the queried name AND the
+    //    nameserver target with is_safe_host(). escapeshellarg alone
+    //    is NOT enough, because tools like dig accept option-style
+    //    arguments (e.g. "-f", "-k") that begin with a dash. By
+    //    whitelisting characters first we make argument injection
+    //    impossible.
+    //  - We additionally separate the dig invocation from the sort
+    //    pipe by running sort in PHP rather than via shell.
+    // -------------------------------------
+
+    /**
+     * Run "dig +short <TYPE> <name> @<ns>" with strict validation.
+     * Returns array of trimmed, non-empty output lines (sorted), or [].
+     */
+    function _dig_lookup($type, $name, $ns_ip) {
+        // Restrict record type to a known set
+        $allowed_types = ['A','AAAA','TXT','CNAME','MX','NS','PTR','SOA','SRV'];
+        if (!in_array($type, $allowed_types, true)) {
+            return [];
+        }
+        if (!is_safe_host($name)) return [];
+        if (!is_safe_host($ns_ip)) return [];
+
+        $command = "dig +short " . escapeshellarg($type)
+                 . " "          . safe_shell_arg($name)
+                 . " @"         . safe_shell_arg($ns_ip);
         $output = shell_exec($command);
-        $ipv4_a = explode("\n", $output);
-        foreach ($ipv4_a as $ipv4_entry) {
-            if (trim($ipv4_entry) !== '') {
-                $ipv4_addresses[] = $ipv4_entry;
+        if ($output === null) {
+            return [];
+        }
+        $lines = [];
+        foreach (explode("\n", $output) as $line) {
+            $line = trim($line);
+            if ($line !== '') {
+                $lines[] = $line;
             }
         }
-        sort($ipv4_addresses); //Sort entries for better readability
-        return $ipv4_addresses;
+        sort($lines);
+        return $lines;
+    }
+
+    // get A records
+    function get_a_records($toproof, $ns_ip) {
+        return _dig_lookup('A', $toproof, $ns_ip);
     }
 
     // get AAAA records
     function get_aaaa_records($toproof, $ns_ip) {
-
-        $ipv6_addresses = [];
-
-        $command = "dig +short AAAA " . escapeshellcmd($toproof) . " @" . escapeshellcmd($ns_ip) . " | sort";
-        $output = shell_exec($command);
-        $ipv6_a = explode("\n", $output);
-        foreach ($ipv6_a as $ipv6_entry) {
-            if (trim($ipv6_entry) !== '') {
-                $ipv6_addresses[] = $ipv6_entry;
-            }
-        }
-        sort($ipv6_addresses); //Sort entries for better readability
-        return $ipv6_addresses;
+        return _dig_lookup('AAAA', $toproof, $ns_ip);
     }
 
     // get TXT records
     function get_txt_records($toproof, $ns_ip) {
-
-        $txt_adresses = [];
-
-        $command = "dig +short TXT " . escapeshellcmd($toproof) . " @" . escapeshellcmd($ns_ip) . " | sort";
-        $output = shell_exec($command);
-        $txt_a = explode("\n", $output);
-        foreach ($txt_a as $txt_entry) {
-            if (trim($txt_entry) !== '') {
-                $txt_adresses[] = $txt_entry;
-            }
-        }
-        sort($txt_adresses); //Sort entries for better readability
-        return $txt_adresses;
+        return _dig_lookup('TXT', $toproof, $ns_ip);
     }
 
     // get CNAME records
     function get_cname_records($toproof, $ns_ip) {
-
-        $cname_adresses = [];
-
-        $command = "dig +short CNAME " . escapeshellcmd($toproof) . " @" . escapeshellcmd($ns_ip) . " | sort";
-        $output = shell_exec($command);
-        $cname_a = explode("\n", $output);
-        foreach ($cname_a as $cname_entry) {
-            if (trim($cname_entry) !== '') {
-                $cname_adresses[] = $cname_entry;
-            }
-        }
-        sort($cname_adresses); //Sort entries for better readability
-        return $cname_adresses;
+        return _dig_lookup('CNAME', $toproof, $ns_ip);
     }
 
     // get mx records
     function get_mx_records($toproof, $ns_ip) {
-
+        $raw = _dig_lookup('MX', $toproof, $ns_ip);
         $mx_addresses = [];
-
-        $command = "dig +short MX " . escapeshellcmd($toproof) . " @" . escapeshellcmd($ns_ip) . " | sort";
-        $output = shell_exec($command);
-        $mx_a = explode("\n", $output);
-        foreach ($mx_a as $mx_entry) {
-            if (trim($mx_entry) !== '') {
-                $parts = explode(' ', $mx_entry);
-                $priority = (int)$parts[0];
-                $destination = $parts[1];
-                //remove last dot of string. example.com. -> example.com
-                $destination_without_dot = remove_dot_if_last_char($destination);
-                $mx_addresses[] = array('priority' => $priority, 'destination' => $destination_without_dot);
-            }
+        foreach ($raw as $mx_entry) {
+            $parts = explode(' ', $mx_entry);
+            if (count($parts) < 2) continue;
+            $priority = (int)$parts[0];
+            $destination = remove_dot_if_last_char($parts[1]);
+            $mx_addresses[] = ['priority' => $priority, 'destination' => $destination];
         }
-        sort($mx_addresses); //Sort entries for better readability
+        // Sort by priority for determinism
+        usort($mx_addresses, function($a, $b){ return $a['priority'] <=> $b['priority']; });
         return $mx_addresses;
     }
     // -------------------------------------
@@ -146,38 +148,33 @@
         $dns_array_result = [];
 
         foreach ($nameserverlist as $nameserver) {
+            $ns_ip   = $nameserver['ns_ip']   ?? '';
+            $ns_name = $nameserver['ns_name'] ?? '';
+            $type    = $nameserver['type']    ?? '';
 
-            $ns_ip = $nameserver['ns_ip'];
-            $ns_name = $nameserver['ns_name'];
-            $type = $nameserver['type'];
-
-            // get default DNS records (A; AAAA; TXT; CNAME; MX)
             $ipv4_addresses = get_a_records($toproof, $ns_ip);
             $ipv6_addresses = get_aaaa_records($toproof, $ns_ip);
-            $txt_adresses = get_txt_records($toproof, $ns_ip);
+            $txt_adresses   = get_txt_records($toproof, $ns_ip);
             $cname_adresses = get_cname_records($toproof, $ns_ip);
-            $mx_addresses = get_mx_records($toproof, $ns_ip);
+            $mx_addresses   = get_mx_records($toproof, $ns_ip);
 
             $dns_array_result[] = [
-                'ns_ip' => $ns_ip,
+                'ns_ip'   => $ns_ip,
                 'ns_name' => $ns_name,
-                'type' => $type,
-                'ipv4' => $ipv4_addresses,
-                'ipv6' => $ipv6_addresses,
-                'txt' => $txt_adresses,
-                'cname' => $cname_adresses,
-                'mx' => $mx_addresses,
+                'type'    => $type,
+                'ipv4'    => $ipv4_addresses,
+                'ipv6'    => $ipv6_addresses,
+                'txt'     => $txt_adresses,
+                'cname'   => $cname_adresses,
+                'mx'      => $mx_addresses,
             ];
-
-        } // END of foreach
-
+        }
 
         return $dns_array_result;
     }
 
     function check_dns_divergences($dns_array) {
 
-        // check if array is empty
         if (empty($dns_array)) {
             return false;
         }
@@ -188,7 +185,6 @@
         $cname_are_same = true;
         $mx_are_same = true;
 
-        // Reference entrys
         $reference_ipv4 = $dns_array[0]['ipv4'];
         $reference_ipv6 = $dns_array[0]['ipv6'];
         $reference_txt = $dns_array[0]['txt'];
@@ -196,79 +192,46 @@
         $reference_mx = $dns_array[0]['mx'];
 
         foreach ($dns_array as $nameserver) {
-
-            // current entrys
-            $current_ipv4 = $nameserver['ipv4'];
-            $current_ipv6 = $nameserver['ipv6'];
-            $current_txt = $nameserver['txt'];
-            $current_cname = $nameserver['cname'];
-            $current_mx = $nameserver['mx'];
-       
-            //check if entrys are same
-            if ($current_ipv4 !== $reference_ipv4) {
-                $ipv4_are_same = false;
-            }
-            if ($current_ipv6 !== $reference_ipv6) {
-                $ipv6_are_same = false;
-            }
-            if ($current_txt !== $reference_txt) {
-                $txt_are_same = false;
-            }
-            if ($current_cname !== $reference_cname) {
-                $cname_are_same = false;
-            }
-            if ($current_mx !== $reference_mx) {
-                $mx_are_same = false;
-            }
+            if ($nameserver['ipv4']  !== $reference_ipv4)  $ipv4_are_same = false;
+            if ($nameserver['ipv6']  !== $reference_ipv6)  $ipv6_are_same = false;
+            if ($nameserver['txt']   !== $reference_txt)   $txt_are_same = false;
+            if ($nameserver['cname'] !== $reference_cname) $cname_are_same = false;
+            if ($nameserver['mx']    !== $reference_mx)    $mx_are_same = false;
         }
 
-        // report a error if nameserver_arrays are not the same 
         if ($ipv4_are_same === false) {
-            echo '<div class="alert alert-warning">';
-                echo '<strong>Note!</strong> The ipv4 entries differ from nameserver to nameserver.</a>';
-            echo '</div>';
+            echo '<div class="alert alert-warning"><strong>Note!</strong> The ipv4 entries differ from nameserver to nameserver.</div>';
         }
         if ($ipv6_are_same === false) {
-            echo '<div class="alert alert-warning">';
-                echo '<strong>Note!</strong> The ipv6 entries differ from nameserver to nameserver.</a>';
-            echo '</div>';
+            echo '<div class="alert alert-warning"><strong>Note!</strong> The ipv6 entries differ from nameserver to nameserver.</div>';
         }
         if ($txt_are_same === false) {
-            echo '<div class="alert alert-warning">';
-                echo '<strong>Note!</strong> The txt entries differ from nameserver to nameserver.</a>';
-            echo '</div>';
+            echo '<div class="alert alert-warning"><strong>Note!</strong> The txt entries differ from nameserver to nameserver.</div>';
         }
         if ($cname_are_same === false) {
-            echo '<div class="alert alert-warning">';
-                echo '<strong>Note!</strong> The cname entries differ from nameserver to nameserver.</a>';
-            echo '</div>';
+            echo '<div class="alert alert-warning"><strong>Note!</strong> The cname entries differ from nameserver to nameserver.</div>';
         }
         if ($mx_are_same === false) {
-            echo '<div class="alert alert-warning">';
-                echo '<strong>Note!</strong> The mx entries differ from nameserver to nameserver.</a>';
-            echo '</div>';
+            echo '<div class="alert alert-warning"><strong>Note!</strong> The mx entries differ from nameserver to nameserver.</div>';
         }
-
-
     }
 
 
     function print_dns_check($dns_array) {
         foreach ($dns_array as $result) {
-            $ns_ip = $result['ns_ip'];
+            $ns_ip   = $result['ns_ip'];
             $ns_name = $result['ns_name'];
             $ns_type = $result['type'];
-            $ipv4 = $result['ipv4'];
-            $ipv6 = $result['ipv6'];
-            $txt = $result['txt'];
-            $cname = $result['cname'];
-            $mx = $result['mx'];
-            // $ns = $result['ns'];
-            
+            $ipv4    = $result['ipv4'];
+            $ipv6    = $result['ipv6'];
+            $txt     = $result['txt'];
+            $cname   = $result['cname'];
+            $mx      = $result['mx'];
+
             if ($ns_type === "authorative") {
-                echo '<div class="content-header">' . $ns_name . ' (' . $ns_ip . ') (Authorative)</div>';
+                echo '<div class="content-header">' . h($ns_name) . ' (' . h($ns_ip) . ') (Authorative)</div>';
             } else {
-                echo '<div class="content-header">' . $ns_name . ' (' . $ns_ip . ')</div>';
+                echo '<div class="content-header">' . h($ns_name) . ' (' . h($ns_ip) . ')</div>';
             }
 
             echo '<table class="table table-borderless">';
@@ -287,18 +250,15 @@
             echo '</thead>';
             echo '<tbody>';
             if (empty($ipv4)) {
-                echo '<tr>';
-                echo "<th>-</th>";
-                echo '<th></th>';
-                echo '</tr>';
+                echo '<tr><th>-</th><th></th></tr>';
             } else {
                 foreach ($ipv4 as $ipv4_entry) {
                     echo '<tr>';
-                    echo '<th>'; 
+                    echo '<th>';
                     ?>
                         <form action="index.php" method="get">
-                            <?php echo $ipv4_entry; ?>
-                            <input type="hidden" name="toproof" value="<?php echo $ipv4_entry; ?>">
+                            <?php echo h($ipv4_entry); ?>
+                            <input type="hidden" name="toproof" value="<?php echo h($ipv4_entry); ?>">
                             <button type="submit" class="btn table-info btn-sm" name="action" value="whois">
                                 <img src="assets/feather/eye.svg" alt="WHOIS" width="16" height="16">
                             </button>
@@ -331,18 +291,15 @@
             echo '</thead>';
             echo '<tbody>';
             if (empty($ipv6)) {
-                echo '<tr>';
-                echo "<th>-</th>";
-                echo '<th></th>';
-                echo '</tr>';
+                echo '<tr><th>-</th><th></th></tr>';
             } else {
                 foreach ($ipv6 as $ipv6_entry) {
                     echo '<tr>';
-                    echo '<th>'; 
+                    echo '<th>';
                     ?>
                         <form action="index.php" method="get">
-                            <?php echo $ipv6_entry; ?>
-                            <input type="hidden" name="toproof" value="<?php echo $ipv6_entry; ?>">
+                            <?php echo h($ipv6_entry); ?>
+                            <input type="hidden" name="toproof" value="<?php echo h($ipv6_entry); ?>">
                             <button type="submit" class="btn table-info btn-sm" name="action" value="whois">
                                 <img src="assets/feather/eye.svg" alt="WHOIS" width="16" height="16">
                             </button>
@@ -375,14 +332,11 @@
             echo '</thead>';
             echo '<tbody>';
             if (empty($txt)) {
-                echo '<tr>';
-                echo "<th>-</th>";
-                echo '<th></th>';
-                echo '</tr>';
+                echo '<tr><th>-</th><th></th></tr>';
             } else {
                 foreach ($txt as $txt_entry) {
                     echo '<tr>';
-                    echo "<th>" . $txt_entry . "</th>";
+                    echo '<th>' . h($txt_entry) . '</th>';
                     echo '<th></th>';
                     echo '</tr>';
                 }
@@ -405,18 +359,15 @@
             echo '</thead>';
             echo '<tbody>';
             if (empty($cname)) {
-                echo '<tr>';
-                echo "<th>-</th>";
-                echo '<th></th>';
-                echo '</tr>';
+                echo '<tr><th>-</th><th></th></tr>';
             } else {
                 foreach ($cname as $cname_entry) {
                     echo '<tr>';
-                    echo "<th>";
+                    echo '<th>';
                     ?>
                         <form action="index.php" method="get">
-                            <?php echo $ipv6_entry; ?>
-                            <input type="hidden" name="toproof" value="<?php echo $cname_entry; ?>">
+                            <?php echo h($cname_entry); ?>
+                            <input type="hidden" name="toproof" value="<?php echo h($cname_entry); ?>">
                             <button type="submit" class="btn table-info btn-sm" name="action" value="geo">
                                 <img src="assets/feather/map-pin.svg" alt="GEO" width="16" height="16">
                             </button>
@@ -451,27 +402,24 @@
             echo '</thead>';
             echo '<tbody>';
             if (empty($mx)) {
-                echo '<tr>';
-                echo "<th>-</th>";
-                echo '<th></th>';
-                echo '</tr>';
+                echo '<tr><th>-</th><th></th></tr>';
             } else {
                 foreach ($mx as $mx_entry) {
-                    $priority = $mx_entry['priority'];
+                    $priority = (int)$mx_entry['priority'];
                     $destination = $mx_entry['destination'];
                     echo '<tr>';
                     echo "<th>";
-                                        ?>
+                    ?>
                         <form action="index.php" method="get">
-                            <?php echo $destination; ?>
-                            <input type="hidden" name="toproof" value="<?php echo $destination; ?>">
+                            <?php echo h($destination); ?>
+                            <input type="hidden" name="toproof" value="<?php echo h($destination); ?>">
                             <button type="submit" class="btn table-info btn-sm" name="action" value="dnscheck">
                                 <img src="assets/feather/globe.svg" alt="GEO" width="16" height="16">
                             </button>
                         </form>
                     <?php
                     echo '</th>';
-                    echo '<th>' . $priority . '</th>';
+                    echo '<th>' . (int)$priority . '</th>';
                     echo '</tr>';
                 }
             }
@@ -503,7 +451,7 @@
                     <div class="modal-footer">
                         <button type="button" class="btn btn-success" data-bs-dismiss="modal">Close</button>
                     </div>
-                    
+
                     </div>
                 </div>
             </div>
@@ -511,27 +459,16 @@
             <div class="modal" id="aaaaModal">
                 <div class="modal-dialog">
                     <div class="modal-content">
-
-                    <!-- Modal Header -->
                     <div class="modal-header">
                         <h4 class="modal-title">AAAA-Records</h4>
                         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                     </div>
-
-                    <!-- Modal body -->
                     <div class="modal-body">
-                    <?php
-
-                        aaaaExplain();
-
-                    ?>
+                    <?php aaaaExplain(); ?>
                     </div>
-
-                    <!-- Modal footer -->
                     <div class="modal-footer">
                         <button type="button" class="btn btn-success" data-bs-dismiss="modal">Close</button>
                     </div>
-                    
                     </div>
                 </div>
             </div>
@@ -539,27 +476,16 @@
             <div class="modal" id="aModal">
                 <div class="modal-dialog">
                     <div class="modal-content">
-
-                    <!-- Modal Header -->
                     <div class="modal-header">
                         <h4 class="modal-title">A-Records</h4>
                         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                     </div>
-
-                    <!-- Modal body -->
                     <div class="modal-body">
-                    <?php
-
-                        aExplain();
-
-                    ?>
+                    <?php aExplain(); ?>
                     </div>
-
-                    <!-- Modal footer -->
                     <div class="modal-footer">
                         <button type="button" class="btn btn-success" data-bs-dismiss="modal">Close</button>
                     </div>
-                    
                     </div>
                 </div>
             </div>
@@ -567,27 +493,16 @@
             <div class="modal" id="cnameModal">
                 <div class="modal-dialog">
                     <div class="modal-content">
-
-                    <!-- Modal Header -->
                     <div class="modal-header">
                         <h4 class="modal-title">CNAME-Records</h4>
                         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                     </div>
-
-                    <!-- Modal body -->
                     <div class="modal-body">
-                    <?php
-
-                        cnameExplain();
-
-                    ?>
+                    <?php cnameExplain(); ?>
                     </div>
-
-                    <!-- Modal footer -->
                     <div class="modal-footer">
                         <button type="button" class="btn btn-success" data-bs-dismiss="modal">Close</button>
                     </div>
-                    
                     </div>
                 </div>
             </div>
@@ -595,27 +510,16 @@
             <div class="modal" id="nsModal">
                 <div class="modal-dialog">
                     <div class="modal-content">
-
-                    <!-- Modal Header -->
                     <div class="modal-header">
                         <h4 class="modal-title">NS-Records</h4>
                         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                     </div>
-
-                    <!-- Modal body -->
                     <div class="modal-body">
-                    <?php
-
-                        nsExplain();
-
-                    ?>
+                    <?php nsExplain(); ?>
                     </div>
-
-                    <!-- Modal footer -->
                     <div class="modal-footer">
                         <button type="button" class="btn btn-success" data-bs-dismiss="modal">Close</button>
                     </div>
-                    
                     </div>
                 </div>
             </div>
@@ -623,37 +527,25 @@
             <div class="modal" id="txtModal">
                 <div class="modal-dialog">
                     <div class="modal-content">
-
-                    <!-- Modal Header -->
                     <div class="modal-header">
                         <h4 class="modal-title">TXT-Records</h4>
                         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                     </div>
-
-                    <!-- Modal body -->
                     <div class="modal-body">
-                    <?php
-
-                        txtExplain();
-
-                    ?>
+                    <?php txtExplain(); ?>
                     </div>
-
-                    <!-- Modal footer -->
                     <div class="modal-footer">
                         <button type="button" class="btn btn-success" data-bs-dismiss="modal">Close</button>
                     </div>
-                    
                     </div>
                 </div>
             </div>
             <?php
-
         }
     }
 
     function arrayToString($array) {
-        $result = array();
+        $result = [];
         foreach ($array as $value) {
             if (is_array($value)) {
                 $result[] = arrayToString($value);
